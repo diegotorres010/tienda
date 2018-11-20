@@ -3,7 +3,7 @@ $(document).ready(function () {
         $(this).removeAttr('href')
         $(this).removeAttr('data-toggle')
         if ($('[name="nuevoHost"]').val().length < 1) {
-            $('#alertError').html('Nombre de host o ip vacío').show()            
+            $('#alertError').html('Nombre de host o ip vacío').show()
         } else if ($('[name="nuevoBD"]').val().length < 1) {
             $('#alertError').html('Nombre de la base de datos vacío').show()
         } else if ($('[name="nuevoUsuarioBD"]').val().length < 1) {
@@ -13,15 +13,17 @@ $(document).ready(function () {
             $(this).attr({ 'href': '#tiendatab', 'data-toggle': 'tab' })
             setTimeout(function () {
                 $(this).click()
-            }, 100)            
+            }, 100)
         }
     });
 
     $('#tabUsuario').click(function () {
         $(this).removeAttr('href')
         $(this).removeAttr('data-toggle')
+
         if ($('[name="nuevaTiendaNombre"]').val().length < 1) {
-            $('#alertError').html('Nombre de la tienda vacío').show()            
+            $('[name="nuevaTiendaNombre"]').focus();
+            $('#alertError').html('Nombre de la tienda vacío').show()
         } else if ($('[name="nuevaTiendaDireccion"]').val().length < 1) {
             $('#alertError').html('Dirección vacío').show()
         } else if ($('[name="nuevaTiendaTelefono"]').val().length < 1) {
@@ -30,20 +32,23 @@ $(document).ready(function () {
             $('#alertError').html('Propietario vacío').show()
         } else if ($('[name="nuevaTiendaEmail"]').val().length < 1) {
             $('#alertError').html('Email vacío').show()
+        } else if (!validateEmail($('[name="nuevaTiendaEmail"]').val())) {
+            $('#alertError').html('Email inválido').show()
         } else {
             $('#alertError').hide()
             $(this).attr({ 'href': '#usuariotab', 'data-toggle': 'tab' })
             setTimeout(function () {
                 $(this).click()
-            }, 100)            
+            }, 100)
         }
     });
+
 
     $('#tabSistema').click(function () {
         $(this).removeAttr('href')
         $(this).removeAttr('data-toggle')
         if ($('[name="nuevoTipoDoc"]').val().length < 1) {
-            $('#alertError').html('Nombre de la tienda vacío').show()            
+            $('#alertError').html('Nombre de la tienda vacío').show()
         } else if ($('[name="nuevoDocumentoId"]').val().length < 1) {
             $('#alertError').html('Dirección vacío').show()
         } else if ($('[name="nuevoTercero"]').val().length < 1) {
@@ -60,12 +65,12 @@ $(document).ready(function () {
             $('#alertError').html('Email vacío').show()
         } else if ($('[name="nuevoTipoTercero"]').val().length < 1) {
             $('#alertError').html('Email vacío').show()
-        } else {    
+        } else {
             $('#alertError').hide()
             $(this).attr({ 'href': '#sistematab', 'data-toggle': 'tab' })
             setTimeout(function () {
                 $(this).click()
-            }, 100)            
+            }, 100)
         }
     });
 });
@@ -143,3 +148,8 @@ function fixStepIndicator(n) {
   //... and adds the "active" class on the current step:
   x[n].className += " active";
 }*/
+
+function validateEmail(email) {
+    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return re.test(String(email).toLowerCase());
+}

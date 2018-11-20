@@ -376,7 +376,7 @@ button:hover {
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-phone"></i></span>
-                                            <input type="text" class="form-control input-lg" name="nuevaTiendaTelefono" placeholder="Teléfono" data-inputmask="'mask':'(999) 999-9999'" data-mask required>
+                                            <input type="number" class="form-control input-lg" name="nuevaTiendaTelefono" placeholder="Teléfono" data-inputmask="'mask':'(999) 999-9999'" data-mask required>
                                         </div>
                                     </div>
 

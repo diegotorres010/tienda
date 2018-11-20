@@ -1,23 +1,34 @@
 <?php
-
-require_once "controllers/plantilla.controller.php";
-require_once "controllers/terceros.controller.php";
-require_once "controllers/empleados.controller.php";
-require_once "controllers/usuarios.controller.php";
-require_once "controllers/proveedores.controller.php";
-require_once "controllers/clientes.controller.php";
-require_once "controllers/categorias.controller.php";
-require_once "controllers/productos.controller.php";
-require_once "controllers/ventas.controller.php";
-
-require_once "models/terceros.model.php";
-require_once "models/empleados.model.php";
-require_once "models/usuarios.model.php";
-require_once "models/proveedores.model.php";
-require_once "models/clientes.model.php";
-require_once "models/categorias.model.php";
-require_once "models/productos.model.php";
-require_once "models/ventas.model.php";
-
-$plantilla = new ControllerPlantilla();
-$plantilla -> ctrPlantilla();
+$install = 'models/conexion.php';
+if (!file_exists($install)) {
+	echo "<center><h2>Debes realizar la instalación!</h2></center>";
+	echo '<META HTTP-EQUIV="REFRESH" CONTENT="2;URL=install">';
+	
+}else{
+    echo "error";
+}
+/*elseif(isset($_SESSION['user'])) {
+	$buscar = @mysql_query("SELECT * FROM soft_bans WHERE username ='".$_SESSION['user']."'");
+	$ban = mysql_fetch_array($buscar);
+	if( $ban['ban'] == '1'){
+	require("inc/config.php");
+require("inc/conexion_mysql.php");	
+include("inc/query.php");
+session_start();
+		include("inc/contenido/ban.html");
+	}else{
+	require("inc/config.php");
+require("inc/conexion_mysql.php");	
+include("inc/query.php");
+session_start();
+	include("./temas/$tema/index.php");
+	}
+}
+else{
+require("inc/config.php");
+require("inc/conexion_mysql.php");	
+include("inc/query.php");
+session_start();
+	include("./temas/$tema/index.php");
+}*/
+?>

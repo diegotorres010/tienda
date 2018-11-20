@@ -44,9 +44,7 @@ session_start();
   <link rel="stylesheet" href="views//plugins/iCheck/square/blue.css">
   <link rel="stylesheet" href="views/plugins/iCheck/all.css">
 
-
-
-   <!-- Daterange picker -->
+  <!-- daterange picker -->
   <link rel="stylesheet" href="views/bower_components/bootstrap-daterangepicker/daterangepicker.css">
 
   <!-- Morris chart -->
@@ -90,7 +88,7 @@ session_start();
   <!-- jQuery Number -->
   <script src="views/plugins/jqueryNumber/jquerynumber.min.js"></script>
 
-  <!-- daterangepicker http://www.daterangepicker.com/-->
+  <!-- date-range-picker -->
   <script src="views/bower_components/moment/min/moment.min.js"></script>
   <script src="views/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 

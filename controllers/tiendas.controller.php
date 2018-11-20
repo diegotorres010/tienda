@@ -1,34 +1,30 @@
 <?php
 
-class ControladorTerceros{
+class ControladorTiendas{
 
 	/*=============================================
-	CREAR TERCEROS
+	CREAR TIENDAS
 	=============================================*/
 
-	static public function ctrCrearTercero(){
+	static public function ctrCrearTienda(){
 
-		if(isset($_POST["nuevoTercero"])){
+		if(isset($_POST["nuevaTiendaNombre"])){
 
-			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevoTercero"]) &&
-			   preg_match('/^[0-9]+$/', $_POST["nuevoDocumentoId"]) &&
-			   preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $_POST["nuevoEmail"]) && 
-			   preg_match('/^[()\-0-9 ]+$/', $_POST["nuevoTelefono"]) && 
-			   preg_match('/^[#\.\-a-zA-Z0-9 ]+$/', $_POST["nuevaDireccion"])){
+			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevaTiendaNombre"]) &&
+			   preg_match('/^[#\.\-a-zA-Z0-9 ]+$/', $_POST["nuevaTiendaDireccion"]) &&
+			   preg_match('/^[()\-0-9 ]+$/', $_POST["nuevaTiendaTelefono"]) && 
+			   preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevaTiendaPropietario"]) &&
+			   preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $_POST["nuevaTiendaEmail"])){
 
-			   	$tabla = "terceros";
+			   	$tabla = "tienda";
 
-			   	$datos = array("tipoDoc"=>$_POST["nuevoTipoDoc"],
-					   		   "documentoId"=>$_POST["nuevoDocumentoId"],
-							   "nombre"=>$_POST["nuevoTercero"],
-							   "telefono"=>$_POST["nuevoTelefono"],
-					           "email"=>$_POST["nuevoEmail"],
-					           "direccion"=>$_POST["nuevaDireccion"],
-					           "fechaNacimiento"=>$_POST["nuevaFechaNacimiento"],
-							   "tipoTercero"=>$_POST["nuevoTipoTercero"],
-							   "genero"=>$_POST["nuevoGeneroTercero"]);
+			   	$datos = array("nombreTienda"=>$_POST["nuevaTiendaNombre"],
+							   "direccion"=>$_POST["nuevaTiendaDireccion"],
+							   "telefono"=>$_POST["nuevaTiendaTelefono"],
+							   "email"=>$_POST["nuevaTiendaEmail"],
+							   "propietario"=>$_POST["nuevaTiendaPropietario"]);
 
-			   	$respuesta = ModeloTerceros::mdlIngresarTercero($tabla, $datos);
+			//   	$respuesta = ModeloTiendas::mdlIngresarTienda($tabla, $datos);
 
 			   	if($respuesta == "ok"){
 
@@ -36,7 +32,7 @@ class ControladorTerceros{
 
 					swal({
 						  type: "success",
-						  title: "El usuario ha sido guardado correctamente",
+						  title: "La tienda ha sido guardado correctamente",
 						  showConfirmButton: true,
 						  confirmButtonText: "Cerrar"
 						  }).then(function(result){

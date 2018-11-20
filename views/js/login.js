@@ -25,14 +25,19 @@ $(document).ready(function () {
             $('[name="nuevaTiendaNombre"]').focus();
             $('#alertError').html('Nombre de la tienda vacío').show()
         } else if ($('[name="nuevaTiendaDireccion"]').val().length < 1) {
+            $('[name="nuevaTiendaDireccion"]').focus();
             $('#alertError').html('Dirección vacío').show()
         } else if ($('[name="nuevaTiendaTelefono"]').val().length < 1) {
+            $('[name="nuevaTiendaTelefono"]').focus();
             $('#alertError').html('Teléfono vacío').show()
         } else if ($('[name="nuevaTiendaPropietario"]').val().length < 1) {
+            $('[name="nuevaTiendaPropietario"]').focus();
             $('#alertError').html('Propietario vacío').show()
         } else if ($('[name="nuevaTiendaEmail"]').val().length < 1) {
+            $('[name="nuevaTiendaEmail"]').focus();
             $('#alertError').html('Email vacío').show()
         } else if (!validateEmail($('[name="nuevaTiendaEmail"]').val())) {
+            $('[name="nuevaTiendaEmail"]').focus();
             $('#alertError').html('Email inválido').show()
         } else {
             $('#alertError').hide()

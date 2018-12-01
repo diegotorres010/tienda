@@ -1,69 +1,82 @@
 <div class="content-wrapper">
-  <section class="content-header">    
-    <h1>      
-      Administración de impuestos    
+  <section class="content-header">
+    <h1>
+      Administración de impuestos
     </h1>
-    <ol class="breadcrumb">      
-      <li><a href="inicio"><i class="fa fa-dashboard"></i> Inicio</a></li>      
-      <li class="active">Administración de impuestos</li>    
+    <ol class="breadcrumb">
+      <li><a href="inicio"><i class="fa fa-dashboard"></i> Inicio</a></li>
+      <li class="active">Administración de impuestos</li>
     </ol>
   </section>
 
   <section class="content">
     <div class="box">
-      <div class="box-header with-border">  
-        <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarCategoria">          
+      <div class="box-header with-border">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarImpuesto">
           Agregar impuesto
         </button>
       </div>
 
-      <div class="box-body">        
-       <table class="table table-bordered table-striped dt-responsive tablas" width="100%">         
-        <thead>         
-         <tr>           
+      <div class="box-body">
+       <table class="table table-bordered table-striped dt-responsive tablas" width="100%">
+        <thead>
+         <tr>
            <th style="width:10px">#</th>
-           <th>Categoria</th>
-           <th>Acciones</th>
-         </tr> 
+           <th>Descripción</th>
+           <th>Porcentaje de impuesto</th>
+           <th>Estado</th>
+           <th>Editar</th>
+         </tr>
         </thead>
 
         <tbody>
 
         <?php
+$item = null;
+$valor = null;
 
-          $item = null;
-          $valor = null;
+$impuestos = ControladorImpuestos::ctrListarImpuesto($item, $valor);
 
-          $categorias = ControladorCategorias::ctrMostrarCategorias($item, $valor);
+foreach ($impuestos as $key => $value) {
 
-          foreach ($categorias as $key => $value) {
-           
-            echo ' <tr>
+    echo ' <tr>
 
-                    <td>'.($key+1).'</td>
+                    <td>' . ($key + 1) . '</td>
 
-                    <td class="text-uppercase">'.$value["categoria"].'</td>
+                    <td>' . $value["descripcion"] . '</td>
 
-                    <td>
+                    <td>' . $value["porcentaje"] . '</td>';
 
-                      <div class="btn-group">
-                          
-                        <button class="btn btn-warning btnEditarCategoria" idCategoria="'.$value["id"].'" data-toggle="modal" data-target="#modalEditarCategoria"><i class="fa fa-pencil"></i></button>';
+    if ($value["estado"] != 0) {
+        echo '<td><button class="btn btn-success btn-xs btnActivarIva" idIva="' . $value["idIva"] . '" estado="0">Activado</button></td>';
+    } else {
+        echo '<td><button class="btn btn-danger btn-xs btnActivarIva" idIva="' . $value["idIva"] . '" estado="1">Desactivado</button></td>';
+    }
 
-                      //  if($_SESSION["perfil"] == "Administrador"){
+    echo '<td>
 
-                          echo '<button class="btn btn-danger btnEliminarCategoria" idCategoria="'.$value["id"].'"><i class="fa fa-times"></i></button>';
+                      <div class="btn-group">';
 
-                      //  }
+    // if ($value["estado"] != 0) {
+    echo '<button class="btn btn-warning btnEditarImpuesto" idIva="' . $value["idIva"] . '" estado="' . $value["estado"] . '" data-toggle="modal" data-target="#modalEditarImpuesto"><i class="fa fa-pencil"></i></button>';
+    // } else {
+    // echo '<button class="btn btn-warning disabled"><i class="fa fa-pencil"></i></button>';
+    // }
 
-                      echo '</div>  
+    //  if($_SESSION["perfil"] == "Administrador"){
+
+    //    echo '<button class="btn btn-danger btnEliminarImpuesto" idIva="'.$value["idIva"].'"descripcion="'.$value["descripcion"].'"porcentaje="'.$value["porcentaje"].'"><i class="fa fa-times"></i></button>';
+
+    //  }
+
+    echo '</div>
 
                     </td>
 
                   </tr>';
-          }
+}
 
-        ?>
+?>
 
         </tbody>
 
@@ -73,33 +86,42 @@
   </section>
 </div>
 
-<div id="modalAgregarCategoria" class="modal fade" role="dialog">  
+<div id="modalAgregarImpuesto" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
       <form role="form" method="post">
         <div class="modal-header" style="background:#3c8dbc; color:white">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Agregar categoría</h4>
+          <h4 class="modal-title">Agregar impuesto</h4>
         </div>
         <div class="modal-body">
           <div class="box-body">
-            <div class="form-group">              
-              <div class="input-group">              
-                <span class="input-group-addon"><i class="fa fa-th"></i></span> 
-                <input type="text" class="form-control input-lg" name="nuevaCategoria" placeholder="Ingresar categoría" required>
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-archive"></i></span>
+                <input type="text" class="form-control input-lg" name="nuevoImpuesto" placeholder="Ingresar descripción del impuesto" id="nuevoImpuesto" required>
               </div>
-            </div>  
+            </div>
+            <div class="form-group row">
+              <div class="col-xs-12 col-md-6 col-lg-6">
+                <div class="input-group">
+                  <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                  <input type="number" class="form-control input-lg nuevoPorcentaje" name="nuevoPorcentaje" id="nuevoPorcentaje" min="0" max="100" value="19" required>
+                  <span class="input-group-addon"><i class="fa fa-percent"></i></span>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
-          <button type="submit" class="btn btn-primary">Guardar categoría</button>
+          <button type="submit" class="btn btn-primary">Guardar impuesto</button>
         </div>
 
         <?php
-          $crearCategoria = new ControladorCategorias();
-          $crearCategoria -> ctrCrearCategoria();
-        ?>
+$crearImpuesto = new ControladorImpuestos();
+$crearImpuesto->ctrCrearImpuesto();
+?>
 
       </form>
     </div>
@@ -107,11 +129,11 @@
 </div>
 
 <!--=====================================
-MODAL EDITAR CATEGORÍA
+MODAL EDITAR IMPUESTO
 ======================================-->
 
-<div id="modalEditarCategoria" class="modal fade" role="dialog">
-  
+<div id="modalEditarImpuesto" class="modal fade" role="dialog">
+
   <div class="modal-dialog">
 
     <div class="modal-content">
@@ -126,7 +148,7 @@ MODAL EDITAR CATEGORÍA
 
           <button type="button" class="close" data-dismiss="modal">&times;</button>
 
-          <h4 class="modal-title">Editar categoría</h4>
+          <h4 class="modal-title">Editar impuesto</h4>
 
         </div>
 
@@ -135,27 +157,24 @@ MODAL EDITAR CATEGORÍA
         ======================================-->
 
         <div class="modal-body">
-
           <div class="box-body">
-
-            <!-- ENTRADA PARA EL NOMBRE -->
-            
             <div class="form-group">
-              
               <div class="input-group">
-              
-                <span class="input-group-addon"><i class="fa fa-th"></i></span> 
-
-                <input type="text" class="form-control input-lg" name="editarCategoria" id="editarCategoria" required>
-
-                 <input type="hidden"  name="idCategoria" id="idCategoria" required>
-
+                <span class="input-group-addon"><i class="fa fa-archive"></i></span>
+                <input type="text" class="form-control input-lg" name="editarImpuesto" id="editarImpuesto" required>
+                <input type="hidden"  name="idIva" id="idIva" required>
               </div>
-
             </div>
-  
+            <div class="form-group row">
+            <div class="col-xs-12 col-md-6 col-lg-6">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-usd"></i></span>
+                <input type="number" class="form-control input-lg editarPorcentaje" name="editarPorcentaje" id="editarPorcentaje" min="0" required>
+                <span class="input-group-addon"><i class="fa fa-percent"></i></span>
+              </div>
+            </div>
+            </div>
           </div>
-
         </div>
 
         <!--=====================================
@@ -172,10 +191,10 @@ MODAL EDITAR CATEGORÍA
 
       <?php
 
-          $editarCategoria = new ControladorCategorias();
-          $editarCategoria -> ctrEditarCategoria();
+$editarImpuesto = new ControladorImpuestos();
+$editarImpuesto->ctrEditarImpuesto();
 
-        ?> 
+?>
 
       </form>
 
@@ -184,12 +203,5 @@ MODAL EDITAR CATEGORÍA
   </div>
 
 </div>
-
-<?php
-
-  $borrarCategoria = new ControladorCategorias();
-  $borrarCategoria -> ctrBorrarCategoria();
-
-?>
 
 

@@ -43,85 +43,6 @@
 
   <!-- Morris chart -->
   <link rel="stylesheet" href="../views/bower_components/morris.js/morris.css"> 
-  
-  <style>
-* {
-  box-sizing: border-box;
-}
-
-body {
-  background-color: #f1f1f1;
-}
-
-#regForm {
-  background-color: #ffffff;
-  font-family: Raleway;
-  padding: 10px;
-  width: 100%;
-  min-width: 300px;
-}
-
-h1 {
-  text-align: center;  
-}
-
-input {
-  padding: 10px;
-  width: 100%;
-  font-size: 17px;
-  font-family: Raleway;
-  border: 1px solid #aaaaaa;
-}
-
-/* Mark input boxes that gets an error on validation: */
-input.invalid {
-  background-color: #ffdddd;
-}
-
-/* Hide all steps by default: */
-.tab {
-  display: none;
-}
-
-button {
-  background-color: #4CAF50;
-  color: #ffffff;
-  border: none;
-  padding: 10px 20px;
-  font-size: 17px;
-  font-family: Raleway;
-  cursor: pointer;
-}
-
-button:hover {
-  opacity: 0.8;
-}
-
-#prevBtn {
-  background-color: #bbbbbb;
-}
-
-/* Make circles that indicate the steps of the form: */
-.step {
-  height: 15px;
-  width: 15px;
-  margin: 0 2px;
-  background-color: #bbbbbb;
-  border: none;  
-  border-radius: 50%;
-  display: inline-block;
-  opacity: 0.5;
-}
-
-.step.active {
-  opacity: 1;
-}
-
-/* Mark the steps that are finished and valid: */
-.step.finish {
-  background-color: #4CAF50;
-}
-</style>
 
 <!--=====================================
   PLUGINS DE JAVASCRIPT
@@ -196,126 +117,30 @@ button:hover {
                 </div>
                 <div class="box-body">
                     <dl>
+                        <dt>Nota!</dt>
+                        <dd>El sistema no dejará ingresar a las siguientes pestañas si hace falta algún dato requerido.</dd>
+                        <dt class="text-red">Este proceso se realizará una sóla vez si todo se configura de la manera correcta.</dt>
+                        <br>
                         <dt>Pasos para la configuración</dt>
                         <dd>A continuación se explicaran los pasos necesarios para la configuración:</dd>
                         <ul>
-                            <li>Configuración del archivo <b class="text-red">conexion.php</b> en la pestaña <b class="text-red">"Conexión", el campo de contraseña de la base de datos puede ir vacío.</b></li>
-                            <li>Ingresar a la pestaña <b class="text-red">"Crear tienda"</b> e ingresar todos los campos (todos los campos son obligatorios) </li>
-                            <li>Ingresar a la pestaña <b class="text-red">"Datos del usuario"</b> e ingresar todos los campos (todos los campos son obligatorios) </li>
-                            <li>Ingresar a la pestaña <b class="text-red">"Datos del sistema"</b> e ingresar todos los campos (todos los campos son obligatorios) </li>
-                        </ul>        
-                    <dt>Al finalizar de llenar en totalidad los datos debe dar en el boton <b class="text-blue">"Crear Tienda"</b>.</dt>
-                    <dd>El sistema validará los datos ingresados.</dd>
-                    <dd>Una vez finalizado este proceso, ingresará al menú principal de SITIB.</dd>
+                            <li>Configuración del archivo <b class="text-red">conexion.php</b> en la pestaña <b class="text-red">"Conexión"</b>, por defecto se recomiendan algunos datos ya cargados en el formulario, recuerde el campo de contraseña de la base de datos puede ir vacío.</li>
+                            <li>Ingresar a la pestaña <b class="text-red">"Crear tienda"</b> e ingresar todos los campos (todos los campos son obligatorios). </li>
+                            <li>Ingresar a la pestaña <b class="text-red">"Datos del usuario"</b> e ingresar todos los campos (todos los campos son obligatorios). </li>
+                            <li>Ingresar a la pestaña <b class="text-red">"Datos del sistema"</b> e ingresar todos los campos (la foto es opcional). </li>
+                        </ul>
                     <br>
-                    <dt class="text-red">Nota!</dt>
-                    <dd>El sistema no dejará ingresar a las siguientes pestañas si hace falta algún dato en una de ellas.</dd>
+                    <dt>Al terminar de digitar todos los datos debe dar clic en el botón <b class="text-blue">"Crear Tienda"</b>.</dt>
+                    <br>
+                    <dd>El sistema validará los datos ingresados, Si se presenta algún tipo de error el sistema se lo notificará.</dd>
+                    <dd>Una vez finalizado este proceso, ingresará al menú principal de SITIB.</dd>
                 </dl>
                 </div>
             </div>
         </div>
-<!--
-<div class="col-md-6">
-<form id="regForm" action="/action_page.php">
-  <h1>Registro:</h1>
-  <div class="tab">Datos para conexión:
-  <div class="modal-body">
-    <div class="box-body">
-        <div class="form-group">
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                <input type="text" class="form-control input-lg" name="nuevoHost" placeholder="Host o ip" oninput="this.className = ''" required>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                <input type="text" class="form-control input-lg" name="nuevoBD" placeholder="Nombre de la base de datos" required>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                <input type="text" class="form-control input-lg" name="nuevoUsuarioBD" placeholder="Usuario de la base de datos" required>
-            </div>
-        </div>
-        <div class="form-group">
-            <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                <input type="password" class="form-control input-lg" name="nuevaPasswordDB" placeholder="Contraseña de la base de datos" >
-            </div>
-        </div>
-    </div>
-</div>
-</div>
-  <div class="tab">Crear tienda:
-  <div class="modal-body">
-                                <div class="box-body">
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                            <input type="text" class="form-control input-lg" name="nuevaTiendaNombre" placeholder="Nombre de la tienda" required>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
-                                            <input type="text" class="form-control input-lg" name="nuevaTiendaDireccion" placeholder="Dirección" required>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-phone"></i></span>
-                                            <input type="text" class="form-control input-lg" name="nuevaTiendaTelefono" placeholder="Teléfono" data-inputmask="'mask':'(999) 999-9999'" data-mask required>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                            <input type="text" class="form-control input-lg" name="nuevaTiendaPropietario" placeholder="Nombre del propietario" required>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                            <input type="email" class="form-control input-lg" name="nuevaTiendaEmail" placeholder="email" required>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        
-  </div>
-  <div class="tab">Birthday:
-    <p><input placeholder="dd" oninput="this.className = ''" name="dd"></p>
-    <p><input placeholder="mm" oninput="this.className = ''" name="nn"></p>
-    <p><input placeholder="yyyy" oninput="this.className = ''" name="yyyy"></p>
-  </div>
-  <div class="tab">Login Info:
-    <p><input placeholder="Username..." oninput="this.className = ''" name="uname"></p>
-    <p><input placeholder="Password..." oninput="this.className = ''" name="pword" type="password"></p>
-  </div>
-  <div style="overflow:auto;">
-    <div style="float:right;">
-      <button type="button" id="prevBtn" onclick="nextPrev(-1)">Anterior</button>
-      <button type="submit" id="nextBtn" onclick="nextPrev(1)">Siguiente</button>
-    </div>
-  </div>
-  <div style="text-align:center;margin-top:40px;">
-    <span class="step"></span>
-    <span class="step"></span>
-    <span class="step"></span>
-    <span class="step"></span>
-  </div>
-</form>
-</div>
--->
 
         <div class="col-md-6">
-            <form role="form" method="post">
+            <form role="form" action="crear_conexion.php" method="post" enctype="multipart/form-data">
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#conexiontab" data-toggle="tab">Conexión</a></li>
@@ -331,19 +156,19 @@ button:hover {
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                                            <input type="text" class="form-control input-lg" name="nuevoHost" placeholder="Host o ip" required>
+                                            <input type="text" class="form-control input-lg" name="nuevoHost" placeholder="Host o ip" value="localhost" required>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                                            <input type="text" class="form-control input-lg" name="nuevoBD" placeholder="Nombre de la base de datos" required>
+                                            <input type="text" class="form-control input-lg" name="nuevoDB" placeholder="Nombre de la base de datos" value="tienda" required>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                            <input type="text" class="form-control input-lg" name="nuevoUsuarioBD" placeholder="Usuario de la base de datos" required>
+                                            <input type="text" class="form-control input-lg" name="nuevoUsuarioDB" placeholder="Usuario de la base de datos" value="root" required>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -488,13 +313,13 @@ button:hover {
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                                            <input type="text" class="form-control input-lg" name="nuevoEmpleado" placeholder="Ingresar usuario" id="nuevoEmpleado" >
+                                            <input type="text" class="form-control input-lg" name="nuevoEmpleado" placeholder="Ingresar usuario" value="admin" required>
                                         </div>
                                     </div>
                                     <div class="form-group">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-lock"></i></span>
-                                            <input type="password" class="form-control input-lg" name="nuevoPassword" placeholder="Ingresar contraseña" >
+                                            <input type="password" class="form-control input-lg" name="nuevoPassword" placeholder="Ingresar contraseña" required>
                                         </div>
                                     </div>
                                     <div class="form-group">
@@ -512,6 +337,24 @@ button:hover {
                     </div>
                     <div id="alertError" style="display:none;" class="alert alert-danger">
                     </div>
+        
+                    <div class="modal modal-danger fade in" id="modal-danger" style="display: none;">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">×</span></button>
+                                    <h4 class="modal-title">Recuerde</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Debe diligenciar todos los campos en su totalidad y con Información correcta.</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-outline" data-dismiss="modal">Regresar</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>                    
                 </div>
             </form>
         </div>

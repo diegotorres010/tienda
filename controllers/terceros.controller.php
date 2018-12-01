@@ -16,40 +16,39 @@ class ControladorTerceros{
 			   preg_match('/^[()\-0-9 ]+$/', $_POST["nuevoTelefono"]) && 
 			   preg_match('/^[#\.\-a-zA-Z0-9 ]+$/', $_POST["nuevaDireccion"])){
 
-			   	$tabla = "terceros";
+			   	$tabla = "usuarios";
 
-			   	$datos = array("tipoDoc"=>$_POST["nuevoTipoDoc"],
-					   		   "documentoId"=>$_POST["nuevoDocumentoId"],
-							   "nombre"=>$_POST["nuevoTercero"],
+			   	$datos = array("tipoDocumento"=>$_POST["nuevoTipoDoc"],
+					   		   "documento"=>$_POST["nuevoDocumentoId"],
+							   "descripcion"=>$_POST["nuevoTercero"],
 							   "telefono"=>$_POST["nuevoTelefono"],
 					           "email"=>$_POST["nuevoEmail"],
 					           "direccion"=>$_POST["nuevaDireccion"],
 					           "fechaNacimiento"=>$_POST["nuevaFechaNacimiento"],
-							   "tipoTercero"=>$_POST["nuevoTipoTercero"],
+							   "tipoUsuario"=>$_POST["nuevoTipoTercero"],
 							   "genero"=>$_POST["nuevoGeneroTercero"]);
 
-			   	$respuesta = ModeloTerceros::mdlIngresarTercero($tabla, $datos);
+			   	$respuesta = ModeloTerceros::mdlCrearTercero($tabla, $datos);
 
-			   	if($respuesta == "ok"){
-
+			   	$respuestTmp = explode("|",$respuesta);
+				
+				 if($respuestTmp[0] == "1"){
+					$tipoAlerta ="error";
+				}else{
+					$tipoAlerta ="success";
+				}
 					echo'<script>
-
 					swal({
-						  type: "success",
-						  title: "El usuario ha sido guardado correctamente",
+						  type: "'.$tipoAlerta.'",
+						  title: "'.$respuestTmp[1].'",
 						  showConfirmButton: true,
 						  confirmButtonText: "Cerrar"
 						  }).then(function(result){
 									if (result.value) {
-
 									window.location = "terceros";
-
 									}
 								})
-
 					</script>';
-
-				}
 
 			}else{
 
@@ -79,18 +78,25 @@ class ControladorTerceros{
 	}
 
 	/*=============================================
-	MOSTRAR TERCEROS
+	MOSTRAR USUARIOS
 	=============================================*/
 
 	static public function ctrMostrarTercero($item, $valor){
 
-		$tabla = "terceros";
+		$tabla = "usuarios";
 
 		$respuesta = ModeloTerceros::mdlMostrarTercero($tabla, $item, $valor);
 
-	//	var_dump($respuesta);
 		return $respuesta;
 
+	}
+
+	static public function ctrListarTercero($item, $valor){
+
+		$tabla = "usuarios";
+		$respuesta = ModeloTerceros::mdlListarTercero($tabla, $item, $valor);
+		return $respuesta;
+	
 	}
 
 	/*=============================================
@@ -107,41 +113,40 @@ class ControladorTerceros{
 			   preg_match('/^[()\-0-9 ]+$/', $_POST["editarTelefono"]) && 
 			   preg_match('/^[#\.\-a-zA-Z0-9 ]+$/', $_POST["editarDireccion"])){
 
-			   	$tabla = "terceros";
+			   	$tabla = "usuarios";
 
-				$datos = array("idTercero"=>$_POST["idTercero"],
-							   "tipoDoc"=>$_POST["editarTipoDoc"],
-				   			   "documentoId"=>$_POST["editarDocumentoId"],
-							   "nombre"=>$_POST["editarTercero"],
+				$datos = array("idUsuario"=>$_POST["idTercero"],
+							   "tipoDocumento"=>$_POST["editarTipoDoc"],
+				   			   "documento"=>$_POST["editarDocumentoId"],
+							   "descripcion"=>$_POST["editarTercero"],
 							   "telefono"=>$_POST["editarTelefono"],
 							   "email"=>$_POST["editarEmail"],
 							   "direccion"=>$_POST["editarDireccion"],
 							   "fechaNacimiento"=>$_POST["editarFechaNacimiento"],
-							   "tipoTercero"=>$_POST["editarTipoTercero"],
+							   "tipoUsuario"=>$_POST["editarTipoTercero"],
 							   "genero"=>$_POST["editarGeneroTercero"]);
 
 			   	$respuesta = ModeloTerceros::mdlEditarTercero($tabla, $datos);
 
-			   	if($respuesta == "ok"){
-
+			   	$respuestTmp = explode("|",$respuesta);
+				
+				 if($respuestTmp[0] == "1"){
+					$tipoAlerta ="error";
+				}else{
+					$tipoAlerta ="success";
+				}
 					echo'<script>
-
 					swal({
-						  type: "success",
-						  title: "El usuario ha sido cambiado correctamente",
+						  type: "'.$tipoAlerta.'",
+						  title: "'.$respuestTmp[1].'",
 						  showConfirmButton: true,
 						  confirmButtonText: "Cerrar"
 						  }).then(function(result){
 									if (result.value) {
-
 									window.location = "terceros";
-
 									}
 								})
-
 					</script>';
-
-				}
 
 			}else{
 
@@ -165,45 +170,6 @@ class ControladorTerceros{
 
 
 			}
-
-		}
-
-	}
-
-	/*=============================================
-	ELIMINAR TERCERO
-	=============================================*/
-
-	static public function ctrEliminarTercero(){
-
-		if(isset($_GET["idTercero"])){
-
-			$tabla ="terceros";
-			$datos = $_GET["idTercero"];
-
-			$respuesta = ModeloTerceros::mdlEliminarTercero($tabla, $datos);
-
-			if($respuesta == "ok"){
-
-				echo'<script>
-
-				swal({
-					  type: "success",
-					  title: "El usuario ha sido borrado correctamente",
-					  showConfirmButton: true,
-					  confirmButtonText: "Cerrar",
-					  closeOnConfirm: false
-					  }).then(function(result){
-								if (result.value) {
-
-								window.location = "terceros";
-
-								}
-							})
-
-				</script>';
-
-			}		
 
 		}
 

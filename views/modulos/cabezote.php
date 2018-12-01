@@ -25,14 +25,14 @@
 						echo '<img src="views/img/empleados/default/anonymous.png" class="user-image">';
 					}
 
-					$item = "idTercero";
-					$valor = $_SESSION["idTercero"];
+					$item = "idUsuario";
+					$valor = $_SESSION["idUsuario"];
 			
 					$terceros = ControladorTerceros::ctrMostrarTercero($item, $valor);
 
 					?>						
 					
-						<span class="hidden-xs"><?php  echo $terceros["nombre"]; ?></span>
+						<span class="hidden-xs"><?php  echo $terceros["descripcion"]; ?></span>
 					</a>
 
 					<ul class="dropdown-menu">						

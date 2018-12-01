@@ -15,15 +15,47 @@ class AjaxProductos{
 
   public function ajaxCrearCodigoProducto(){
 
-  	$item = "id_categoria";
+  	$item = "idCategoria";
   	$valor = $this->idCategoria;
-    $orden = "id";
+    $orden = "idProducto";
 
-  	$respuesta = ControladorProductos::ctrMostrarProductos($item, $valor, $orden);
+  	$respuesta = ControladorProductos::ctrMostrarProducto($item, $valor, $orden);
 
   	echo json_encode($respuesta);
 
   }
+
+
+  public $activarProducto;
+	public $activarIdProducto;
+
+	public function ajaxActivarProducto(){
+
+		$tabla = "productos";
+
+		$item1 = "estado";
+		$valor1 = $this->activarProducto;
+
+		$item2 = "idProducto";
+		$valor2 = $this->activarIdProducto;
+
+		$respuesta = ModeloProductos::mdlActualizarProductoEstado($tabla, $item1, $valor1, $item2, $valor2);
+  }
+  
+  public $validarProducto;
+	public $campo;
+
+	public function ajaxValidarProducto(){
+
+		$item = $this->campo;
+    $valor = $this->validarProducto;
+    $orden = "idProducto";
+
+		$respuesta = ControladorProductos::ctrMostrarProducto($item, $valor, $orden);
+
+		echo json_encode($respuesta);
+
+	}
 
 
   /*=============================================
@@ -40,10 +72,9 @@ class AjaxProductos{
 
       $item = null;
       $valor = null;
-      $orden = "id";
+      $orden = "idProducto";
 
-      $respuesta = ControladorProductos::ctrMostrarProductos($item, $valor,
-        $orden);
+      $respuesta = ControladorProductos::ctrMostrarProducto($item, $valor, $orden);
 
       echo json_encode($respuesta);
 
@@ -52,21 +83,19 @@ class AjaxProductos{
 
       $item = "descripcion";
       $valor = $this->nombreProducto;
-      $orden = "id";
+      $orden = "idProducto";
 
-      $respuesta = ControladorProductos::ctrMostrarProductos($item, $valor,
-        $orden);
+      $respuesta = ControladorProductos::ctrMostrarProducto($item, $valor, $orden);
 
       echo json_encode($respuesta);
 
     }else{
 
-      $item = "id";
+      $item = "idProducto";
       $valor = $this->idProducto;
-      $orden = "id";
+      $orden = "idProducto";
 
-      $respuesta = ControladorProductos::ctrMostrarProductos($item, $valor,
-        $orden);
+      $respuesta = ControladorProductos::ctrMostrarProducto($item, $valor, $orden);
 
       echo json_encode($respuesta);
 
@@ -124,8 +153,16 @@ if(isset($_POST["nombreProducto"])){
 
 }
 
+if(isset($_POST["activarProducto"])){
+	$activarProducto = new AjaxProductos();
+	$activarProducto -> activarProducto = $_POST["activarProducto"];
+	$activarProducto -> activarIdProducto = $_POST["activarIdProducto"];
+	$activarProducto -> ajaxActivarProducto();
+}
 
-
-
-
-
+if(isset( $_POST["validarProducto"])){
+	$valProducto = new AjaxProductos();
+	$valProducto -> validarProducto = $_POST["validarProducto"];
+	$valProducto -> campo = $_POST["campo"];
+	$valProducto -> ajaxValidarProducto();
+}

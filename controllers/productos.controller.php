@@ -6,14 +6,22 @@ class ControladorProductos{
 	MOSTRAR PRODUCTOS
 	=============================================*/
 
-	static public function ctrMostrarProductos($item, $valor, $orden){
+	static public function ctrMostrarProducto($item, $valor, $orden){
 
 		$tabla = "productos";
 
-		$respuesta = ModeloProductos::mdlMostrarProductos($tabla, $item, $valor, $orden);
+		$respuesta = ModeloProductos::mdlMostrarProducto($tabla, $item, $valor, $orden);
 
 		return $respuesta;
 
+	}
+
+	static public function ctrListarProducto($item, $valor){
+
+		$tabla = "productos";
+		$respuesta = ModeloProductos::mdlListarProducto($tabla, $item, $valor);
+		return $respuesta;
+	
 	}
 
 	/*=============================================
@@ -25,15 +33,13 @@ class ControladorProductos{
 		if(isset($_POST["nuevaDescripcion"])){
 
 			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevaDescripcion"]) &&
-			   preg_match('/^[0-9]+$/', $_POST["nuevoStock"]) &&	
-			   preg_match('/^[0-9.]+$/', $_POST["nuevoPrecioCompra"]) &&
-			   preg_match('/^[0-9.]+$/', $_POST["nuevoPrecioVenta"])){
+			   preg_match('/^[0-9]+$/', $_POST["nuevoCodigo"])){
 
 		   		/*=============================================
 				VALIDAR IMAGEN
 				=============================================*/
 
-			   	$ruta = "vistas/img/productos/default/anonymous.png";
+			   	$ruta = "views/img/productos/default/anonymous.png";
 
 			   	if(isset($_FILES["nuevaImagen"]["tmp_name"])){
 
@@ -46,7 +52,7 @@ class ControladorProductos{
 					CREAMOS EL DIRECTORIO DONDE VAMOS A GUARDAR LA FOTO DEL USUARIO
 					=============================================*/
 
-					$directorio = "vistas/img/productos/".$_POST["nuevoCodigo"];
+					$directorio = "views/img/productos/".$_POST["nuevoCodigo"];
 
 					mkdir($directorio, 0755);
 
@@ -62,7 +68,7 @@ class ControladorProductos{
 
 						$aleatorio = mt_rand(100,999);
 
-						$ruta = "vistas/img/productos/".$_POST["nuevoCodigo"]."/".$aleatorio.".jpg";
+						$ruta = "views/img/productos/".$_POST["nuevoCodigo"]."/".$aleatorio.".jpg";
 
 						$origen = imagecreatefromjpeg($_FILES["nuevaImagen"]["tmp_name"]);						
 
@@ -82,7 +88,7 @@ class ControladorProductos{
 
 						$aleatorio = mt_rand(100,999);
 
-						$ruta = "vistas/img/productos/".$_POST["nuevoCodigo"]."/".$aleatorio.".png";
+						$ruta = "views/img/productos/".$_POST["nuevoCodigo"]."/".$aleatorio.".png";
 
 						$origen = imagecreatefrompng($_FILES["nuevaImagen"]["tmp_name"]);						
 
@@ -98,37 +104,35 @@ class ControladorProductos{
 
 				$tabla = "productos";
 
-				$datos = array("id_categoria" => $_POST["nuevaCategoria"],
-							   "codigo" => $_POST["nuevoCodigo"],
+				$datos = array("idCategoria" => $_POST["nuevaCategoria"],
+							   "idUnidadVenta" => $_POST["nuevaMedidas"],
+							   "idIva" => $_POST["nuevoImpuestos"],
+							   "codigoProducto" => $_POST["nuevoCodigo"],
+							   "codigoBarras" => $_POST["nuevoCodigoBarras"],
 							   "descripcion" => $_POST["nuevaDescripcion"],
-							   "stock" => $_POST["nuevoStock"],
-							   "precio_compra" => $_POST["nuevoPrecioCompra"],
-							   "precio_venta" => $_POST["nuevoPrecioVenta"],
 							   "imagen" => $ruta);
 
 				$respuesta = ModeloProductos::mdlIngresarProducto($tabla, $datos);
 
-				if($respuesta == "ok"){
-
-					echo'<script>
-
-						swal({
-							  type: "success",
-							  title: "El producto ha sido guardado correctamente",
-							  showConfirmButton: true,
-							  confirmButtonText: "Cerrar"
-							  }).then(function(result){
-										if (result.value) {
-
-										window.location = "productos";
-
-										}
-									})
-
-						</script>';
-
+				$respuestTmp = explode("|",$respuesta);
+				
+				 if($respuestTmp[0] == "1"){
+					$tipoAlerta ="error";
+				}else{
+					$tipoAlerta ="success";
 				}
-
+					echo'<script>
+					swal({
+						  type: "'.$tipoAlerta.'",
+						  title: "'.$respuestTmp[1].'",
+						  showConfirmButton: true,
+						  confirmButtonText: "Cerrar"
+						  }).then(function(result){
+									if (result.value) {
+									window.location = "productos";
+									}
+								})
+					</script>';
 
 			}else{
 
@@ -162,9 +166,7 @@ class ControladorProductos{
 		if(isset($_POST["editarDescripcion"])){
 
 			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["editarDescripcion"]) &&
-			   preg_match('/^[0-9]+$/', $_POST["editarStock"]) &&	
-			   preg_match('/^[0-9.]+$/', $_POST["editarPrecioCompra"]) &&
-			   preg_match('/^[0-9.]+$/', $_POST["editarPrecioVenta"])){
+			preg_match('/^[0-9]+$/', $_POST["editarCodigo"])){
 
 		   		/*=============================================
 				VALIDAR IMAGEN
@@ -247,38 +249,36 @@ class ControladorProductos{
 
 				$tabla = "productos";
 
-				$datos = array("id_categoria" => $_POST["editarCategoria"],
-							   "codigo" => $_POST["editarCodigo"],
+				$datos = array("idProducto" => $_POST["idProducto"],
+					           "idCategoria" => $_POST["editarCategoria"],
+							   "idUnidadVenta" => $_POST["editarMedidas"],
+							   "idIva" => $_POST["editarImpuestos"],
+							   "codigoProducto" => $_POST["editarCodigo"],
+							   "codigoBarras" => $_POST["editarCodigoBarras"],
 							   "descripcion" => $_POST["editarDescripcion"],
-							   "stock" => $_POST["editarStock"],
-							   "precio_compra" => $_POST["editarPrecioCompra"],
-							   "precio_venta" => $_POST["editarPrecioVenta"],
 							   "imagen" => $ruta);
 
 				$respuesta = ModeloProductos::mdlEditarProducto($tabla, $datos);
 
-				if($respuesta == "ok"){
-
-					echo'<script>
-
-						swal({
-							  type: "success",
-							  title: "El producto ha sido editado correctamente",
-							  showConfirmButton: true,
-							  confirmButtonText: "Cerrar"
-							  }).then(function(result){
-										if (result.value) {
-
-										window.location = "productos";
-
-										}
-									})
-
-						</script>';
-
+				$respuestTmp = explode("|",$respuesta);
+				
+				 if($respuestTmp[0] == "1"){
+					$tipoAlerta ="error";
+				}else{
+					$tipoAlerta ="success";
 				}
-
-
+					echo'<script>
+					swal({
+						  type: "'.$tipoAlerta.'",
+						  title: "'.$respuestTmp[1].'",
+						  showConfirmButton: true,
+						  confirmButtonText: "Cerrar"
+						  }).then(function(result){
+									if (result.value) {
+									window.location = "productos";
+									}
+								})
+					</script>';
 			}else{
 
 				echo'<script>

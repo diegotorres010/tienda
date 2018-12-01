@@ -29,7 +29,7 @@
   <section class="content">
     <div class="box">
       <div class="box-header with-border">  
-        <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarCliente">          
+        <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarProveedor">          
           Agregar proveedor
         </button>
       </div>
@@ -40,14 +40,14 @@
          <tr>           
            <th style="width:10px">#</th>
            <th>Nombre</th>
-           <th>Documento ID</th>
+           <th>Número de documento</th>
            <th>Email</th>
            <th>Teléfono</th>
            <th>Dirección</th>
-           <th>Fecha nacimiento</th> 
-           <th>Total compras</th>
-           <th>Última compra</th>
-           <th>Ingreso al sistema</th>
+           <th>Fecha nacimiento</th>
+           <th>Fecha registro</th>
+           <th>Tipo</th>
+           <th>Estado</th>
            <th>Acciones</th>
          </tr> 
         </thead>
@@ -55,30 +55,50 @@
         <tbody>
 
         <?php
-
-          $item = null;
+          $item = "tipoUsuario";
           $valor = null;
 
-          $clientes = ControladorClientes::ctrMostrarClientes($item, $valor);
+          $proveedores = ControladorProveedores::ctrListarProveedor($item, $valor);
 
-          foreach ($clientes as $key => $value) {
+          foreach ($proveedores as $key => $value) {
+            $tipoUsuario = "";
+            switch($value["tipoUsuario"]){
+              case 1: 
+                $tipoUsuario = "Cliente";
+                break;
+              case 2:
+                $tipoUsuario = "Proveedor";
+                break;          
+              case 3:
+                $tipoUsuario = "Empleado";
+                break;                
+              default:
+                $tipoUsuario = "null";
+                break;                
+            }
+            
             echo '<tr>
                     <td>'.($key+1).'</td>
-                    <td>'.$value["nombre"].'</td>
+                    <td>'.$value["descripcion"].'</td>
                     <td>'.$value["documento"].'</td>
                     <td>'.$value["email"].'</td>
                     <td>'.$value["telefono"].'</td>
                     <td>'.$value["direccion"].'</td>
-                    <td>'.$value["fecha_nacimiento"].'</td>
-                    <td>'.$value["compras"].'</td>
-                    <td>'.$value["ultima_compra"].'</td>
-                    <td>'.$value["fecha"].'</td>
-                    <td>
-                      <div class="btn-group">  
-                        <button class="btn btn-warning btnEditarCliente" data-toggle="modal" data-target="#modalEditarCliente" idCliente="'.$value["id"].'"><i class="fa fa-pencil"></i></button>';
-                      if($_SESSION["perfil"] == "Administrador"){
-                          echo '<button class="btn btn-danger btnEliminarCliente" idCliente="'.$value["id"].'"><i class="fa fa-times"></i></button>';
-                      }
+                    <td>'.$value["fechaNacimiento"].'</td>
+                    <td>'.$value["fechaRegistro"].'</td>
+                    <td>'.$tipoUsuario.'</td>';
+                    if ($value["estado"] != 0) {
+                      echo '<td><button class="btn btn-success btn-xs btnActivarProveedor" idUsuario="' . $value["idUsuario"] . '" estado="0">Activado</button></td>';
+                    } else {
+                      echo '<td><button class="btn btn-danger btn-xs btnActivarProveedor" idUsuario="' . $value["idUsuario"] . '" estado="1">Desactivado</button></td>';
+                    }
+
+              echo '<td>
+                      <div class="btn-group">
+                        <button class="btn btn-warning btnEditarProveedor" data-toggle="modal" data-target="#modalEditarProveedor" idUsuario="'.$value["idUsuario"].'" estado="'.$value["estado"].'"><i class="fa fa-pencil"></i></button>';
+                    //  if($_SESSION["perfil"] == "Administrador"){
+                    //      echo '<button class="btn btn-danger btnEliminarTercero" idUsuario="'.$value["idUsuario"].'"><i class="fa fa-times"></i></button>';
+                    //  }
                       echo '</div>  
                     </td>
                   </tr>';
@@ -97,145 +117,100 @@
 MODAL AGREGAR CLIENTE
 ======================================-->
 
-<div id="modalAgregarCliente" class="modal fade" role="dialog">
+<div id="modalAgregarProveedor" class="modal fade" role="dialog">
   
   <div class="modal-dialog">
-
     <div class="modal-content">
-
       <form role="form" method="post">
 
-        <!--=====================================
-        CABEZA DEL MODAL
-        ======================================-->
-
         <div class="modal-header" style="background:#3c8dbc; color:white">
-
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-
-          <h4 class="modal-title">Agregar cliente</h4>
-
+          <h4 class="modal-title">Agregar proveedor</h4>
         </div>
 
-        <!--=====================================
-        CUERPO DEL MODAL
-        ======================================-->
+            <div class="modal-body">
+              <div class="box-body">
+                <div class="form-group">
+                  <div class="input-group">
+                    <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
+                    <select class="form-control input-lg" name="nuevoTipoDoc" id="nuevoTipoDoc" required>
+                      <option value="">Seleccionar tipo documento</option>
+                      <option value="1">CC </option>
+                      <option value="2">NIT</option>
+                      <option value="3">TI </option>
+                      <option value="4">PA </option>
+                    </select>
+                  </div>
+                </div>
 
-        <div class="modal-body">
+            <div class="form-group">              
+              <div class="input-group">              
+                <span class="input-group-addon"><i class="fa fa-sort-numeric-asc"></i></span> 
+                <input type="number" min="0" class="form-control input-lg" name="nuevoDocumentoId" placeholder="Ingresar documento" id="nuevoDocumentoId" required>
+              </div>
+            </div>
 
-          <div class="box-body">
-
-            <!-- ENTRADA PARA EL NOMBRE -->
-            
-            <div class="form-group">
-              
-              <div class="input-group">
-              
+            <div class="form-group">              
+              <div class="input-group">              
                 <span class="input-group-addon"><i class="fa fa-user"></i></span> 
-
-                <input type="text" class="form-control input-lg" name="nuevoCliente" placeholder="Ingresar nombre" required>
-
+                <input type="text" class="form-control input-lg" name="nuevoTercero" placeholder="Ingresar nombre" required>
               </div>
-
             </div>
 
-            <!-- ENTRADA PARA EL DOCUMENTO ID -->
-            
-            <div class="form-group">
-              
-              <div class="input-group">
-              
-                <span class="input-group-addon"><i class="fa fa-key"></i></span> 
-
-                <input type="number" min="0" class="form-control input-lg" name="nuevoDocumentoId" placeholder="Ingresar documento" required>
-
-              </div>
-
-            </div>
-
-            <!-- ENTRADA PARA EL EMAIL -->
-            
-            <div class="form-group">
-              
-              <div class="input-group">
-              
-                <span class="input-group-addon"><i class="fa fa-envelope"></i></span> 
-
-                <input type="email" class="form-control input-lg" name="nuevoEmail" placeholder="Ingresar email" required>
-
-              </div>
-
-            </div>
-
-            <!-- ENTRADA PARA EL TELÉFONO -->
-            
-            <div class="form-group">
-              
-              <div class="input-group">
-              
+            <div class="form-group">              
+              <div class="input-group">              
                 <span class="input-group-addon"><i class="fa fa-phone"></i></span> 
-
                 <input type="text" class="form-control input-lg" name="nuevoTelefono" placeholder="Ingresar teléfono" data-inputmask="'mask':'(999) 999-9999'" data-mask required>
-
               </div>
-
             </div>
 
-            <!-- ENTRADA PARA LA DIRECCIÓN -->
-            
             <div class="form-group">
-              
               <div class="input-group">
-              
+                <span class="input-group-addon"><i class="fa fa-envelope"></i></span> 
+                <input type="email" class="form-control input-lg" name="nuevoEmail" placeholder="Ingresar email" required>
+              </div>
+            </div>
+
+            <div class="form-group">              
+              <div class="input-group">              
                 <span class="input-group-addon"><i class="fa fa-map-marker"></i></span> 
-
                 <input type="text" class="form-control input-lg" name="nuevaDireccion" placeholder="Ingresar dirección" required>
-
               </div>
-
             </div>
 
-             <!-- ENTRADA PARA LA FECHA DE NACIMIENTO -->
-            
             <div class="form-group">
-              
               <div class="input-group">
-              
                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
-
                 <input type="text" class="form-control input-lg" name="nuevaFechaNacimiento" placeholder="Ingresar fecha nacimiento" data-inputmask="'alias': 'yyyy/mm/dd'" data-mask required>
-
               </div>
-
             </div>
-  
+
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
+                <select class="form-control input-lg" name="nuevoGeneroTercero" required>
+                  <option value="">Seleccionar genero</option>
+                  <option value="1">Masculino  </option>
+                  <option value="2">Femenino</option>
+                  <option value="3">Indefinido </option>
+                </select>
+              </div>
+            </div>
           </div>
-
         </div>
-
-        <!--=====================================
-        PIE DEL MODAL
-        ======================================-->
 
         <div class="modal-footer">
-
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
-
-          <button type="submit" class="btn btn-primary">Guardar cliente</button>
-
+          <button type="submit" class="btn btn-primary">Guardar proveedor</button>
         </div>
-
       </form>
 
       <?php
-
-        $crearCliente = new ControladorClientes();
-        $crearCliente -> ctrCrearCliente();
-
+        $crearProveedor = new ControladorProveedores();
+        $crearProveedor -> ctrCrearProveedor();
       ?>
 
     </div>
-
   </div>
 
 </div>
@@ -244,156 +219,100 @@ MODAL AGREGAR CLIENTE
 MODAL EDITAR CLIENTE
 ======================================-->
 
-<div id="modalEditarCliente" class="modal fade" role="dialog">
-  
+<div id="modalEditarProveedor" class="modal fade" role="dialog">  
   <div class="modal-dialog">
-
     <div class="modal-content">
-
       <form role="form" method="post">
 
-        <!--=====================================
-        CABEZA DEL MODAL
-        ======================================-->
-
         <div class="modal-header" style="background:#3c8dbc; color:white">
-
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-
-          <h4 class="modal-title">Editar cliente</h4>
-
+          <h4 class="modal-title">Editar proveedor</h4>
         </div>
-
-        <!--=====================================
-        CUERPO DEL MODAL
-        ======================================-->
-
+        
         <div class="modal-body">
-
           <div class="box-body">
-
-            <!-- ENTRADA PARA EL NOMBRE -->
-            
-            <div class="form-group">
-              
+          <div class="form-group">
               <div class="input-group">
-              
-                <span class="input-group-addon"><i class="fa fa-user"></i></span> 
-
-                <input type="text" class="form-control input-lg" name="editarCliente" id="editarCliente" required>
-                <input type="hidden" id="idCliente" name="idCliente">
+                <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
+                <select class="form-control input-lg" name="editarTipoDoc" required>                  
+                  <option value="1">CC </option>
+                  <option value="2">NIT</option>
+                  <option value="3">TI </option>
+                  <option value="4">PA </option>
+                </select>
               </div>
-
             </div>
 
-            <!-- ENTRADA PARA EL DOCUMENTO ID -->
-            
-            <div class="form-group">
-              
-              <div class="input-group">
-              
-                <span class="input-group-addon"><i class="fa fa-key"></i></span> 
-
+            <div class="form-group">              
+              <div class="input-group">              
+                <span class="input-group-addon"><i class="fa fa-sort-numeric-asc"></i></span> 
                 <input type="number" min="0" class="form-control input-lg" name="editarDocumentoId" id="editarDocumentoId" required>
-
               </div>
-
             </div>
 
-            <!-- ENTRADA PARA EL EMAIL -->
-            
-            <div class="form-group">
-              
-              <div class="input-group">
-              
-                <span class="input-group-addon"><i class="fa fa-envelope"></i></span> 
-
-                <input type="email" class="form-control input-lg" name="editarEmail" id="editarEmail" required>
-
+            <div class="form-group">              
+              <div class="input-group">              
+                <span class="input-group-addon"><i class="fa fa-user"></i></span> 
+                <input type="text" class="form-control input-lg" name="editarTercero" id="editarTercero" required>
+                <input type="hidden" id="idTercero" name="idTercero">
               </div>
-
             </div>
 
-            <!-- ENTRADA PARA EL TELÉFONO -->
-            
-            <div class="form-group">
-              
-              <div class="input-group">
-              
+            <div class="form-group">              
+              <div class="input-group">              
                 <span class="input-group-addon"><i class="fa fa-phone"></i></span> 
-
                 <input type="text" class="form-control input-lg" name="editarTelefono" id="editarTelefono" data-inputmask="'mask':'(999) 999-9999'" data-mask required>
-
               </div>
-
             </div>
-
-            <!-- ENTRADA PARA LA DIRECCIÓN -->
+            
+            <div class="form-group">              
+              <div class="input-group">              
+                <span class="input-group-addon"><i class="fa fa-envelope"></i></span> 
+                <input type="email" class="form-control input-lg" name="editarEmail" id="editarEmail" required>
+              </div>
+            </div>            
             
             <div class="form-group">
-              
               <div class="input-group">
-              
                 <span class="input-group-addon"><i class="fa fa-map-marker"></i></span> 
-
                 <input type="text" class="form-control input-lg" name="editarDireccion" id="editarDireccion"  required>
-
               </div>
-
             </div>
-
-             <!-- ENTRADA PARA LA FECHA DE NACIMIENTO -->
             
-            <div class="form-group">
-              
-              <div class="input-group">
-              
+            <div class="form-group">              
+              <div class="input-group">              
                 <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
-
                 <input type="text" class="form-control input-lg" name="editarFechaNacimiento" id="editarFechaNacimiento"  data-inputmask="'alias': 'yyyy/mm/dd'" data-mask required>
-
               </div>
-
             </div>
-  
+
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
+                <select class="form-control input-lg" name="editarGeneroTercero" required>
+                  <option value="" id="editarGeneroTercero"></option>
+                  <option value="1">Masculino  </option>
+                  <option value="2">Femenino</option>
+                  <option value="3">Indefinido </option>
+                </select>
+              </div>
+            </div>
+
           </div>
-
         </div>
-
-        <!--=====================================
-        PIE DEL MODAL
-        ======================================-->
 
         <div class="modal-footer">
-
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
-
           <button type="submit" class="btn btn-primary">Guardar cambios</button>
-
         </div>
 
       </form>
 
       <?php
-
-        $editarCliente = new ControladorClientes();
-        $editarCliente -> ctrEditarCliente();
-
+        $editarProveedor = new ControladorProveedores();
+        $editarProveedor -> ctrEditarProveedor();
       ?>
 
-    
-
     </div>
-
   </div>
-
 </div>
-
-<?php
-
-  $eliminarCliente = new ControladorClientes();
-  $eliminarCliente -> ctrEliminarCliente();
-
-?>
-
-

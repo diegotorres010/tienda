@@ -133,9 +133,12 @@ CUERPO DOCUMENTO
          $_GET["ruta"] == "empleados" ||
          $_GET["ruta"] == "proveedores" ||
          $_GET["ruta"] == "terceros" ||
+         $_GET["ruta"] == "clientes" ||
          $_GET["ruta"] == "impuestos" ||
+         $_GET["ruta"] == "medidas" ||
          $_GET["ruta"] == "categorias" ||
          $_GET["ruta"] == "productos" ||
+         $_GET["ruta"] == "creditos" ||
          $_GET["ruta"] == "ingresos" ||
          $_GET["ruta"] == "ventas" ||
          $_GET["ruta"] == "crear-ingreso" ||
@@ -170,9 +173,13 @@ CUERPO DOCUMENTO
 <script src="views/js/plantilla.js"></script>
 <script src="views/js/terceros.js"></script>
 <script src="views/js/empleados.js"></script>
+<script src="views/js/proveedores.js"></script>
+<script src="views/js/medidas.js"></script>
 <script src="views/js/categorias.js"></script>
 <script src="views/js/productos.js"></script>
+<script src="views/js/impuestos.js"></script>
 <script src="views/js/clientes.js"></script>
+<script src="views/js/creditos.js"></script>
 <script src="views/js/ventas.js"></script>
 <script src="views/js/reportes.js"></script>
 </body>

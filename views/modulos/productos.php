@@ -1,16 +1,16 @@
 <?php
 
-if($_SESSION["perfil"] == "Vendedor"){
+// if($_SESSION["perfil"] == "Vendedor"){
 
-  echo '<script>
+//   echo '<script>
 
-    window.location = "inicio";
+//     window.location = "inicio";
 
-  </script>';
+//   </script>';
 
-  return;
+//   return;
 
-}
+//}
 
 ?>
 <div class="content-wrapper">
@@ -58,13 +58,13 @@ if($_SESSION["perfil"] == "Vendedor"){
            <th style="width:10px">#</th>
            <th>Imagen</th>
            <th>Código</th>
+           <th>Código de barras</th>
            <th>Descripción</th>
            <th>Categoría</th>
-           <th>Stock</th>
-           <th>Precio de compra</th>
-           <th>Precio de venta</th>
-           <th>Agregado</th>
-           <th>Acciones</th>
+           <th>Unidad de medida</th>
+           <th>Impuestos</th>
+           <th>Estado</th>
+           <th>Editar</th>
            
          </tr> 
 
@@ -72,7 +72,7 @@ if($_SESSION["perfil"] == "Vendedor"){
 
        </table>
 
-       <input type="hidden" value="<?php echo $_SESSION['perfil']; ?>" id="perfilOculto">
+       <input type="hidden" value="" id="listarProductos">
 
       </div>
 
@@ -125,18 +125,19 @@ MODAL AGREGAR PRODUCTO
 
                 <select class="form-control input-lg" id="nuevaCategoria" name="nuevaCategoria" required>
                   
-                  <option value="">Selecionar categoría</option>
+                  <option value="">Seleccionar categoría</option>
 
                   <?php
 
                   $item = null;
                   $valor = null;
 
-                  $categorias = ControladorCategorias::ctrMostrarCategorias($item, $valor);
+                  $categorias = ControladorCategorias::ctrMostrarCategoria($item, $valor);
 
                   foreach ($categorias as $key => $value) {
-                    
-                    echo '<option value="'.$value["id"].'">'.$value["categoria"].'</option>';
+                    if ($value["estado"] != 0) {
+                      echo '<option value="'.$value["idCategoria"].'">'.$value["descripcion"].'</option>';
+                    }
                   }
 
                   ?>
@@ -161,6 +162,18 @@ MODAL AGREGAR PRODUCTO
 
             </div>
 
+            <div class="form-group">
+              
+              <div class="input-group">
+              
+                <span class="input-group-addon"><i class="fa fa-code"></i></span> 
+
+                <input type="text" class="form-control input-lg" id="nuevoCodigoBarras" name="nuevoCodigoBarras" placeholder="Ingresar código de barras">
+
+              </div>
+
+            </div>
+
             <!-- ENTRADA PARA LA DESCRIPCIÓN -->
 
              <div class="form-group">
@@ -175,81 +188,65 @@ MODAL AGREGAR PRODUCTO
 
             </div>
 
-             <!-- ENTRADA PARA STOCK -->
-
-             <div class="form-group">
+            <div class="form-group">
               
               <div class="input-group">
               
-                <span class="input-group-addon"><i class="fa fa-check"></i></span> 
+                <span class="input-group-addon"><i class="fa fa-th"></i></span> 
 
-                <input type="number" class="form-control input-lg" name="nuevoStock" min="0" placeholder="Stock" required>
+                <select class="form-control input-lg" id="nuevaMedidas" name="nuevaMedidas" required>
+                  
+                  <option value="">Seleccionar unidad de medida</option>
+
+                  <?php
+
+                  $item = null;
+                  $valor = null;
+
+                  $medidas = ControladorMedidas::ctrMostrarMedida($item, $valor);
+
+                  foreach ($medidas as $key => $value) {
+                    if ($value["estado"] != 0) {
+                      echo '<option value="'.$value["idUnidadVenta"].'">'.$value["descripcion"].'</option>';
+                    }
+                  }
+
+                  ?>
+  
+                </select>
 
               </div>
 
             </div>
 
-             <!-- ENTRADA PARA PRECIO COMPRA -->
+            <div class="form-group">
+              
+              <div class="input-group">
+              
+                <span class="input-group-addon"><i class="fa fa-th"></i></span> 
 
-             <div class="form-group row">
-
-                <div class="col-xs-6">
-                
-                  <div class="input-group">
+                <select class="form-control input-lg" id="nuevoImpuestos" name="nuevoImpuestos" required>
                   
-                    <span class="input-group-addon"><i class="fa fa-arrow-up"></i></span> 
+                  <option value="">Seleccionar impuesto</option>
 
-                    <input type="number" class="form-control input-lg" id="nuevoPrecioCompra" name="nuevoPrecioCompra" step="any" min="0" placeholder="Precio de compra" required>
+                  <?php
 
-                  </div>
+                  $item = null;
+                  $valor = null;
 
-                </div>
+                  $impuestos = ControladorImpuestos::ctrMostrarImpuesto($item, $valor);
 
-                <!-- ENTRADA PARA PRECIO VENTA -->
+                  foreach ($impuestos as $key => $value) {
+                    if ($value["estado"] != 0) {
+                      echo '<option value="'.$value["idIva"].'">'.$value["porcentaje"].'%'.'</option>';
+                    }
+                  }
 
-                <div class="col-xs-6">
-                
-                  <div class="input-group">
-                  
-                    <span class="input-group-addon"><i class="fa fa-arrow-down"></i></span> 
+                  ?>
+  
+                </select>
 
-                    <input type="number" class="form-control input-lg" id="nuevoPrecioVenta" name="nuevoPrecioVenta" step="any" min="0" placeholder="Precio de venta" required>
-
-                  </div>
-                
-                  <br>
-
-                  <!-- CHECKBOX PARA PORCENTAJE -->
-
-                  <div class="col-xs-6">
-                    
-                    <div class="form-group">
-                      
-                      <label>
-                        
-                        <input type="checkbox" class="minimal porcentaje" checked>
-                        Utilizar procentaje
-                      </label>
-
-                    </div>
-
-                  </div>
-
-                  <!-- ENTRADA PARA PORCENTAJE -->
-
-                  <div class="col-xs-6" style="padding:0">
-                    
-                    <div class="input-group">
-                      
-                      <input type="number" class="form-control input-lg nuevoPorcentaje" min="0" value="40" required>
-
-                      <span class="input-group-addon"><i class="fa fa-percent"></i></span>
-
-                    </div>
-
-                  </div>
-
-                </div>
+              </div>
 
             </div>
 
@@ -339,10 +336,23 @@ MODAL EDITAR PRODUCTO
               
                 <span class="input-group-addon"><i class="fa fa-th"></i></span> 
 
-                <select class="form-control input-lg"  name="editarCategoria" readonly required>
-                  
-                  <option id="editarCategoria"></option>
+                <select class="form-control input-lg" name="editarCategoria" required>
 
+                  <?php
+
+                  $item = null;
+                  $valor = null;
+
+                  $categorias = ControladorCategorias::ctrMostrarCategoria($item, $valor);
+
+                  foreach ($categorias as $key => $value) {
+                    if ($value["estado"] != 0) {
+                      echo '<option value="'.$value["idCategoria"].'">'.$value["descripcion"].'</option>';
+                    }
+                  }
+
+                  ?>
+  
                 </select>
 
               </div>
@@ -357,7 +367,20 @@ MODAL EDITAR PRODUCTO
               
                 <span class="input-group-addon"><i class="fa fa-code"></i></span> 
 
-                <input type="text" class="form-control input-lg" id="editarCodigo" name="editarCodigo" readonly required>
+                <input type="text" class="form-control input-lg" id="editarCodigo" name="editarCodigo" required>
+                <input type="hidden"  name="idProducto" id="idProducto" required>
+
+              </div>
+
+            </div>
+
+            <div class="form-group">
+              
+              <div class="input-group">
+              
+                <span class="input-group-addon"><i class="fa fa-code"></i></span> 
+
+                <input type="text" class="form-control input-lg" id="editarCodigoBarras" name="editarCodigoBarras">
 
               </div>
 
@@ -377,81 +400,61 @@ MODAL EDITAR PRODUCTO
 
             </div>
 
-             <!-- ENTRADA PARA STOCK -->
-
-             <div class="form-group">
+            <div class="form-group">
               
               <div class="input-group">
               
-                <span class="input-group-addon"><i class="fa fa-check"></i></span> 
+                <span class="input-group-addon"><i class="fa fa-th"></i></span> 
 
-                <input type="number" class="form-control input-lg" id="editarStock" name="editarStock" min="0" required>
+                <select class="form-control input-lg" name="editarMedidas" required>
+
+                  <?php
+
+                  $item = null;
+                  $valor = null;
+
+                  $medidas = ControladorMedidas::ctrMostrarMedida($item, $valor);
+
+                  foreach ($medidas as $key => $value) {
+                    if ($value["estado"] != 0) {
+                      echo '<option value="'.$value["idUnidadVenta"].'">'.$value["descripcion"].'</option>';
+                    }
+                  }
+
+                  ?>
+  
+                </select>
 
               </div>
 
             </div>
 
-             <!-- ENTRADA PARA PRECIO COMPRA -->
+            <div class="form-group">
+              
+              <div class="input-group">
+              
+                <span class="input-group-addon"><i class="fa fa-th"></i></span> 
 
-             <div class="form-group row">
+                <select class="form-control input-lg" name="editarImpuestos" required>
 
-                <div class="col-xs-6">
-                
-                  <div class="input-group">
-                  
-                    <span class="input-group-addon"><i class="fa fa-arrow-up"></i></span> 
+                  <?php
 
-                    <input type="number" class="form-control input-lg" id="editarPrecioCompra" name="editarPrecioCompra" step="any" min="0" required>
+                  $item = null;
+                  $valor = null;
 
-                  </div>
+                  $impuestos = ControladorImpuestos::ctrMostrarImpuesto($item, $valor);
 
-                </div>
+                  foreach ($impuestos as $key => $value) {
+                    if ($value["estado"] != 0) {
+                      echo '<option value="'.$value["idIva"].'">'.$value["porcentaje"].'%'.'</option>';
+                    }
+                  }
 
-                <!-- ENTRADA PARA PRECIO VENTA -->
+                  ?>
+  
+                </select>
 
-                <div class="col-xs-6">
-                
-                  <div class="input-group">
-                  
-                    <span class="input-group-addon"><i class="fa fa-arrow-down"></i></span> 
-
-                    <input type="number" class="form-control input-lg" id="editarPrecioVenta" name="editarPrecioVenta" step="any" min="0" readonly required>
-
-                  </div>
-                
-                  <br>
-
-                  <!-- CHECKBOX PARA PORCENTAJE -->
-
-                  <div class="col-xs-6">
-                    
-                    <div class="form-group">
-                      
-                      <label>
-                        
-                        <input type="checkbox" class="minimal porcentaje" checked>
-                        Utilizar procentaje
-                      </label>
-
-                    </div>
-
-                  </div>
-
-                  <!-- ENTRADA PARA PORCENTAJE -->
-
-                  <div class="col-xs-6" style="padding:0">
-                    
-                    <div class="input-group">
-                      
-                      <input type="number" class="form-control input-lg nuevoPorcentaje" min="0" value="40" required>
-
-                      <span class="input-group-addon"><i class="fa fa-percent"></i></span>
-
-                    </div>
-
-                  </div>
-
-                </div>
+              </div>
 
             </div>
 
@@ -501,13 +504,3 @@ MODAL EDITAR PRODUCTO
   </div>
 
 </div>
-
-<?php
-
-  $eliminarProducto = new ControladorProductos();
-  $eliminarProducto -> ctrEliminarProducto();
-
-?>      
-
-
-

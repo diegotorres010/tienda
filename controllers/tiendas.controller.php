@@ -5,7 +5,7 @@ class ControladorTiendas{
 	/*=============================================
 	CREAR TIENDAS
 	=============================================*/
-
+	
 	static public function ctrCrearTienda(){
 
 		if(isset($_POST["nuevaTiendaNombre"])){
@@ -24,182 +24,182 @@ class ControladorTiendas{
 							   "email"=>$_POST["nuevaTiendaEmail"],
 							   "propietario"=>$_POST["nuevaTiendaPropietario"]);
 
-			//   	$respuesta = ModeloTiendas::mdlIngresarTienda($tabla, $datos);
+				$respuesta = ModeloTiendas::mdlIngresarTienda($tabla, $datos);
 
 			   	if($respuesta == "ok"){
-
-					echo'<script>
-
-					swal({
-						  type: "success",
-						  title: "La tienda ha sido guardado correctamente",
-						  showConfirmButton: true,
-						  confirmButtonText: "Cerrar"
-						  }).then(function(result){
-									if (result.value) {
-
-									window.location = "terceros";
-
-									}
-								})
-
-					</script>';
-
+					echo'<div class="callout callout-success">
+							<h4>Tienda</h4>	
+							<p>La tienda ha sido guardado correctamente</p>
+						</div>';
 				}
 
 			}else{
-
-				echo'<script>
-
-					swal({
-						  type: "error",
-						  title: "¡El usuario no puede ir vacío o llevar caracteres especiales!",
-						  showConfirmButton: true,
-						  confirmButtonText: "Cerrar"
-						  }).then(function(result){
-							if (result.value) {
-
-							window.location = "terceros";
-
-							}
-						})
-
-			  	</script>';
-
-
-
+				echo'<div class="callout callout-danger">
+                		<h4>Tienda</h4>
+                		<p>¡Los campos de tienda no fueron creados porque no pueden ir vacíos o tenían caracteres especiales! <br> Vuelva a intentarlo de volver a presentarse el error contactese con SITIB.</p>
+              		 </div>';
 			}
 
 		}
 
 	}
 
-	/*=============================================
-	MOSTRAR TERCEROS
-	=============================================*/
+	static public function ctrCrearTiendaTercero(){
 
-	static public function ctrMostrarTercero($item, $valor){
+		if(isset($_POST["nuevoTercero"])){
 
-		$tabla = "terceros";
+			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevoTercero"]) &&
+			   preg_match('/^[0-9]+$/', $_POST["nuevoDocumentoId"]) &&
+			   preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $_POST["nuevoEmail"]) && 
+			   preg_match('/^[()\-0-9 ]+$/', $_POST["nuevoTelefono"]) && 
+			   preg_match('/^[#\.\-a-zA-Z0-9 ]+$/', $_POST["nuevaDireccion"])){
 
-		$respuesta = ModeloTerceros::mdlMostrarTercero($tabla, $item, $valor);
+				$item = "idTienda";
+				$valor = null;	 
+				$tabla = "tienda";
 
-	//	var_dump($respuesta);
-		return $respuesta;
+				$tienda = ModeloTiendas::mdlTraerTienda($tabla, $item, $valor);
 
-	}
+			   	$tabla = "usuarios";
 
-	/*=============================================
-	EDITAR TERCERO
-	=============================================*/
+			   	$datos = array("tipoDoc"=>$_POST["nuevoTipoDoc"],
+					   		   "documentoId"=>$_POST["nuevoDocumentoId"],
+							   "nombre"=>$_POST["nuevoTercero"],
+							   "telefono"=>$_POST["nuevoTelefono"],
+					           "email"=>$_POST["nuevoEmail"],
+					           "direccion"=>$_POST["nuevaDireccion"],
+					           "fechaNacimiento"=>$_POST["nuevaFechaNacimiento"],
+							   "tipoUsuario"=>$_POST["nuevoTipoTercero"],
+							   "genero"=>$_POST["nuevoGeneroTercero"]);
 
-	static public function ctrEditarTercero(){
-
-		if(isset($_POST["editarTercero"])){
-
-			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["editarTercero"]) &&
-     		   preg_match('/^[0-9]+$/', $_POST["editarDocumentoId"]) &&
-			   preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $_POST["editarEmail"]) && 
-			   preg_match('/^[()\-0-9 ]+$/', $_POST["editarTelefono"]) && 
-			   preg_match('/^[#\.\-a-zA-Z0-9 ]+$/', $_POST["editarDireccion"])){
-
-			   	$tabla = "terceros";
-
-				$datos = array("idTercero"=>$_POST["idTercero"],
-							   "tipoDoc"=>$_POST["editarTipoDoc"],
-				   			   "documentoId"=>$_POST["editarDocumentoId"],
-							   "nombre"=>$_POST["editarTercero"],
-							   "telefono"=>$_POST["editarTelefono"],
-							   "email"=>$_POST["editarEmail"],
-							   "direccion"=>$_POST["editarDireccion"],
-							   "fechaNacimiento"=>$_POST["editarFechaNacimiento"],
-							   "tipoTercero"=>$_POST["editarTipoTercero"],
-							   "genero"=>$_POST["editarGeneroTercero"]);
-
-			   	$respuesta = ModeloTerceros::mdlEditarTercero($tabla, $datos);
+			   	$respuesta = ModeloTerceros::mdlIngresarTercero($tabla, $datos, $tienda);
 
 			   	if($respuesta == "ok"){
 
-					echo'<script>
-
-					swal({
-						  type: "success",
-						  title: "El usuario ha sido cambiado correctamente",
-						  showConfirmButton: true,
-						  confirmButtonText: "Cerrar"
-						  }).then(function(result){
-									if (result.value) {
-
-									window.location = "terceros";
-
-									}
-								})
-
-					</script>';
-
+					echo'<div class="callout callout-success">
+							<h4>Persona</h4>	
+							<p>La persona ha sido guardado correctamente</p>
+				   		 </div>';
 				}
 
 			}else{
 
-				echo'<script>
-
-					swal({
-						  type: "error",
-						  title: "¡El usuario no puede ir vacío o llevar caracteres especiales!",
-						  showConfirmButton: true,
-						  confirmButtonText: "Cerrar"
-						  }).then(function(result){
-							if (result.value) {
-
-							window.location = "terceros";
-
-							}
-						})
-
-			  	</script>';
-
-
-
+				echo'<div class="callout callout-danger">
+						<h4>Persona</h4>
+						<p>¡Los campos de persona no fueron creados porque no pueden ir vacíos o tenían caracteres especiales! <br> Vuelva a intentarlo de volver a presentarse el error contactese con SITIB.</p>
+			   		 </div>';
 			}
 
 		}
 
 	}
 
-	/*=============================================
-	ELIMINAR TERCERO
-	=============================================*/
+// voy aca falta llevar el idUsuario a tabla usuarios sistema como el ejemplo de la tienda con el tercero
 
-	static public function ctrEliminarTercero(){
+	static public function ctrCrearTiendaUsuario(){
 
-		if(isset($_GET["idTercero"])){
+		if(isset($_POST["nuevoEmpleado"])){
 
-			$tabla ="terceros";
-			$datos = $_GET["idTercero"];
+			if(preg_match('/^[a-zA-Z0-9]+$/', $_POST["nuevoEmpleado"]) &&
+			   preg_match('/^[a-zA-Z0-9]+$/', $_POST["nuevoPassword"])){
 
-			$respuesta = ModeloTerceros::mdlEliminarTercero($tabla, $datos);
+				$ruta = "";
 
-			if($respuesta == "ok"){
+				if(isset($_FILES["nuevaFoto"]["tmp_name"])){
+					
+					list($ancho, $alto) = getimagesize($_FILES["nuevaFoto"]["tmp_name"]);
 
-				echo'<script>
+					$nuevoAncho = 500;
+					$nuevoAlto = 500;
 
-				swal({
-					  type: "success",
-					  title: "El usuario ha sido borrado correctamente",
-					  showConfirmButton: true,
-					  confirmButtonText: "Cerrar",
-					  closeOnConfirm: false
-					  }).then(function(result){
-								if (result.value) {
+				// mostrar directorio actual echo getcwd() . "\n";
+				// guardo el directorio actual
+					$oldPath = getcwd();
+				// regreso de directorio para ingresar a vistas img empleados
+					chdir('../');				
+					
+					$directorio = "views/img/empleados/".$_POST["nuevoEmpleado"];
 
-								window.location = "terceros";
+					error_reporting(0);
+					if(!mkdir($directorio, 0777)) {
+						echo '<div class="callout callout-danger">
+                				<h4>Imagen del usuario</h4>
+                				<p>Error al crear la carpeta con la imagen del usuario.</p>
+              		 		  </div>';
+					}
 
-								}
-							})
+				//	mkdir($directorio, 0755);
 
-				</script>';
 
-			}		
+					if($_FILES["nuevaFoto"]["type"] == "image/jpeg"){
+
+						$aleatorio = mt_rand(100,999);
+
+						$ruta = "views/img/empleados/".$_POST["nuevoEmpleado"]."/".$aleatorio.".jpg";
+
+						$origen = imagecreatefromjpeg($_FILES["nuevaFoto"]["tmp_name"]);						
+
+						$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
+
+						imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
+
+						imagejpeg($destino, $ruta);
+
+					}
+
+					if($_FILES["nuevaFoto"]["type"] == "image/png"){
+
+						$aleatorio = mt_rand(100,999);
+
+						$ruta = "views/img/empleados/".$_POST["nuevoEmpleado"]."/".$aleatorio.".png";
+
+						$origen = imagecreatefrompng($_FILES["nuevaFoto"]["tmp_name"]);						
+
+						$destino = imagecreatetruecolor($nuevoAncho, $nuevoAlto);
+
+						imagecopyresized($destino, $origen, 0, 0, 0, 0, $nuevoAncho, $nuevoAlto, $ancho, $alto);
+
+						imagepng($destino, $ruta);
+
+					}
+					chdir($oldPath);
+
+				}
+
+				$item = "idUsuario";
+				$valor = null;	 
+				$tabla = "usuarios";
+
+				$usuario = ModeloUsuarios::mdlTraerUsuario($tabla, $item, $valor);
+
+				$tabla = "usuariossistema";
+
+				$encriptar = crypt($_POST["nuevoPassword"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
+
+				$datos = array("usuario" => $_POST["nuevoEmpleado"],
+					           "password" => $encriptar,
+							   "foto"=>$ruta);
+
+				$respuesta = ModeloUsuarios::mdlIngresarUsuario($tabla, $datos, $usuario);
+
+				if($respuesta == "ok"){
+
+					echo '<div class="callout callout-success">
+							<h4>Usuario del sistema</h4>	
+							<p>¡El usuario ha sido guardado correctamente!</p>
+						  </div>';
+
+
+				}	
+
+
+			}else{
+
+				echo '<div class="callout callout-danger">
+						<h4>Usuario del sistema</h4>
+						<p>¡Los campos de usuario del sistema no fueron creados porque no pueden ir vacíos o tenían caracteres especiales! <br> Vuelva a intentarlo de volver a presentarse el error contactese con SITIB.</p>
+					  </div>';
+			}	
 
 		}
 

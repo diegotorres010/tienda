@@ -23,7 +23,8 @@
          <tr>           
            <th style="width:10px">#</th>
            <th>Categoria</th>
-           <th>Acciones</th>
+           <th>Estado</th>
+           <th>Editar</th>
          </tr> 
         </thead>
 
@@ -34,7 +35,7 @@
           $item = null;
           $valor = null;
 
-          $categorias = ControladorCategorias::ctrMostrarCategorias($item, $valor);
+          $categorias = ControladorCategorias::ctrListarCategoria($item, $valor);
 
           foreach ($categorias as $key => $value) {
            
@@ -42,17 +43,27 @@
 
                     <td>'.($key+1).'</td>
 
-                    <td class="text-uppercase">'.$value["categoria"].'</td>
+                    <td class="text-uppercase">'.$value["descripcion"].'</td>';
 
-                    <td>
+                    if ($value["estado"] != 0) {
+                      echo '<td><button class="btn btn-success btn-xs btnActivarCategoria" idCategoria="' . $value["idCategoria"] . '" estado="0">Activado</button></td>';
+                    } else {
+                      echo '<td><button class="btn btn-danger btn-xs btnActivarCategoria" idCategoria="' . $value["idCategoria"] . '" estado="1">Desactivado</button></td>';
+                    }
 
-                      <div class="btn-group">
-                          
-                        <button class="btn btn-warning btnEditarCategoria" idCategoria="'.$value["id"].'" data-toggle="modal" data-target="#modalEditarCategoria"><i class="fa fa-pencil"></i></button>';
+            echo '<td>
+
+                      <div class="btn-group">';
+
+                      //  if ($value["estado"] != 0) {
+                          echo '<button class="btn btn-warning btnEditarCategoria" idCategoria="'.$value["idCategoria"].'" estado="'.$value["estado"].'" data-toggle="modal" data-target="#modalEditarCategoria"><i class="fa fa-pencil"></i></button>';
+                      //  } else {
+                      //    echo '<button class="btn btn-warning disabled"><i class="fa fa-pencil"></i></button>';
+                      //  }
 
                       //  if($_SESSION["perfil"] == "Administrador"){
 
-                          echo '<button class="btn btn-danger btnEliminarCategoria" idCategoria="'.$value["id"].'"><i class="fa fa-times"></i></button>';
+                      //    echo '<button class="btn btn-danger btnEliminarCategoria" idCategoria="'.$value["idCategoria"].'"descripcion="'.$value["descripcion"].'"><i class="fa fa-times"></i></button>';
 
                       //  }
 
@@ -86,9 +97,9 @@
             <div class="form-group">              
               <div class="input-group">              
                 <span class="input-group-addon"><i class="fa fa-th"></i></span> 
-                <input type="text" class="form-control input-lg" name="nuevaCategoria" placeholder="Ingresar categoría" required>
+                <input type="text" class="form-control input-lg" name="nuevaCategoria" placeholder="Ingresar categoría" id="nuevaCategoria" required>
               </div>
-            </div>  
+            </div>
           </div>
         </div>
         <div class="modal-footer">
@@ -98,7 +109,7 @@
 
         <?php
           $crearCategoria = new ControladorCategorias();
-          $crearCategoria -> ctrCrearCategoria();
+          $crearCategoria -> ctrIngresarCategoria();
         ?>
 
       </form>
@@ -184,12 +195,3 @@ MODAL EDITAR CATEGORÍA
   </div>
 
 </div>
-
-<?php
-
-  $borrarCategoria = new ControladorCategorias();
-  $borrarCategoria -> ctrBorrarCategoria();
-
-?>
-
-

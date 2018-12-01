@@ -45,7 +45,7 @@ $terceros = ControladorEmpleados::ctrListarEmpleados();
 foreach ($terceros as $key => $value) {
     echo '<tr>' .
         '<td>' . ($key + 1) . '</td>' .
-        '<td>' . $value['nombre'] . '</td>' .
+        '<td>' . $value['descripcion'] . '</td>' .
         '<td>' . $value['codigoEmpleado'] . '</td>' .
         '<td>' . $value['telefono'] . '</td>';
 
@@ -57,17 +57,16 @@ foreach ($terceros as $key => $value) {
 
     //  echo '<td>'.$value["perfil"].'</td>';
 
-    if ($value["estadoEmpleado"] != 0) {
-        echo '<td><button class="btn btn-success btn-xs btnActivar" idEmpleado="' . $value["id_empleado"] . '" estadoEmpleado="0">Activado</button></td>';
+    if ($value["estado"] != 0) {
+        echo '<td><button class="btn btn-success btn-xs btnActivarEmpleado" idUsuarioSistema="' . $value["idUsuarioSistema"] . '" estado="0">Activado</button></td>';
     } else {
-        echo '<td><button class="btn btn-danger btn-xs btnActivar" idEmpleado="' . $value["id_empleado"] . '" estadoEmpleado="1">Desactivado</button></td>';
+        echo '<td><button class="btn btn-danger btn-xs btnActivarEmpleado" idUsuarioSistema="' . $value["idUsuarioSistema"] . '" estado="1">Desactivado</button></td>';
     }
 
     echo '<td>' . $value["ultimoIngreso"] . '</td>
                   <td>
                     <div class="btn-group">
-                      <button class="btn btn-warning btnEditarEmpleado" idEmpleado="' . $value["id_empleado"] . '" data-toggle="modal" data-target="#modalEditarEmpleado"><i class="fa fa-pencil"></i></button>
-                      <button class="btn btn-danger btnEliminarEmpleado" idEmpleado="' . $value["id_empleado"] . '" fotoEmpleado="' . $value["avatar"] . '" empleado="' . $value["codigoEmpleado"] . '"><i class="fa fa-times"></i></button>
+                      <button class="btn btn-warning btnEditarEmpleado" idUsuarioSistema="'.$value["idUsuarioSistema"].'" estado="'.$value["estado"].'" data-toggle="modal" data-target="#modalEditarEmpleado"><i class="fa fa-pencil"></i></button>
                     </div>
                   </td>
                 </tr>';
@@ -95,7 +94,7 @@ foreach ($terceros as $key => $value) {
           <div class="form-group">
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
-                <select class="form-control input-lg" name="nuevoTipoDoc">
+                <select class="form-control input-lg" name="nuevoTipoDoc" id="nuevoTipoDoc">
                   <option value="">Seleccionar tipo documento</option>
                   <option value="1">CC</option>
                   <option value="2">NIT</option>
@@ -106,14 +105,14 @@ foreach ($terceros as $key => $value) {
             </div>
             <div class="form-group">              
               <div class="input-group">              
-                <span class="input-group-addon"><i class="fa fa-key"></i></span> 
-                <input type="number" min="0" class="form-control input-lg" name="nuevoDocumentoId" placeholder="Ingresar documento" >
+                <span class="input-group-addon"><i class="fa fa-sort-numeric-asc"></i></span> 
+                <input type="number" min="0" class="form-control input-lg" name="nuevoDocumentoId" id="nuevoDocumentoId" placeholder="Ingresar documento" >
               </div>
             </div>
             <div class="form-group">
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                <input type="text" class="form-control input-lg" name="nuevoNombre" placeholder="Ingresar nombre" >
+                <input type="text" class="form-control input-lg" name="nuevoTercero" placeholder="Ingresar nombre" >
               </div>
             </div>
             <div class="form-group">              
@@ -143,7 +142,7 @@ foreach ($terceros as $key => $value) {
             <div class="form-group">
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
-                <select class="form-control input-lg" name="nuevoGenero">
+                <select class="form-control input-lg" name="nuevoGeneroTercero">
                   <option value="">Seleccionar género</option>
                   <option value="1">Masculino</option>
                   <option value="2">Femenino</option>
@@ -218,20 +217,6 @@ MODAL EDITAR USUARIO
 
           <div class="box-body">
 
-            <!-- ENTRADA PARA EL NOMBRE -->
-
-            <div class="form-group">
-
-              <div class="input-group">
-
-                <span class="input-group-addon"><i class="fa fa-user"></i></span>
-
-                <input type="text" class="form-control input-lg" id="editarNombre" name="editarNombre" value="" required>
-
-              </div>
-
-            </div>
-
             <!-- ENTRADA PARA EL USUARIO -->
 
              <div class="form-group">
@@ -240,7 +225,8 @@ MODAL EDITAR USUARIO
 
                 <span class="input-group-addon"><i class="fa fa-key"></i></span>
 
-                <input type="text" class="form-control input-lg" id="editarUsuario" name="editarUsuario" value="" readonly>
+                <input type="text" class="form-control input-lg" name="editarNombre" id="editarNombre">
+                <input type="hidden" id="idUsuarioSistema" name="idUsuarioSistema">
 
               </div>
 
@@ -262,41 +248,17 @@ MODAL EDITAR USUARIO
 
             </div>
 
-            <!-- ENTRADA PARA SELECCIONAR SU PERFIL -->
-
-            <div class="form-group">
-
-              <div class="input-group">
-
-                <span class="input-group-addon"><i class="fa fa-users"></i></span>
-
-                <select class="form-control input-lg" name="editarPerfil">
-
-                  <option value="" id="editarPerfil"></option>
-
-                  <option value="Administrador">Administrador</option>
-
-                  <option value="Especial">Especial</option>
-
-                  <option value="Vendedor">Vendedor</option>
-
-                </select>
-
-              </div>
-
-            </div>
-
             <!-- ENTRADA PARA SUBIR FOTO -->
 
              <div class="form-group">
 
               <div class="panel">SUBIR FOTO</div>
 
-              <input type="file" class="nuevaFoto" name="editarFoto">
+              <input type="file" class="editarFoto" name="editarFoto">
 
               <p class="help-block">Peso máximo de la foto 2MB</p>
 
-              <img src="views/img/empleados/default/anonymous.png" class="img-thumbnail previsualizar" width="100px">
+              <img src="views/img/empleados/default/anonymous.png" class="img-thumbnail previsualizarEditar" width="100px">
 
               <input type="hidden" name="fotoActual" id="fotoActual">
 
@@ -320,8 +282,8 @@ MODAL EDITAR USUARIO
 
      <?php
 
-$editarUsuario = new ControladorUsuarios();
-$editarUsuario->ctrEditarUsuario();
+$editarEmpleado = new ControladorEmpleados();
+$editarEmpleado->ctrEditarEmpleado();
 
 ?>
 
@@ -332,12 +294,3 @@ $editarUsuario->ctrEditarUsuario();
   </div>
 
 </div>
-
-<?php
-
-$borrarUsuario = new ControladorUsuarios();
-$borrarUsuario->ctrBorrarUsuario();
-
-?>
-
-

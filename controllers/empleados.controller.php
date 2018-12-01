@@ -6,26 +6,25 @@ class ControladorEmpleados{
 
 		if(isset($_POST["ingEmpleado"])){
 
-			if(preg_match('/^[a-zA-Z0-9]+$/', $_POST["ingEmpleado"]) &&
-			   preg_match('/^[a-zA-Z0-9]+$/', $_POST["ingPassword"])){
+			if(preg_match('/^[a-zA-Z0-9]+$/', $_POST["ingEmpleado"])){
 
-			   	$encriptar = crypt($_POST["ingPassword"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
+				$encriptar = crypt($_POST["ingPassword"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
 
-				$tabla = "empleados";
-				$item = "cod_empleado";
+				$tabla = "usuariossistema";
+				$item = "nombreEmpleado";
 				$valor = $_POST["ingEmpleado"];
 
 				$respuesta = ModeloEmpleados::MdlMostrarEmpleados($tabla, $item, $valor);
 
-				if($respuesta["cod_empleado"] == $_POST["ingEmpleado"] && $respuesta["password"] == $_POST["ingPassword"]){
+				if($respuesta["nombreEmpleado"] == $_POST["ingEmpleado"] && $respuesta["contrasena"] == $encriptar){
 
 					if($respuesta["estado"] == 1){
 
 						$_SESSION["iniciarSesion"] = "ok";
-						$_SESSION["id_empleado"] = $respuesta["id_empleado"];
+						$_SESSION["idUsuarioSistema"] = $respuesta["idUsuarioSistema"];
 						
-						$_SESSION["cod_empleado"] = $respuesta["cod_empleado"];
-						$_SESSION["idTercero"] = $respuesta["id_tercero"];
+						$_SESSION["nombreEmpleado"] = $respuesta["nombreEmpleado"];
+						$_SESSION["idUsuario"] = $respuesta["idUsuario"];
 						$_SESSION["foto"] = $respuesta["foto"];
 						
 						/*=============================================
@@ -39,15 +38,15 @@ class ControladorEmpleados{
 
 						$fechaActual = $fecha.' '.$hora;
 
-						$item1 = "fecha_ultimo_login";
+						$item1 = "fecha_ultimo_ingreso";
 						$valor1 = $fechaActual;
 
-						$item2 = "id_empleado";
-						$valor2 = $respuesta["id_empleado"];
+						$item2 = "idUsuarioSistema";
+						$valor2 = $respuesta["idUsuarioSistema"];
 
-					//	$ultimoLogin = ModeloEmpleados::mdlActualizarEmpleado($tabla, $item1, $valor1, $item2, $valor2);
+						$ultimoLogin = ModeloEmpleados::mdlActualizarEmpleado($tabla, $item1, $valor1, $item2, $valor2);
 
-					//	if($ultimoLogin == "re"){
+						if($ultimoLogin == "ok"){
 
 							echo '<script>
 
@@ -55,12 +54,12 @@ class ControladorEmpleados{
 
 							</script>';
 
-				//		}				
+						}				
 						
-				//	}else{
+					}else{
 
-				//		echo '<br>
-				//			<div class="alert alert-danger">El usuario aún no está activado</div>';
+						echo '<br>
+							<div class="alert alert-danger">El usuario aún no está activado</div>';
 
 					}		
 
@@ -81,7 +80,11 @@ class ControladorEmpleados{
 
 		if(isset($_POST["nuevoDocumentoId"])){			
 
-			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevoNombre"]) &&
+			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevoTercero"]) &&
+			   preg_match('/^[0-9]+$/', $_POST["nuevoDocumentoId"]) &&
+			   preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $_POST["nuevoEmail"]) && 
+			   preg_match('/^[()\-0-9 ]+$/', $_POST["nuevoTelefono"]) && 
+			   preg_match('/^[#\.\-a-zA-Z0-9 ]+$/', $_POST["nuevaDireccion"]) && 
 			   preg_match('/^[a-zA-Z0-9]+$/', $_POST["nuevoEmpleado"]) &&
 			   preg_match('/^[a-zA-Z0-9]+$/', $_POST["nuevoPassword"])){
 
@@ -153,111 +156,97 @@ class ControladorEmpleados{
 				}
 
 				$tabla = "terceros";
-
-				/*$encriptar = crypt($_POST["nuevoPassword"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
-
-				$datos = array("nombre" => $_POST["nuevoNombre"],
-					           "empleado" => $_POST["nuevoEmpleado"],
-					           "password" => $encriptar,
-					           "perfil" => $_POST["nuevoPerfil"],
-							   "foto"=>$ruta);*/
 							   
-				$datosTercero = array("tipoDocumento" => $_POST['nuevoTipoDoc'],
-								"idDocumento" => $_POST['nuevoDocumentoId'],
-								"nombre" => $_POST['nuevoNombre'],
-								"telefono" => $_POST['nuevoTelefono'],
-								"email" => $_POST['nuevoEmail'],
-								"direccion" => $_POST['nuevaDireccion'],
-								"fechaNacimiento" => $_POST['nuevaFechaNacimiento'],
-								"genero" => $_POST['nuevoGenero']
-				);
+				$datosTercero = array("tipoDocumento"=>$_POST["nuevoTipoDoc"],
+							  		  "documento"=>$_POST["nuevoDocumentoId"],
+							   		  "descripcion"=>$_POST["nuevoTercero"],
+								      "telefono"=>$_POST["nuevoTelefono"],
+							   		  "email"=>$_POST["nuevoEmail"],
+							   		  "direccion"=>$_POST["nuevaDireccion"],
+							  		  "fechaNacimiento"=>$_POST["nuevaFechaNacimiento"],
+							  		  "tipoUsuario"=>"3",
+							 		  "genero"=>$_POST["nuevoGeneroTercero"]);
 
-				$respuesta = ModeloTerceros::mdlIngresarTercero($tabla, $datosTercero);
+				$respuesta = ModeloTerceros::mdlCrearTercero($tabla, $datosTercero);
 
+				$respuestTmp = explode("|",$respuesta);
+				
+				 if($respuestTmp[0] == "1"){
+					$tipoAlerta ="error";
+					echo'<script>
+					swal({
+						  type: "'.$tipoAlerta.'",
+						  title: "'.$respuestTmp[1].'",
+						  showConfirmButton: true,
+						  confirmButtonText: "Cerrar"
+						  }).then(function(result){
+									if (result.value) {
+									window.location = "empleados";
+									}
+								})
+					</script>';
+				}
+				
+				$tabla = "usuarios";
+				$item = "idUsuario";
+				$valor = null;
+				
+				$terceros = ModeloTerceros::mdlTraerTercero($tabla, $item, $valor);
 
-				$respuesta = "ok";
-				if($respuesta == "ok"){
-					$tabla = "empleados";
+				$tabla = "usuariossistema";
 
 				$encriptar = crypt($_POST["nuevoPassword"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
 
-				$datos = array("nombre" => $_POST["nuevoEmpleado"],				
-					           "password" => $encriptar,
-							   "foto"=>$ruta);
+				$datos = array("nombreEmpleado" => $_POST["nuevoEmpleado"],				
+								"contrasena" => $encriptar,
+								"foto"=>$ruta,
+							    "idUsuario"=>$terceros["idUsuario"]);
 
 				$respuesta2 = ModeloEmpleados::mdlIngresarEmpleado($tabla, $datos);
-				echo '<script>alert("dd: '. print_r($respuesta2) . ' ")</script>';	
 
-					if($respuesta2 == "ok"){
+				$respuestTmp2 = explode("|",$respuesta2);
 
-						echo '<script>
-	
-						swal({
-	
-							type: "success",
-							title: "¡El empleado ha sido guardado correctamente!",
-							showConfirmButton: true,
-							confirmButtonText: "Cerrar"
-	
-						}).then(function(result){
-	
-							if(result.value){
-							
-								window.location = "empleados";
-	
-							}
-	
-						});
-					
-	
-						</script>';
+				if($respuestTmp2[0] == "1"){
+					$tipoAlerta ="error";
 				}else{
-	
-					echo '<script>
-	
-						swal({
-	
-							type: "error",
-							title: "¡El usuario no puede ir vacío o llevar caracteres especiales!",
-							showConfirmButton: true,
-							confirmButtonText: "Cerrar"
-	
-						}).then(function(result){
-	
-							if(result.value){
-							
-								window.location = "empleados";
-	
-							}
-	
-						});
-					
-	
-					</script>';
-	
+					$tipoAlerta ="success";
 				}
-
-				}else{
-					echo '<script>
-
+					echo'<script>
 					swal({
-
-						type: "error",
-						title: "¡Ocurrio un error al ingresar este empleado!",
-						showConfirmButton: true,
-						confirmButtonText: "Cerrar"
-
-					}).then(function(result){
-
-						if(result.value){
-						
-							window.location = "empleados";
-
-						}
-
-					});
+						  type: "'.$tipoAlerta.'",
+						  title: "'.$respuestTmp2[1].'",
+						  showConfirmButton: true,
+						  confirmButtonText: "Cerrar"
+						  }).then(function(result){
+									if (result.value) {
+									window.location = "empleados";
+									}
+								})
 					</script>';
-				}
+		}else{
+	
+			echo '<script>
+
+				swal({
+
+					type: "error",
+					title: "¡El usuario no puede ir vacío o llevar caracteres especiales!",
+					showConfirmButton: true,
+					confirmButtonText: "Cerrar"
+
+				}).then(function(result){
+
+					if(result.value){
+					
+						window.location = "empleados";
+
+					}
+
+				});
+			
+
+			</script>';
+				
 				//echo '<script>alert("Jhohan: '. $respuesta . ' ")</script>';
 			}
 		}
@@ -269,14 +258,14 @@ class ControladorEmpleados{
 
 	static public function ctrMostrarEmpleados($item, $valor){
 
-		$tabla = "empleados";
+		$tabla = "usuariossistema";
 
 		$respuesta = ModeloEmpleados::MdlMostrarEmpleados($tabla, $item, $valor);
 
 		return $respuesta;
 	}
 
-	static public function ctrListarEmpleados(){		
+	static public function ctrListarEmpleados(){	
 		$respuesta = ModeloEmpleados::mdlListarEmpleados();
 		return $respuesta;
 	}
@@ -287,7 +276,7 @@ class ControladorEmpleados{
 
 	static public function ctrEditarEmpleado(){
 
-		if(isset($_POST["editarEmpleado"])){
+		if(isset($_POST["editarNombre"])){
 
 			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["editarNombre"])){
 
@@ -308,7 +297,7 @@ class ControladorEmpleados{
 					CREAMOS EL DIRECTORIO DONDE VAMOS A GUARDAR LA FOTO DEL EMPLEADO
 					=============================================*/
 
-					$directorio = "vistas/img/empleados/".$_POST["editarEmpleado"];
+					$directorio = "views/img/empleados/".$_POST["editarEmpleado"];
 
 					/*=============================================
 					PRIMERO PREGUNTAMOS SI EXISTE OTRA IMAGEN EN LA BD
@@ -336,7 +325,7 @@ class ControladorEmpleados{
 
 						$aleatorio = mt_rand(100,999);
 
-						$ruta = "vistas/img/empleados/".$_POST["editarEmpleado"]."/".$aleatorio.".jpg";
+						$ruta = "views/img/empleados/".$_POST["editarEmpleado"]."/".$aleatorio.".jpg";
 
 						$origen = imagecreatefromjpeg($_FILES["editarFoto"]["tmp_name"]);						
 
@@ -356,7 +345,7 @@ class ControladorEmpleados{
 
 						$aleatorio = mt_rand(100,999);
 
-						$ruta = "vistas/img/empleados/".$_POST["editarEmpleado"]."/".$aleatorio.".png";
+						$ruta = "views/img/empleados/".$_POST["editarEmpleado"]."/".$aleatorio.".png";
 
 						$origen = imagecreatefrompng($_FILES["editarFoto"]["tmp_name"]);						
 
@@ -370,7 +359,7 @@ class ControladorEmpleados{
 
 				}
 
-				$tabla = "empleados";
+				$tabla = "usuariossistema";
 
 				if($_POST["editarPassword"] != ""){
 
@@ -405,34 +394,32 @@ class ControladorEmpleados{
 
 				}
 
-				$datos = array("nombre" => $_POST["editarNombre"],
-							   "empleado" => $_POST["editarEmpleado"],
-							   "password" => $encriptar,
-							   "perfil" => $_POST["editarPerfil"],
+				$datos = array("idUsuarioSistema" => $_POST["idUsuarioSistema"],
+					           "nombreEmpleado" => $_POST["editarNombre"],
+							   "contrasena" => $encriptar,
 							   "foto" => $ruta);
 
 				$respuesta = ModeloEmpleados::mdlEditarEmpleado($tabla, $datos);
 
-				if($respuesta == "ok"){
-
+				$respuestTmp = explode("|",$respuesta);
+				
+				 if($respuestTmp[0] == "1"){
+					$tipoAlerta ="error";
+				}else{
+					$tipoAlerta ="success";
+				}
 					echo'<script>
-
 					swal({
-						  type: "success",
-						  title: "El empleado ha sido editado correctamente",
+						  type: "'.$tipoAlerta.'",
+						  title: "'.$respuestTmp[1].'",
 						  showConfirmButton: true,
 						  confirmButtonText: "Cerrar"
-						  }).then(function(result) {
+						  }).then(function(result){
 									if (result.value) {
-
 									window.location = "empleados";
-
 									}
 								})
-
 					</script>';
-
-				}
 
 
 			}else{
@@ -459,53 +446,6 @@ class ControladorEmpleados{
 		}
 
 	}
-
-	/*=============================================
-	BORRAR USUARIO
-	=============================================*/
-
-	static public function ctrBorrarUsuario(){
-
-		if(isset($_GET["idUsuario"])){
-
-			$tabla ="usuarios";
-			$datos = $_GET["idUsuario"];
-
-			if($_GET["fotoUsuario"] != ""){
-
-				unlink($_GET["fotoUsuario"]);
-				rmdir('vistas/img/usuarios/'.$_GET["usuario"]);
-
-			}
-
-			$respuesta = ModeloUsuarios::mdlBorrarUsuario($tabla, $datos);
-
-			if($respuesta == "ok"){
-
-				echo'<script>
-
-				swal({
-					  type: "success",
-					  title: "El usuario ha sido borrado correctamente",
-					  showConfirmButton: true,
-					  confirmButtonText: "Cerrar",
-					  closeOnConfirm: false
-					  }).then(function(result) {
-								if (result.value) {
-
-								window.location = "usuarios";
-
-								}
-							})
-
-				</script>';
-
-			}		
-
-		}
-
-	}
-
 
 }
 	

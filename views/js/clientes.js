@@ -1,12 +1,27 @@
 /*=============================================
-EDITAR CLIENTE
+EDITAR TERCERO
 =============================================*/
+$(document).ready(function () {
+  validarBotonesClientes();
+  $('.sorting_1').click(function () {    
+    setTimeout(function () { validarBotonesClientes() }, 50)
+  });
+});
+
+function validarBotonesClientes() {  
+  var botones = $('.btnEditarCliente');
+  for (var i = 0; i < botones.length; i++) {
+    let boton = botones[i]
+    if ($(boton).attr('estado') == 0) $(boton).attr('disabled', 'true')
+  }
+}
+
 $(".tablas").on("click", ".btnEditarCliente", function(){
 
-	var idCliente = $(this).attr("idCliente");
+  var idUsuario = $(this).attr("idUsuario");
 
 	var datos = new FormData();
-    datos.append("idCliente", idCliente);
+    datos.append("idUsuario", idUsuario);
 
     $.ajax({
 
@@ -19,41 +34,67 @@ $(".tablas").on("click", ".btnEditarCliente", function(){
       dataType:"json",
       success:function(respuesta){
       
-      	   $("#idCliente").val(respuesta["id"]);
-	       $("#editarCliente").val(respuesta["nombre"]);
-	       $("#editarDocumentoId").val(respuesta["documento"]);
-	       $("#editarEmail").val(respuesta["email"]);
-	       $("#editarTelefono").val(respuesta["telefono"]);
-	       $("#editarDireccion").val(respuesta["direccion"]);
-           $("#editarFechaNacimiento").val(respuesta["fecha_nacimiento"]);
+        $("#idTercero").val(respuesta["idUsuario"]);                       
+        $('select[name="editarTipoDoc"] > option[value="' + respuesta["tipoDocumento"] +'"]').attr('selected',true);
+        $("#editarDocumentoId").val(respuesta["documento"]);
+	      $("#editarTercero").val(respuesta["descripcion"]);
+	      $("#editarTelefono").val(respuesta["telefono"]);
+	      $("#editarEmail").val(respuesta["email"]);
+	      $("#editarDireccion").val(respuesta["direccion"]);
+        $("#editarFechaNacimiento").val(respuesta["fechaNacimiento"]);
+        $('select[name="editarGeneroTercero"] > option[value="' + respuesta["genero"] +'"]').attr('selected',true);
+        $('select[name="editarTipoTercero"] > option[value="' + respuesta["tipoUsuario"] +'"]').attr('selected',true);        
 	  }
 
   	})
 
 })
 
-/*=============================================
-ELIMINAR CLIENTE
-=============================================*/
-$(".tablas").on("click", ".btnEliminarCliente", function(){
+$(".tablas").on("click", ".btnActivarCliente", function () {
 
-	var idCliente = $(this).attr("idCliente");
-	
-	swal({
-        title: '¿Está seguro de borrar el cliente?',
-        text: "¡Si no lo está puede cancelar la acción!",
-        type: 'warning',
-        showCancelButton: true,
-        confirmButtonColor: '#3085d6',
-        cancelButtonColor: '#d33',
-        cancelButtonText: 'Cancelar',
-        confirmButtonText: 'Si, borrar cliente!'
-      }).then(function(result){
-        if (result.value) {
-          
-            window.location = "index.php?ruta=clientes&idCliente="+idCliente;
-        }
-
+	var idUsuario = $(this).attr("idUsuario");
+	var estado = $(this).attr("estado");
+  
+	  var datos = new FormData();
+	  datos.append("activarIdUsuario", idUsuario);
+	  datos.append("activarUsuario", estado);	
+  
+	$.ajax({
+  
+	  url: "ajax/clientes.ajax.php",
+	  method: "POST",
+	  data: datos,
+	  cache: false,
+	  contentType: false,
+	  processData: false,
+	  success: function (respuesta) {      
+				  swal({
+					  title: "El cliente ha sido actualizado",
+					  type: "success",
+					  confirmButtonText: "¡Cerrar!"
+				  }).then(function (result) {
+					  if (result.value) {
+						  window.location = "clientes";
+					  }
+				  });
+	  }
+  
+	})
+  
+	if (estado == 0) {
+  
+	  $(this).removeClass('btn-success');
+	  $(this).addClass('btn-danger');
+	  $(this).html('Desactivado');
+	  $(this).attr('estado', 1);
+  
+	} else {
+  
+	  $(this).addClass('btn-success');
+	  $(this).removeClass('btn-danger');
+	  $(this).html('Activado');
+	  $(this).attr('estado', 0);
+  
+	}
+  
   })
-
-})

@@ -25,15 +25,15 @@ class ModeloEmpleados
 
     public static function mdlListarEmpleados()
     {
-        $stmt = Conexion::conectar()->prepare("SELECT terceros.nombre,
-		terceros.telefono,    
-		empleados.cod_empleado AS codigoEmpleado,
-		empleados.estado AS estadoEmpleado,
-		empleados.fecha_ultimo_ingreso AS ultimoIngreso,
-		empleados.foto AS avatar,
-		empleados.id_empleado 
-		FROM terceros
-		INNER JOIN empleados ON terceros.id_tercero = empleados.id_tercero");
+        $stmt = Conexion::conectar()->prepare("SELECT usuarios.descripcion,
+		usuarios.telefono,    
+		usuariossistema.nombreEmpleado AS codigoEmpleado,
+		usuariossistema.estado AS estado,
+		usuariossistema.fecha_ultimo_ingreso AS ultimoIngreso,
+		usuariossistema.foto AS avatar,
+		usuariossistema.idUsuarioSistema 
+		FROM usuarios
+		INNER JOIN usuariossistema ON usuarios.idUsuario = usuariossistema.idUsuario ORDER BY estado DESC");
         $stmt->execute();
         return $stmt->fetchAll();
 
@@ -47,33 +47,26 @@ class ModeloEmpleados
 
     public static function mdlIngresarEmpleado($tabla, $datos)
     {
-		$stmt2 = Conexion::conectar()->prepare("SELECT id_tercero FROM terceros WHERE 1 ORDER BY id_tercero DESC LIMIT 1");
-        $stmt2->execute();
+        try {
+			$pdo = Conexion::conectar();
 		
-	//	return $stmt2->fetchAll();
-
-		return $stmt2->fetchAll();
+			$sql = 'CALL agregarUsuarioSistema(:nombreEmpleado,:contrasena,:foto,:idUsuario,@respuesta)';
+			$stmt = $pdo->prepare($sql);
+			$stmt->bindParam(":nombreEmpleado", $datos["nombreEmpleado"], PDO::PARAM_STR);
+			$stmt->bindParam(":contrasena", $datos["contrasena"], PDO::PARAM_STR);
+            $stmt->bindParam(":foto", $datos["foto"], PDO::PARAM_STR);
+            $stmt->bindParam(":idUsuario", $datos["idUsuario"], PDO::PARAM_INT);
 			
-        /*$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(cod_empleado, password, foto) VALUES (:nombre, :password, :foto)");
+			$stmt->execute();
+			$stmt->closeCursor();
 
-        $stmt->bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
-        $stmt->bindParam(":password", $datos["password"], PDO::PARAM_STR);
-        $stmt->bindParam(":foto", $datos["foto"], PDO::PARAM_STR);
-		
-        if ($stmt->execute()) {
-
-            return "ok";
-
-        } else {
-
-            return "error";
-
-        }*/
-
-        $stmt2->close();
-
-        $stmt2 = null;
-
+			$row = $pdo->query("SELECT @respuesta AS respuesta")->fetch(PDO::FETCH_ASSOC);
+			if ($row) {			
+				return $row['respuesta'];
+			}
+		} catch (PDOException $e) {
+			die("Error occurred:" . $e->getMessage());
+        }
     }
 
     /*=============================================
@@ -83,27 +76,48 @@ class ModeloEmpleados
     public static function mdlEditarEmpleado($tabla, $datos)
     {
 
-        $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET nombre = :nombre, password = :password, perfil = :perfil, foto = :foto WHERE empleado = :empleado");
+        try {
+			$pdo = Conexion::conectar();
+		
+			$sql = 'CALL actualizarUsuarioSistema(:idUsuarioSistema,:nombreEmpleado,:contrasena,:foto,@respuesta)';
+            $stmt = $pdo->prepare($sql);
+            $stmt->bindParam(":idUsuarioSistema", $datos["idUsuarioSistema"], PDO::PARAM_INT);
+			$stmt->bindParam(":nombreEmpleado", $datos["nombreEmpleado"], PDO::PARAM_STR);
+			$stmt->bindParam(":contrasena", $datos["contrasena"], PDO::PARAM_STR);
+            $stmt->bindParam(":foto", $datos["foto"], PDO::PARAM_STR);
+			
+			$stmt->execute();
+			$stmt->closeCursor();
 
-        $stmt->bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
-        $stmt->bindParam(":password", $datos["password"], PDO::PARAM_STR);
-        $stmt->bindParam(":perfil", $datos["perfil"], PDO::PARAM_STR);
-        $stmt->bindParam(":foto", $datos["foto"], PDO::PARAM_STR);
-        $stmt->bindParam(":empleado", $datos["empleado"], PDO::PARAM_STR);
-
-        if ($stmt->execute()) {
-
-            return "ok";
-
-        } else {
-
-            return "error";
-
+			$row = $pdo->query("SELECT @respuesta AS respuesta")->fetch(PDO::FETCH_ASSOC);
+			if ($row) {			
+				return $row['respuesta'];
+			}
+		} catch (PDOException $e) {
+			die("Error occurred:" . $e->getMessage());
         }
+        
+        // $stmt = Conexion::conectar()->prepare("UPDATE $tabla SET nombre = :nombre, password = :password, perfil = :perfil, foto = :foto WHERE empleado = :empleado");
 
-        $stmt->close();
+        // $stmt->bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
+        // $stmt->bindParam(":password", $datos["password"], PDO::PARAM_STR);
+        // $stmt->bindParam(":perfil", $datos["perfil"], PDO::PARAM_STR);
+        // $stmt->bindParam(":foto", $datos["foto"], PDO::PARAM_STR);
+        // $stmt->bindParam(":empleado", $datos["empleado"], PDO::PARAM_STR);
 
-        $stmt = null;
+        // if ($stmt->execute()) {
+
+        //     return "ok";
+
+        // } else {
+
+        //     return "error";
+
+        // }
+
+        // $stmt->close();
+
+        // $stmt = null;
 
     }
 
@@ -134,32 +148,4 @@ class ModeloEmpleados
         $stmt = null;
 
     }
-
-    /*=============================================
-    BORRAR USUARIO
-    =============================================*/
-
-    public static function mdlBorrarUsuario($tabla, $datos)
-    {
-
-        $stmt = Conexion::conectar()->prepare("DELETE FROM $tabla WHERE id = :id");
-
-        $stmt->bindParam(":id", $datos, PDO::PARAM_INT);
-
-        if ($stmt->execute()) {
-
-            return "ok";
-
-        } else {
-
-            return "error";
-
-        }
-
-        $stmt->close();
-
-        $stmt = null;
-
-    }
-
 }

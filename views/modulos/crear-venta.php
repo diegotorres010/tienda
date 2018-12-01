@@ -1,16 +1,16 @@
 <?php
 
-if($_SESSION["perfil"] == "Especial"){
+// if($_SESSION["perfil"] == "Especial"){
 
-  echo '<script>
+//   echo '<script>
 
-    window.location = "inicio";
+//     window.location = "inicio";
 
-  </script>';
+//   </script>';
 
-  return;
+//   return;
 
-}
+//}
 
 ?>
 
@@ -64,9 +64,9 @@ if($_SESSION["perfil"] == "Especial"){
                     
                     <span class="input-group-addon"><i class="fa fa-user"></i></span> 
 
-                    <input type="text" class="form-control" id="nuevoVendedor" value="<?php echo $_SESSION["nombre"]; ?>" readonly>
+                    <input type="text" class="form-control" id="nuevoVendedor" value="<?php echo $_SESSION["nombreEmpleado"]; ?>" readonly>
 
-                    <input type="hidden" name="idVendedor" value="<?php echo $_SESSION["id"]; ?>">
+                    <input type="hidden" name="idVendedor" value="<?php echo $_SESSION["idUsuarioSistema"]; ?>">
 
                   </div>
 
@@ -137,11 +137,11 @@ if($_SESSION["perfil"] == "Especial"){
                       $item = null;
                       $valor = null;
 
-                      $categorias = ControladorClientes::ctrMostrarClientes($item, $valor);
+                      $clientes = ControladorClientes::ctrSelectCliente();
 
-                       foreach ($categorias as $key => $value) {
+                       foreach ($clientes as $key => $value) {
 
-                         echo '<option value="'.$value["id"].'">'.$value["nombre"].'</option>';
+                         echo '<option value="'.$value["idUsuario"].'">'.$value["nombre"].'</option>';
 
                        }
 

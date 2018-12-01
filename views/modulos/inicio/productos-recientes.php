@@ -2,9 +2,9 @@
 
 $item = null;
 $valor = null;
-$orden = "id";
+$orden = "idProducto";
 
-$productos = ControladorProductos::ctrMostrarProductos($item, $valor, $orden);
+$productos = ControladorProductos::ctrMostrarProducto($item, $valor, $orden);
 
  ?>
 
@@ -55,7 +55,7 @@ $productos = ControladorProductos::ctrMostrarProductos($item, $valor, $orden);
 
             '.$productos[$i]["descripcion"].'
 
-            <span class="label label-warning pull-right">$'.$productos[$i]["precio_venta"].'</span>
+            <span class="label label-warning pull-right">$'.$productos[$i]["estado"].'</span>
 
           </a>
     

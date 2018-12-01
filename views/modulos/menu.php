@@ -37,6 +37,13 @@
 				</li>
 				
 				<li>
+					<a href="clientes">							
+						<i class="fa fa-users"></i>
+						<span>Clientes</span>
+					</a>
+				</li>
+
+				<li>
 					<a href="terceros">							
 						<i class="fa fa-users"></i>
 						<span>Terceros</span>
@@ -63,6 +70,13 @@
 			</li>
 
 			<li>
+				<a href="medidas">							
+					<i class="fa fa-cubes"></i>
+					<span>Medidas</span>
+				</a>
+			</li>
+
+			<li>
 				<a href="categorias">						
 					<i class="fa fa-th"></i>
 					<span>Categorías</span>
@@ -77,6 +91,13 @@
 			</li>
 		</ul>
 	</li>';
+
+	echo '<li>
+			<a href="creditos">
+				<i class="fa fa-credit-card"></i>
+				<span>Créditos</span>
+			</a>
+		</li>';
 
 	//	}
 

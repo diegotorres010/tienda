@@ -6,7 +6,7 @@ class ControladorCategorias{
 	CREAR CATEGORIAS
 	=============================================*/
 
-	static public function ctrCrearCategoria(){
+	static public function ctrIngresarCategoria(){
 
 		if(isset($_POST["nuevaCategoria"])){
 
@@ -18,28 +18,25 @@ class ControladorCategorias{
 
 				$respuesta = ModeloCategorias::mdlIngresarCategoria($tabla, $datos);
 
-				if($respuesta == "ok"){
-
+				$respuestTmp = explode("|",$respuesta);
+				
+				 if($respuestTmp[0] == "1"){
+					$tipoAlerta ="error";
+				}else{
+					$tipoAlerta ="success";
+				}
 					echo'<script>
-
 					swal({
-						  type: "success",
-						  title: "La categoría ha sido guardada correctamente",
+						  type: "'.$tipoAlerta.'",
+						  title: "'.$respuestTmp[1].'",
 						  showConfirmButton: true,
 						  confirmButtonText: "Cerrar"
 						  }).then(function(result){
 									if (result.value) {
-
 									window.location = "categorias";
-
 									}
 								})
-
 					</script>';
-
-				}
-
-
 			}else{
 
 				echo'<script>
@@ -69,12 +66,20 @@ class ControladorCategorias{
 	MOSTRAR CATEGORIAS
 	=============================================*/
 
-	static public function ctrMostrarCategorias($item, $valor){
+	static public function ctrMostrarCategoria($item, $valor){
 
 		$tabla = "categorias";
 
-		$respuesta = ModeloCategorias::mdlMostrarCategorias($tabla, $item, $valor);
+		$respuesta = ModeloCategorias::mdlMostrarCategoria($tabla, $item, $valor);
 
+		return $respuesta;
+	
+	}
+
+	static public function ctrListarCategoria($item, $valor){
+
+		$tabla = "categorias";
+		$respuesta = ModeloCategorias::mdlListarCategoria($tabla, $item, $valor);
 		return $respuesta;
 	
 	}
@@ -91,33 +96,30 @@ class ControladorCategorias{
 
 				$tabla = "categorias";
 
-				$datos = array("categoria"=>$_POST["editarCategoria"],
-							   "id"=>$_POST["idCategoria"]);
+				$datos = array("descripcion"=>$_POST["editarCategoria"],
+							   "idCategoria"=>$_POST["idCategoria"]);
 
 				$respuesta = ModeloCategorias::mdlEditarCategoria($tabla, $datos);
 
-				if($respuesta == "ok"){
-
+				$respuestTmp = explode("|",$respuesta);
+				
+				 if($respuestTmp[0] == "1"){
+					$tipoAlerta ="error";
+				}else{
+					$tipoAlerta ="success";
+				}
 					echo'<script>
-
 					swal({
-						  type: "success",
-						  title: "La categoría ha sido cambiada correctamente",
+						  type: "'.$tipoAlerta.'",
+						  title: "'.$respuestTmp[1].'",
 						  showConfirmButton: true,
 						  confirmButtonText: "Cerrar"
 						  }).then(function(result){
 									if (result.value) {
-
 									window.location = "categorias";
-
 									}
 								})
-
 					</script>';
-
-				}
-
-
 			}else{
 
 				echo'<script>
@@ -147,35 +149,36 @@ class ControladorCategorias{
 	BORRAR CATEGORIA
 	=============================================*/
 
-	static public function ctrBorrarCategoria(){
+	// static public function ctrBorrarCategoria(){
 
-		if(isset($_GET["idCategoria"])){
+	// 	if(isset($_GET["idCategoria"])){
 
-			$tabla ="Categorias";
-			$datos = $_GET["idCategoria"];
+	// 		$tabla ="categorias";
+	// 		$datos = array("idCategoria"=>$_GET["idCategoria"],
+	// 					   "descripcion"=>$_GET["descripcion"]);
 
-			$respuesta = ModeloCategorias::mdlBorrarCategoria($tabla, $datos);
+	// 		$respuesta = ModeloCategorias::mdlBorrarCategoria($tabla, $datos);
 
-			if($respuesta == "ok"){
+	// 		if($respuesta == "ok"){
 
-				echo'<script>
+	// 			echo'<script>
 
-					swal({
-						  type: "success",
-						  title: "La categoría ha sido borrada correctamente",
-						  showConfirmButton: true,
-						  confirmButtonText: "Cerrar"
-						  }).then(function(result){
-									if (result.value) {
+	// 				swal({
+	// 					  type: "success",
+	// 					  title: "La categoría ha sido borrada correctamente",
+	// 					  showConfirmButton: true,
+	// 					  confirmButtonText: "Cerrar"
+	// 					  }).then(function(result){
+	// 								if (result.value) {
 
-									window.location = "categorias";
+	// 								window.location = "categorias";
 
-									}
-								})
+	// 								}
+	// 							})
 
-					</script>';
-			}
-		}
+	// 				</script>';
+	// 		}
+	// 	}
 		
-	}
+	// }
 }

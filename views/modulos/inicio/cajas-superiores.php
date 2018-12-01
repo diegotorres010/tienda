@@ -2,17 +2,17 @@
 
 $item = null;
 $valor = null;
-$orden = "id";
+$orden = "idProducto";
 
 $ventas = (new ControladorVentas)->ctrSumaTotalVentas();
 
-$categorias = ControladorCategorias::ctrMostrarCategorias($item, $valor);
+$categorias = ControladorCategorias::ctrMostrarCategoria($item, $valor);
 $totalCategorias = count($categorias);
 
-$clientes = ControladorClientes::ctrMostrarClientes($item, $valor);
+$clientes = ControladorClientes::ctrMostrarCliente($item, $valor);
 $totalClientes = count($clientes);
 
-$productos = ControladorProductos::ctrMostrarProductos($item, $valor, $orden);
+$productos = ControladorProductos::ctrMostrarProducto($item, $valor, $orden);
 $totalProductos = count($productos);
 
 ?>

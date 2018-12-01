@@ -2,11 +2,19 @@ $(document).ready(function () {
     $('#tabTienda').click(function () {
         $(this).removeAttr('href')
         $(this).removeAttr('data-toggle')
-        if ($('[name="nuevoHost"]').val().length < 1) {
+
+        if ($('[name="nuevoHost"]').val().length < 1
+            && $('[name="nuevoDB"]').val().length < 1
+            && $('[name="nuevoUsuarioDB"]').val().length < 1){
+                $('#modal-danger').modal('show');
+        } else if ($('[name="nuevoHost"]').val().length < 1) {
+            $('[name="nuevoHost"]').focus();
             $('#alertError').html('Nombre de host o ip vacío').show()
-        } else if ($('[name="nuevoBD"]').val().length < 1) {
+        } else if ($('[name="nuevoDB"]').val().length < 1) {
+            $('[name="nuevoDB"]').focus();
             $('#alertError').html('Nombre de la base de datos vacío').show()
-        } else if ($('[name="nuevoUsuarioBD"]').val().length < 1) {
+        } else if ($('[name="nuevoUsuarioDB"]').val().length < 1) {
+            $('[name="nuevoUsuarioDB"]').focus();
             $('#alertError').html('Nombre del usuario de la base de datos vacío').show()
         } else {
             $('#alertError').hide()
@@ -21,7 +29,13 @@ $(document).ready(function () {
         $(this).removeAttr('href')
         $(this).removeAttr('data-toggle')
 
-        if ($('[name="nuevaTiendaNombre"]').val().length < 1) {
+        if ($('[name="nuevaTiendaNombre"]').val().length < 1
+        && $('[name="nuevaTiendaDireccion"]').val().length < 1
+        && $('[name="nuevaTiendaTelefono"]').val().length < 1
+        && $('[name="nuevaTiendaPropietario"]').val().length < 1
+        && $('[name="nuevaTiendaEmail"]').val().length < 1){
+            $('#modal-danger').modal('show');
+        } else if ($('[name="nuevaTiendaNombre"]').val().length < 1) {
             $('[name="nuevaTiendaNombre"]').focus();
             $('#alertError').html('Nombre de la tienda vacío').show()
         } else if ($('[name="nuevaTiendaDireccion"]').val().length < 1) {
@@ -52,24 +66,47 @@ $(document).ready(function () {
     $('#tabSistema').click(function () {
         $(this).removeAttr('href')
         $(this).removeAttr('data-toggle')
-        if ($('[name="nuevoTipoDoc"]').val().length < 1) {
-            $('#alertError').html('Nombre de la tienda vacío').show()
+
+        if ($('[name="nuevoTipoDoc"]').val().length < 1
+        && $('[name="nuevoDocumentoId"]').val().length < 1
+        && $('[name="nuevoTercero"]').val().length < 1
+        && $('[name="nuevoTelefono"]').val().length < 1
+        && $('[name="nuevoEmail"]').val().length < 1
+        && $('[name="nuevaDireccion"]').val().length < 1
+        && $('[name="nuevaFechaNacimiento"]').val().length < 1
+        && $('[name="nuevoGeneroTercero"]').val().length < 1
+        && $('[name="nuevoTipoTercero"]').val().length < 1){
+            $('#modal-danger').modal('show');
+        } else if ($('[name="nuevoTipoDoc"]').val().length < 1) {
+            $('[name="nuevoTipoDoc"]').focus();
+            $('#alertError').html('Tipo de documento vacío').show()
         } else if ($('[name="nuevoDocumentoId"]').val().length < 1) {
-            $('#alertError').html('Dirección vacío').show()
+            $('[name="nuevoDocumentoId"]').focus();
+            $('#alertError').html('Número de documento vacío').show()
         } else if ($('[name="nuevoTercero"]').val().length < 1) {
-            $('#alertError').html('Teléfono vacío').show()
+            $('[name="nuevoTercero"]').focus();
+            $('#alertError').html('Nombre del usuario vacío').show()
         } else if ($('[name="nuevoTelefono"]').val().length < 1) {
-            $('#alertError').html('Propietario vacío').show()
+            $('[name="nuevoTelefono"]').focus();
+            $('#alertError').html('Teléfono vacío').show()
         } else if ($('[name="nuevoEmail"]').val().length < 1) {
+            $('[name="nuevoEmail"]').focus();
             $('#alertError').html('Email vacío').show()
+        } else if (!validateEmail($('[name="nuevoEmail"]').val())) {
+            $('[name="nuevoEmail"]').focus();
+            $('#alertError').html('Email inválido').show()
         } else if ($('[name="nuevaDireccion"]').val().length < 1) {
-            $('#alertError').html('Email vacío').show()
+            $('[name="nuevaDireccion"]').focus();
+            $('#alertError').html('Dirección vacía').show()
         } else if ($('[name="nuevaFechaNacimiento"]').val().length < 1) {
-            $('#alertError').html('Email vacío').show()
+            $('[name="nuevaFechaNacimiento"]').focus();
+            $('#alertError').html('Fecha nacimiento vacía').show()
         } else if ($('[name="nuevoGeneroTercero"]').val().length < 1) {
-            $('#alertError').html('Email vacío').show()
+            $('[name="nuevoGeneroTercero"]').focus();
+            $('#alertError').html('Genero vacío').show()
         } else if ($('[name="nuevoTipoTercero"]').val().length < 1) {
-            $('#alertError').html('Email vacío').show()
+            $('[name="nuevoTipoTercero"]').focus();
+            $('#alertError').html('Tipo tercero vacío').show()
         } else {
             $('#alertError').hide()
             $(this).attr({ 'href': '#sistematab', 'data-toggle': 'tab' })
@@ -80,81 +117,73 @@ $(document).ready(function () {
     });
 });
 
-/*var currentTab = 0; // Current tab is set to be the first tab (0)
-showTab(currentTab); // Display the crurrent tab
-
-function showTab(n) {
-  // This function will display the specified tab of the form...
-  var x = document.getElementsByClassName("tab");  
-
-  x[n].style.display = "block";
-  //... and fix the Previous/Next buttons:
-  if (n == 0) {
-    document.getElementById("prevBtn").style.display = "none";
-  } else {
-    document.getElementById("prevBtn").style.display = "inline";
-  }
-  if (n == (x.length - 1)) {
-    document.getElementById("nextBtn").innerHTML = "Submit";
-  } else {
-    document.getElementById("nextBtn").innerHTML = "Siguiente";
-  }
-  //... and run a function that will display the correct step indicator:
-  fixStepIndicator(n)
-}
-
-function nextPrev(n) {
-  // This function will figure out which tab to display
-  var x = document.getElementsByClassName("tab");
-  // Exit the function if any field in the current tab is invalid:
-  if (n == 1 && !validateForm()) return false;
-  // Hide the current tab:
-  x[currentTab].style.display = "none";
-  // Increase or decrease the current tab by 1:
-  currentTab = currentTab + n;
-  // if you have reached the end of the form...
-  if (currentTab >= x.length) {
-    // ... the form gets submitted:
-    document.getElementById("regForm").submit();
-    return false;
-  }
-  // Otherwise, display the correct tab:
-  showTab(currentTab);
-}
-
-function validateForm() {
-  // This function deals with validation of the form fields
-  var x, y, i, valid = true;
-  x = document.getElementsByClassName("tab");
-  y = x[currentTab].getElementsByTagName("input");
-  // A loop that checks every input field in the current tab:
-  for (i = 0; i < y.length; i++) {
-    // If a field is empty...
-    if (y[i].value == "") {
-      // add an "invalid" class to the field:
-      y[i].className += " invalid";
-      // and set the current valid status to false
-      valid = false;
-    }
-  }
-  // If the valid status is true, mark the step as finished and valid:
-  if (valid) {
-    document.getElementsByClassName("step")[currentTab].className += " finish";
-  }
-  return valid; // return the valid status
-}
-
-function fixStepIndicator(n) {
-  // This function removes the "active" class of all steps...
-  var i, x = document.getElementsByClassName("step");
-  for (i = 0; i < x.length; i++) {
-    x[i].className = x[i].className.replace(" active", "");
-  }
-  //... and adds the "active" class on the current step:
-  x[n].className += " active";
-}*/
-
 function validateEmail(email) {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
 }
+
+/*$('#botonTienda').click(function(event){
+    event.preventDefault();    
+        var contrasena       = $("#nuevoPassword").val();
+        var confirContrasena = $("#nuevoRepetirPass").val();
+    
+        if (contrasena !='' && confirContrasena != '') {    
+            if (contrasena === confirContrasena) {    
+                $("#alertError").html('Los campos coinciden.');
+            }else{    
+                $("#alertError").html('Lo siento!, los campos no coinciden.');
+            }
+        }else{
+          $("#alertError").html('Hey! No dejes los campos vacios');
+        }            
+    });
+*/
+
+/*=============================================
+SUBIENDO LA FOTO DEL USUARIO
+=============================================*/
+$(".nuevaFoto").change(function(){
+
+	var imagen = this.files[0];
+	
+	/*=============================================
+  	VALIDAMOS EL FORMATO DE LA IMAGEN SEA JPG O PNG
+  	=============================================*/
+
+  	if(imagen["type"] != "image/jpeg" && imagen["type"] != "image/png"){
+
+  		$(".nuevaFoto").val("");
+
+  		 swal({
+		      title: "Error al subir la imagen",
+		      text: "¡La imagen debe estar en formato JPG o PNG!",
+		      type: "error",
+		      confirmButtonText: "¡Cerrar!"
+		    });
+
+  	}else if(imagen["size"] > 2000000){
+
+  		$(".nuevaFoto").val("");
+
+  		 swal({
+		      title: "Error al subir la imagen",
+		      text: "¡La imagen no debe pesar más de 2MB!",
+		      type: "error",
+		      confirmButtonText: "¡Cerrar!"
+		    });
+
+  	}else{
+
+  		var datosImagen = new FileReader;
+  		datosImagen.readAsDataURL(imagen);
+
+  		$(datosImagen).on("load", function(event){
+
+  			var rutaImagen = event.target.result;
+
+  			$(".previsualizar").attr("src", rutaImagen);
+
+  		})
+
+  	}
+})

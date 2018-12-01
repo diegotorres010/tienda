@@ -47,6 +47,7 @@
            <th>Fecha nacimiento</th>
            <th>Fecha registro</th>
            <th>Tipo</th>
+           <th>Estado</th>
            <th>Acciones</th>
          </tr> 
         </thead>
@@ -57,41 +58,47 @@
           $item = null;
           $valor = null;
 
-          $terceros = ControladorTerceros::ctrMostrarTercero($item, $valor);
+          $terceros = ControladorTerceros::ctrListarTercero($item, $valor);
 
           foreach ($terceros as $key => $value) {
 
-            $tipoTercero = "";
-            switch($value["tipoTercero"]){
+            $tipoUsuario = "";
+            switch($value["tipoUsuario"]){
               case 1: 
-                $tipoTercero = "Cliente";
+                $tipoUsuario = "Cliente";
                 break;
               case 2:
-                $tipoTercero = "Proveedor";
+                $tipoUsuario = "Proveedor";
                 break;          
               case 3:
-                $tipoTercero = "Empleado";
+                $tipoUsuario = "Empleado";
                 break;                
               default:
-                $tipoTercero = "null";
+                $tipoUsuario = "null";
                 break;                
             }
             
             echo '<tr>
                     <td>'.($key+1).'</td>
-                    <td>'.$value["nombre"].'</td>
+                    <td>'.$value["descripcion"].'</td>
                     <td>'.$value["documento"].'</td>
                     <td>'.$value["email"].'</td>
                     <td>'.$value["telefono"].'</td>
                     <td>'.$value["direccion"].'</td>
                     <td>'.$value["fechaNacimiento"].'</td>
                     <td>'.$value["fechaRegistro"].'</td>
-                    <td>'.$tipoTercero.'</td>
-                    <td>
+                    <td>'.$tipoUsuario.'</td>';
+                    if ($value["estado"] != 0) {
+                      echo '<td><button class="btn btn-success btn-xs btnActivarUsuario" idUsuario="' . $value["idUsuario"] . '" estado="0">Activado</button></td>';
+                    } else {
+                      echo '<td><button class="btn btn-danger btn-xs btnActivarUsuario" idUsuario="' . $value["idUsuario"] . '" estado="1">Desactivado</button></td>';
+                    }
+
+              echo '<td>
                       <div class="btn-group">
-                        <button class="btn btn-warning btnEditarTercero" data-toggle="modal" data-target="#modalEditarTercero" idTercero="'.$value["idTercero"].'"><i class="fa fa-pencil"></i></button>';
+                        <button class="btn btn-warning btnEditarTercero" data-toggle="modal" data-target="#modalEditarTercero" idUsuario="'.$value["idUsuario"].'" estado="'.$value["estado"].'"><i class="fa fa-pencil"></i></button>';
                     //  if($_SESSION["perfil"] == "Administrador"){
-                          echo '<button class="btn btn-danger btnEliminarTercero" idTercero="'.$value["idTercero"].'"><i class="fa fa-times"></i></button>';
+                    //      echo '<button class="btn btn-danger btnEliminarTercero" idUsuario="'.$value["idUsuario"].'"><i class="fa fa-times"></i></button>';
                     //  }
                       echo '</div>  
                     </td>
@@ -122,7 +129,7 @@
                 <div class="form-group">
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
-                    <select class="form-control input-lg" name="nuevoTipoDoc">
+                    <select class="form-control input-lg" name="nuevoTipoDoc" id="nuevoTipoDoc" required>
                       <option value="">Seleccionar tipo documento</option>
                       <option value="1">CC </option>
                       <option value="2">NIT</option>
@@ -135,7 +142,7 @@
             <div class="form-group">              
               <div class="input-group">              
                 <span class="input-group-addon"><i class="fa fa-sort-numeric-asc"></i></span> 
-                <input type="number" min="0" class="form-control input-lg" name="nuevoDocumentoId" placeholder="Ingresar documento" >
+                <input type="number" min="0" class="form-control input-lg" name="nuevoDocumentoId" placeholder="Ingresar documento" id="nuevoDocumentoId" required>
               </div>
             </div>
 
@@ -174,30 +181,29 @@
               </div>
             </div>
 
-                <div class="form-group">
-                  <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
-                    <select class="form-control input-lg" name="nuevoGeneroTercero">
-                      <option value="">Seleccionar genero</option>
-                      <option value="1">Masculino  </option>
-                      <option value="2">Femenino</option>
-                      <option value="3">Indefinido </option>
-                    </select>
-                  </div>
-                </div>
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
+                <select class="form-control input-lg" name="nuevoGeneroTercero" required>
+                  <option value="">Seleccionar genero</option>
+                  <option value="1">Masculino  </option>
+                  <option value="2">Femenino</option>
+                  <option value="3">Indefinido </option>
+                </select>
+              </div>
+            </div>
 
-                <div class="form-group">
-                  <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
-                    <select class="form-control input-lg" name="nuevoTipoTercero">
-                      <option value="">Seleccionar tipo de tercero</option>
-                      <option value="1">Cliente  </option>
-                      <option value="2">Proveedor</option>
-                      <option value="3">Empleado </option>
-                    </select>
-                  </div>
-                </div>
-
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
+                <select class="form-control input-lg" name="nuevoTipoTercero" required>
+                  <option value="">Seleccionar tipo de tercero</option>
+                  <option value="1">Cliente  </option>
+                  <option value="2">Proveedor</option>
+                  <option value="3">Empleado </option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -232,7 +238,7 @@
           <div class="form-group">
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
-                <select class="form-control input-lg" name="editarTipoDoc">                  
+                <select class="form-control input-lg" name="editarTipoDoc" required>                  
                   <option value="1">CC </option>
                   <option value="2">NIT</option>
                   <option value="3">TI </option>
@@ -284,30 +290,27 @@
               </div>
             </div>
 
-                <div class="form-group">
-                  <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
-                    <select class="form-control input-lg" name="editarGeneroTercero">
-                      <option value="" id="editarGeneroTercero"></option>
-                      <option value="1">Masculino  </option>
-                      <option value="2">Femenino</option>
-                      <option value="3">Indefinido </option>
-                    </select>
-                  </div>
-                </div>
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
+                <select class="form-control input-lg" name="editarGeneroTercero" required>
+                  <option value="1">Masculino  </option>
+                  <option value="2">Femenino</option>
+                  <option value="3">Indefinido </option>
+                </select>
+              </div>
+            </div>
 
-                <div class="form-group">
-                  <div class="input-group">
-                    <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
-                    <select class="form-control input-lg" name="editarTipoTercero">
-                      <option value="" id="editarTipoTercero"></option>
-                      <option value="1">Cliente  </option>
-                      <option value="2">Proveedor</option>
-                      <option value="3">Empleado </option>
-                    </select>
-                  </div>
-                </div>  
-
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
+                <select class="form-control input-lg" name="editarTipoTercero" required>
+                  <option value="1">Cliente  </option>
+                  <option value="2">Proveedor</option>
+                  <option value="3">Empleado </option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -326,10 +329,5 @@
     </div>
   </div>
 </div>
-
-<?php
-  $eliminarTercero = new ControladorTerceros();
-  $eliminarTercero -> ctrEliminarTercero();
-?>
 
 

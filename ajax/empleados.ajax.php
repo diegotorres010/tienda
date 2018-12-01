@@ -6,92 +6,70 @@ require_once "../models/empleados.model.php";
 class AjaxEmpleados{
 
 	/*=============================================
-	EDITAR EMPLEADOS
+	EDITAR Proveedor
 	=============================================*/	
 
-	public $idEmpleado;
+	public $idUsuarioSistema;
 
 	public function ajaxEditarEmpleado(){
 
-		$item = "id";
-		$valor = $this->idEmpleado;
+		$item = "idUsuarioSistema";
+		$valor = $this->idUsuarioSistema;
 
 		$respuesta = ControladorEmpleados::ctrMostrarEmpleados($item, $valor);
 
 		echo json_encode($respuesta);
-
 	}
 
-	/*=============================================
-	ACTIVAR EMPLEADOS
-	=============================================*/	
-
-	public $activarEmpleado;
-	public $activarId;
-
+	public $activarUsuario;
+	public $activarIdUsuario;
 
 	public function ajaxActivarEmpleado(){
 
-		$tabla = "empleados";
+		$tabla = "usuariossistema";
 
 		$item1 = "estado";
-		$valor1 = $this->activarEmpleado;
+		$valor1 = $this->activarUsuario;
 
-		$item2 = "id_empleado";
-		$valor2 = $this->activarId;
+		$item2 = "idUsuarioSistema";
+		$valor2 = $this->activarIdUsuario;
 
 		$respuesta = ModeloEmpleados::mdlActualizarEmpleado($tabla, $item1, $valor1, $item2, $valor2);
-		echo $respuesta;
 	}
 
-	/*=============================================
-	VALIDAR NO REPETIR EMPLEADOS
-	=============================================*/	
-
-	public $validarEmpleado;
+	public $validarUsuario;
 
 	public function ajaxValidarEmpleado(){
 
-		$item = "empleado";
-		$valor = $this->validarEmpleado;
+		$item = "nombreEmpleado";
+		$valor = $this->validarUsuario;
 
 		$respuesta = ControladorEmpleados::ctrMostrarEmpleados($item, $valor);
 
 		echo json_encode($respuesta);
 
 	}
-}
-
-/*=============================================
-EDITAR EMPLEADOS
-=============================================*/
-if(isset($_POST["idEmpleado"])){	
-	$editar = new AjaxEmpleados();
-	$editar -> idEmpleado = $_POST["idEmpleado"];
-	$editar -> ajaxEditarEmpleado();
 
 }
 
-/*=============================================
-ACTIVAR EMPLEADO
-=============================================*/	
 
-if(isset($_POST["activarEmpleado"])){
-	$activarEmpleado = new AjaxEmpleados();
-	$activarEmpleado -> activarEmpleado = $_POST["activarEmpleado"];
-	$activarEmpleado -> activarId = $_POST["activarId"];
-	$activarEmpleado -> ajaxActivarEmpleado();
-
+if(isset($_POST["idUsuarioSistema"])){
+	$terceros = new AjaxEmpleados();
+	$terceros -> idUsuarioSistema = $_POST["idUsuarioSistema"];
+	$terceros -> ajaxEditarEmpleado();
 }
 
-/*=============================================
-VALIDAR NO REPETIR EMPLEADO
-=============================================*/
+if(isset($_POST["activarUsuario"])){
+	$activarUsuario = new AjaxEmpleados();
+	$activarUsuario -> activarUsuario = $_POST["activarUsuario"];
+	$activarUsuario -> activarIdUsuario = $_POST["activarIdUsuario"];
+	$activarUsuario -> ajaxActivarEmpleado();
+}
 
-if(isset( $_POST["validarEmpleado"])){
+if(isset( $_POST["validarUsuario"])){
 
-	$valEmpleado = new AjaxEmpleados();
-	$valEmpleado -> validarEmpleado = $_POST["validarEmpleado"];
-	$valEmpleado -> ajaxValidarEmpleado();
+	$valUsuario = new AjaxEmpleados();
+	$valUsuario -> validarUsuario = $_POST["validarUsuario"];
+	$valUsuario -> ajaxValidarEmpleado();
 
 }

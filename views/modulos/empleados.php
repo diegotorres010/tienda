@@ -1,3 +1,6 @@
+<style>
+  #listaPermisos,.sub-privilegio{list-style: none;}
+ </style>
 <div class="content-wrapper">
   <section class="content-header">
     <h1>
@@ -14,6 +17,9 @@
       <div class="box-header with-border">
         <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarEmpleado">
           Agregar empleado
+        </button>
+        <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarPermisos">
+          Agregar permisos
         </button>
       </div>
 
@@ -66,7 +72,7 @@ foreach ($terceros as $key => $value) {
     echo '<td>' . $value["ultimoIngreso"] . '</td>
                   <td>
                     <div class="btn-group">
-                      <button class="btn btn-warning btnEditarEmpleado" idUsuarioSistema="'.$value["idUsuarioSistema"].'" estado="'.$value["estado"].'" data-toggle="modal" data-target="#modalEditarEmpleado"><i class="fa fa-pencil"></i></button>
+                      <button class="btn btn-warning btnEditarEmpleado" idUsuarioSistema="' . $value["idUsuarioSistema"] . '" estado="' . $value["estado"] . '" data-toggle="modal" data-target="#modalEditarEmpleado"><i class="fa fa-pencil"></i></button>
                     </div>
                   </td>
                 </tr>';
@@ -80,6 +86,37 @@ foreach ($terceros as $key => $value) {
     </div>
   </section>
 </div>
+
+<div id="modalAgregarPermisos" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <form role="form" method="post" enctype="multipart/form-data">
+        <div class="modal-header" style="background:#3c8dbc; color:white">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Agregar empleado</h4>
+        </div>
+        <div class="modal-body">
+          <div class="box-body">
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-sort-numeric-asc"></i></span>
+                <input class="form-control input-lg" id="busquedaEmpleado" placeholder="Ingresar documento" >
+              </div>
+            </div>
+            <hr>
+            <ul id="listaPermisos" class="form">
+            </ul>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
+          <input type="button" id="guardarPermisos" class="btn btn-primary" value="Guardar permisos">
+        </div>
+       </form>
+    </div>
+  </div>
+</div>
+
 
 <div id="modalAgregarEmpleado" class="modal fade" role="dialog">
   <div class="modal-dialog">
@@ -103,9 +140,9 @@ foreach ($terceros as $key => $value) {
                 </select>
               </div>
             </div>
-            <div class="form-group">              
-              <div class="input-group">              
-                <span class="input-group-addon"><i class="fa fa-sort-numeric-asc"></i></span> 
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-sort-numeric-asc"></i></span>
                 <input type="number" min="0" class="form-control input-lg" name="nuevoDocumentoId" id="nuevoDocumentoId" placeholder="Ingresar documento" >
               </div>
             </div>
@@ -115,27 +152,27 @@ foreach ($terceros as $key => $value) {
                 <input type="text" class="form-control input-lg" name="nuevoTercero" placeholder="Ingresar nombre" >
               </div>
             </div>
-            <div class="form-group">              
-              <div class="input-group">              
-                <span class="input-group-addon"><i class="fa fa-phone"></i></span> 
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-phone"></i></span>
                 <input type="text" class="form-control input-lg" name="nuevoTelefono" placeholder="Ingresar teléfono" data-inputmask="'mask':'(999) 999-9999'" data-mask >
               </div>
             </div>
-            <div class="form-group">              
-              <div class="input-group">              
-                <span class="input-group-addon"><i class="fa fa-envelope"></i></span> 
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                 <input type="email" class="form-control input-lg" name="nuevoEmail" placeholder="Ingresar email" >
               </div>
             </div>
-            <div class="form-group">              
-              <div class="input-group">              
-                <span class="input-group-addon"><i class="fa fa-map-marker"></i></span> 
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
                 <input type="text" class="form-control input-lg" name="nuevaDireccion" placeholder="Ingresar dirección" >
               </div>
             </div>
-            <div class="form-group">              
-              <div class="input-group">              
-                <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                 <input type="text" class="form-control input-lg" name="nuevaFechaNacimiento" placeholder="Ingresar fecha nacimiento" data-inputmask="'alias': 'yyyy/mm/dd'" data-mask >
               </div>
             </div>
@@ -146,7 +183,7 @@ foreach ($terceros as $key => $value) {
                   <option value="">Seleccionar género</option>
                   <option value="1">Masculino</option>
                   <option value="2">Femenino</option>
-                  <option value="3">Indefinido</option>                
+                  <option value="3">Indefinido</option>
                 </select>
               </div>
             </div>
@@ -155,13 +192,13 @@ foreach ($terceros as $key => $value) {
                 <span class="input-group-addon"><i class="fa fa-key"></i></span>
                 <input type="text" class="form-control input-lg" name="nuevoEmpleado" placeholder="Ingresar usuario" id="nuevoEmpleado" >
               </div>
-            </div>            
+            </div>
              <div class="form-group">
               <div class="input-group">
                 <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                 <input type="password" class="form-control input-lg" name="nuevoPassword" placeholder="Ingresar contraseña" >
               </div>
-            </div>          
+            </div>
              <div class="form-group">
               <div class="panel">SUBIR FOTO</div>
               <input type="file" class="nuevaFoto" name="nuevaFoto">

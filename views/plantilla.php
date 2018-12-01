@@ -56,6 +56,10 @@ session_start();
 
   <!-- jQuery 3 -->
   <script src="views/bower_components/jquery/dist/jquery.min.js"></script>
+
+  <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  <style> .ui-menu{z-index: 99999;} </style>
   
   <!-- Bootstrap 3.3.7 -->
   <script src="views/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>

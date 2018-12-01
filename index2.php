@@ -13,6 +13,8 @@ require_once "controllers/productos.controller.php";
 require_once "controllers/impuestos.controller.php";
 require_once "controllers/creditos.controller.php";
 require_once "controllers/ventas.controller.php";
+require_once "controllers/privilegios.controller.php";
+require_once "controllers/permisos.controller.php";
 
 require_once "models/tiendas.model.php";
 require_once "models/terceros.model.php";
@@ -26,6 +28,8 @@ require_once "models/productos.model.php";
 require_once "models/impuestos.model.php";
 require_once "models/creditos.model.php";
 require_once "models/ventas.model.php";
+require_once "models/privilegios.model.php";
+require_once "models/permisos.model.php";
 
 $plantilla = new ControllerPlantilla();
 $plantilla -> ctrPlantilla();

@@ -50,8 +50,17 @@ class AjaxEmpleados{
 
 	}
 
+	public function ajaxMostrarEmpleado(){
+		$respuesta = ControladorEmpleados::ctrMostrarEmpleados(null, null);
+		echo json_encode($respuesta);
+	}
+
 }
 
+if(isset($_POST["mostrarEmpleados"])){
+	$terceros = new AjaxEmpleados();
+	$terceros -> ajaxMostrarEmpleado();
+}
 
 if(isset($_POST["idUsuarioSistema"])){
 	$terceros = new AjaxEmpleados();

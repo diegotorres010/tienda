@@ -205,5 +205,107 @@ class ControladorTiendas{
 
 	}
 
+	static public function ctrTraerTienda($item, $valor){
+
+		$tabla = "tienda";
+
+		$respuesta = ModeloTiendas::mdlTraerTienda($tabla, $item, $valor);
+
+		return $respuesta;
+	}
+
+	static public function ctrMostrarTienda($item, $valor){
+
+		$tabla = "tienda";
+
+		$respuesta = ModeloTiendas::MdlMostrarTienda($tabla, $item, $valor);
+
+		return $respuesta;
+	}
+
+	static public function ctrEditarTienda(){
+
+		if(isset($_POST["editarTiendaNombre"])){
+
+			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["editarTiendaNombre"]) &&
+			   preg_match('/^[#\.\-a-zA-Z0-9 ]+$/', $_POST["editarTiendaDireccion"]) &&
+			   preg_match('/^[()\-0-9 ]+$/', $_POST["editarTiendaTelefono"]) && 
+			   preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["editarTiendaPropietario"]) &&
+			   preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $_POST["editarTiendaEmail"])){
+
+			   	$tabla = "tienda";
+
+			   	$datos = array("idTienda"=>$_POST["idTienda"],
+					           "nombreTienda"=>$_POST["editarTiendaNombre"],
+							   "direccion"=>$_POST["editarTiendaDireccion"],
+							   "telefono"=>$_POST["editarTiendaTelefono"],
+							   "email"=>$_POST["editarTiendaEmail"],
+							   "propietario"=>$_POST["editarTiendaPropietario"]);
+
+			    echo "hola";
+				var_dump($datos);
+
+
+				$respuesta = ModeloTiendas::mdlEditarTienda($tabla, $datos);
+				
+				if($respuesta == "ok"){
+					echo'<script>
+
+						swal({
+							type: "success",
+							title: "¡La tienda se ha actualizado correctamente!",
+							showConfirmButton: true,
+							confirmButtonText: "Cerrar"
+							}).then(function(result){
+								if (result.value) {
+
+								window.location = "inicio";
+
+								}
+							})
+
+					</script>';
+			   }else{
+				echo'<script>
+
+						swal({
+							type: "error",
+							title: "¡Error la tienda no se pudo actualizar!",
+							showConfirmButton: true,
+							confirmButtonText: "Cerrar"
+							}).then(function(result){
+								if (result.value) {
+
+								window.location = "inicio";
+
+								}
+							})
+
+					</script>';
+			   }
+
+			}else{
+				echo'<script>
+
+					swal({
+						  type: "error",
+						  title: "¡La tienda no puede ir vacía o llevar caracteres especiales!",
+						  showConfirmButton: true,
+						  confirmButtonText: "Cerrar"
+						  }).then(function(result){
+							if (result.value) {
+
+							window.location = "inicio";
+
+							}
+						})
+
+			  	</script>';
+			}
+
+		}
+
+	}
+
 }
 

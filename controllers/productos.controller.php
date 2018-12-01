@@ -16,6 +16,16 @@ class ControladorProductos{
 
 	}
 
+	static public function ctrMostrarProductoDispo($item, $valor, $orden){
+
+		$tabla = "productos";
+
+		$respuesta = ModeloProductos::mdlMostrarProductoDispo($tabla, $item, $valor, $orden);
+
+		return $respuesta;
+
+	}
+
 	static public function ctrListarProducto($item, $valor){
 
 		$tabla = "productos";

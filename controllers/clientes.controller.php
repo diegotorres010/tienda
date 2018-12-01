@@ -183,5 +183,76 @@ class ControladorClientes{
 
 	}
 
+	static public function ctrCrearClienteVenta(){
+
+		if(isset($_POST["nuevoTercero"])){
+
+			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevoTercero"]) &&
+			   preg_match('/^[0-9]+$/', $_POST["nuevoDocumentoId"]) &&
+			   preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $_POST["nuevoEmail"]) && 
+			   preg_match('/^[()\-0-9 ]+$/', $_POST["nuevoTelefono"]) && 
+			   preg_match('/^[#\.\-a-zA-Z0-9 ]+$/', $_POST["nuevaDireccion"])){
+
+			   	$tabla = "usuarios";
+
+			   	$datos = array("tipoDocumento"=>$_POST["nuevoTipoDoc"],
+					   		   "documento"=>$_POST["nuevoDocumentoId"],
+							   "descripcion"=>$_POST["nuevoTercero"],
+							   "telefono"=>$_POST["nuevoTelefono"],
+					           "email"=>$_POST["nuevoEmail"],
+					           "direccion"=>$_POST["nuevaDireccion"],
+					           "fechaNacimiento"=>$_POST["nuevaFechaNacimiento"],
+							   "tipoUsuario"=>"1",
+							   "genero"=>$_POST["nuevoGeneroTercero"]);
+
+			   	$respuesta = ModeloClientes::mdlCrearCliente($tabla, $datos);
+
+			   	$respuestTmp = explode("|",$respuesta);
+				
+				 if($respuestTmp[0] == "1"){
+					$tipoAlerta ="error";
+				}else{
+					$tipoAlerta ="success";
+				}
+					echo'<script>
+					swal({
+						  type: "'.$tipoAlerta.'",
+						  title: "'.$respuestTmp[1].'",
+						  showConfirmButton: true,
+						  confirmButtonText: "Cerrar"
+						  }).then(function(result){
+									if (result.value) {
+									window.location = "crear-venta";
+									}
+								})
+					</script>';
+
+			}else{
+
+				echo'<script>
+
+					swal({
+						  type: "error",
+						  title: "¡El usuario no puede ir vacío o llevar caracteres especiales!",
+						  showConfirmButton: true,
+						  confirmButtonText: "Cerrar"
+						  }).then(function(result){
+							if (result.value) {
+
+							window.location = "crear-venta";
+
+							}
+						})
+
+			  	</script>';
+
+
+
+			}
+
+		}
+
+	}
+
 }
 

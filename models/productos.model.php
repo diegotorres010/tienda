@@ -36,6 +36,20 @@ class ModeloProductos{
 
 	}
 
+	static public function mdlMostrarProductoDispo($tabla, $item, $valor, $orden){
+
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = '1' ORDER BY $orden");
+
+		$stmt -> execute();
+
+		return $stmt -> fetchAll();
+
+		$stmt -> close();
+
+		$stmt = null;
+
+	}
+
 
 	static public function mdlListarProducto($tabla, $item, $valor){
 

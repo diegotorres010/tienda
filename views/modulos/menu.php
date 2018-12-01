@@ -107,7 +107,7 @@
 			<li>
 				<a href="crear-ingreso">
 					<i class="fa fa-credit-card"></i>
-					<span>Movimientos</span>
+					<span>Entradas</span>
 				</a>
 			</li>
 
@@ -136,9 +136,23 @@
 					</li>
 
 					<li>
+						<a href="ventas">							
+							<i class="fa fa-briefcase"></i>
+							<span>Productos ventas</span>
+						</a>
+					</li>
+
+					<li>
 						<a href="ingresos">						
 							<i class="fa fa-book"></i>
-							<span>Control movimientos</span>
+							<span>Control entradas</span>
+						</a>
+					</li>
+
+					<li>
+						<a href="ventas">							
+							<i class="fa fa-briefcase"></i>
+							<span>Productos entradas</span>
 						</a>
 					</li>
 				</ul>

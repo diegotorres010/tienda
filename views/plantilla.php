@@ -171,6 +171,7 @@ CUERPO DOCUMENTO
   ?>
 
 <script src="views/js/plantilla.js"></script>
+<script src="views/js/tiendas.js"></script>
 <script src="views/js/terceros.js"></script>
 <script src="views/js/empleados.js"></script>
 <script src="views/js/proveedores.js"></script>

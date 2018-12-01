@@ -12,11 +12,11 @@ class TablaProductosVentas{
 
 	public function mostrarTablaProductosVentas(){
 
-		$item = null;
+		$item = "estado";
     	$valor = null;
-    	$orden = "id";
+    	$orden = "idProducto";
 
-  		$productos = ControladorProductos::ctrMostrarProductos($item, $valor, $orden);
+  		$productos = ControladorProductos::ctrMostrarProductoDispo($item, $valor, $orden);
  		
   		if(count($productos) == 0){
 
@@ -34,38 +34,39 @@ class TablaProductosVentas{
  	 		TRAEMOS LA IMAGEN
   			=============================================*/ 
 
-		  	$imagen = "<img src='".$productos[$i]["imagen"]."' width='40px'>";
+		  	//$imagen = "<img src='".$productos[$i]["imagen"]."' width='40px'>";
 
 		  	/*=============================================
  	 		STOCK
   			=============================================*/ 
 
-  			if($productos[$i]["stock"] <= 10){
+  			// if($productos[$i]["stock"] <= 10){
 
-  				$stock = "<button class='btn btn-danger'>".$productos[$i]["stock"]."</button>";
+  			// 	$stock = "<button class='btn btn-danger'>".$productos[$i]["stock"]."</button>";
 
-  			}else if($productos[$i]["stock"] > 11 && $productos[$i]["stock"] <= 15){
+  			// }else if($productos[$i]["stock"] > 11 && $productos[$i]["stock"] <= 15){
 
-  				$stock = "<button class='btn btn-warning'>".$productos[$i]["stock"]."</button>";
+  			// 	$stock = "<button class='btn btn-warning'>".$productos[$i]["stock"]."</button>";
 
-  			}else{
+  			// }else{
 
-  				$stock = "<button class='btn btn-success'>".$productos[$i]["stock"]."</button>";
+  			// 	$stock = "<button class='btn btn-success'>".$productos[$i]["stock"]."</button>";
 
-  			}
+  			// }
 
 		  	/*=============================================
  	 		TRAEMOS LAS ACCIONES
   			=============================================*/ 
 
-		  	$botones =  "<div class='btn-group'><button class='btn btn-primary agregarProducto recuperarBoton' idProducto='".$productos[$i]["id"]."'>Agregar</button></div>"; 
+		  	$botones =  "<div class='btn-group'><button class='btn btn-primary agregarProducto recuperarBoton' idProducto='".$productos[$i]["idProducto"]."'>Agregar</button></div>"; 
 
 		  	$datosJson .='[
 			      "'.($i+1).'",
-			      "'.$imagen.'",
-			      "'.$productos[$i]["codigo"].'",
-			      "'.$productos[$i]["descripcion"].'",
-			      "'.$stock.'",
+			      "'.$productos[$i]["codigoProducto"].'",
+				  "'.$productos[$i]["codigoBarras"].'",
+				  "'.$productos[$i]["descripcion"].'",
+				  "<td></td>",
+				  "<td></td>",
 			      "'.$botones.'"
 			    ],';
 

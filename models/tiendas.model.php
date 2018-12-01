@@ -86,20 +86,18 @@ class ModeloTiendas{
 	EDITAR TERCERO
 	=============================================*/
 
-	static public function mdlEditarTercero($tabla, $datos){
+	static public function mdlEditarTienda($tabla, $datos){
 
-		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET tipoDocumento = :tipoDocumento, documento = :documento, nombre = :nombre, telefono = :telefono, email = :email, direccion = :direccion, fechaNacimiento = :fechaNacimiento, tipoTercero = :tipoTercero, genero = :genero WHERE idTercero = :idTercero");
+		$stmt = Conexion::conectar()->prepare("UPDATE $tabla SET nombreTienda = :nombreTienda, direccion = :direccion, telefono = :telefono, email = :email, propietario = :propietario WHERE idTienda = :idTienda");
 
-		$stmt->bindParam(":idTercero", $datos["idTercero"], PDO::PARAM_INT);
-		$stmt->bindParam(":tipoDocumento", $datos["tipoDoc"], PDO::PARAM_STR);
-		$stmt->bindParam(":documento", $datos["documentoId"], PDO::PARAM_STR);
-		$stmt->bindParam(":nombre", $datos["nombre"], PDO::PARAM_STR);
+		echo"hola3";
+		echo $datos["telefono"];
+		$stmt->bindParam(":idTienda", $datos["idTienda"], PDO::PARAM_INT);
+		$stmt->bindParam(":nombreTienda", $datos["nombreTienda"], PDO::PARAM_STR);
+		$stmt->bindParam(":direccion", $datos["direccion"], PDO::PARAM_STR);
 		$stmt->bindParam(":telefono", $datos["telefono"], PDO::PARAM_STR);
 		$stmt->bindParam(":email", $datos["email"], PDO::PARAM_STR);
-		$stmt->bindParam(":direccion", $datos["direccion"], PDO::PARAM_STR);
-		$stmt->bindParam(":fechaNacimiento", $datos["fechaNacimiento"], PDO::PARAM_STR);
-		$stmt->bindParam(":tipoTercero", $datos["tipoTercero"], PDO::PARAM_STR);
-		$stmt->bindParam(":genero", $datos["genero"], PDO::PARAM_STR);
+		$stmt->bindParam(":propietario", $datos["propietario"], PDO::PARAM_STR);
 
 		if($stmt->execute()){
 

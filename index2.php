@@ -14,6 +14,7 @@ require_once "controllers/impuestos.controller.php";
 require_once "controllers/creditos.controller.php";
 require_once "controllers/ventas.controller.php";
 
+require_once "models/tiendas.model.php";
 require_once "models/terceros.model.php";
 require_once "models/empleados.model.php";
 require_once "models/usuarios.model.php";

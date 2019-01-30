@@ -1,3 +1,10 @@
+<?php
+$install = '../models/conexion.php';
+if (file_exists($install)) {
+    $rutaAnterior = '../index2.php';
+    echo '<META HTTP-EQUIV="REFRESH" CONTENT="0;URL='. $rutaAnterior . '">';
+}
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -23,7 +30,7 @@
 
   <!-- Theme style -->
   <link rel="stylesheet" href="../views/dist/css/AdminLTE.css">
-  
+
   <!-- AdminLTE Skins -->
   <link rel="stylesheet" href="../views/dist/css/skins/_all-skins.min.css">
 
@@ -38,26 +45,30 @@
   <link rel="stylesheet" href="../views//plugins/iCheck/square/blue.css">
   <link rel="stylesheet" href="../views/plugins/iCheck/all.css">
 
+  <!-- bootstrap datepicker -->
+  <link rel="stylesheet" href="../views/bower_components/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css">
+
   <!-- daterange picker -->
   <link rel="stylesheet" href="../views/bower_components/bootstrap-daterangepicker/daterangepicker.css">
 
   <!-- Morris chart -->
-  <link rel="stylesheet" href="../views/bower_components/morris.js/morris.css"> 
+  <link rel="stylesheet" href="../views/bower_components/morris.js/morris.css">
 
-<!--=====================================
+  <!--=====================================
   PLUGINS DE JAVASCRIPT
   ======================================-->
 
   <!-- jQuery 3 -->
   <script src="../views/bower_components/jquery/dist/jquery.min.js"></script>
-  <script src="../views/js/jquery-steps/jquery.steps.min.js"></script>
-  
+
+  <!-- <script src="../views/js/jquery-steps/jquery.steps.min.js"></script> -->
+
   <!-- Bootstrap 3.3.7 -->
   <script src="../views/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
 
   <!-- FastClick -->
   <script src="../views/bower_components/fastclick/lib/fastclick.js"></script>
-  
+
   <!-- AdminLTE App -->
   <script src="../views/dist/js/adminlte.min.js"></script>
 
@@ -87,13 +98,16 @@
   <script src="../views/bower_components/moment/min/moment.min.js"></script>
   <script src="../views/bower_components/bootstrap-daterangepicker/daterangepicker.js"></script>
 
+  <!-- bootstrap datepicker -->
+  <script src="../views/bower_components/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+
   <!-- Morris.js charts http://morrisjs.github.io/morris.js/-->
   <script src="../views/bower_components/raphael/raphael.min.js"></script>
   <script src="../views/bower_components/morris.js/morris.min.js"></script>
 
   <!-- ChartJS http://www.chartjs.org/-->
   <script src="../views/bower_components/Chart.js/Chart.js"></script>
-  
+
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini" style="background: #e0e0e0;">
@@ -133,14 +147,14 @@
                     <dt>Al terminar de digitar todos los datos debe dar clic en el botón <b class="text-blue">"Crear Tienda"</b>.</dt>
                     <br>
                     <dd>El sistema validará los datos ingresados, Si se presenta algún tipo de error el sistema se lo notificará.</dd>
-                    <dd>Una vez finalizado este proceso, ingresará al menú principal de SITIB.</dd>
+                    <dd>Una vez finalizado este proceso, ingresará al inicio de sesión de SITIB.</dd>
                 </dl>
                 </div>
             </div>
         </div>
 
         <div class="col-md-6">
-            <form role="form" action="crear_conexion.php" method="post" enctype="multipart/form-data">
+            <form id="configAdmin" action="crear_conexion.php" method="post" enctype="multipart/form-data">
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
                         <li class="active"><a href="#conexiontab" data-toggle="tab">Conexión</a></li>
@@ -153,25 +167,25 @@
                         <div class="active tab-pane" id="conexiontab">
                             <div class="modal-body">
                                 <div class="box-body">
-                                    <div class="form-group">
+                                    <div class="form-group host">
                                         <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-key"></i></span>
-                                            <input type="text" class="form-control input-lg" name="nuevoHost" placeholder="Host o ip" value="localhost" required>
+                                            <span class="input-group-addon"><i class="fa fa-laptop"></i></span>
+                                            <input type="text" class="form-control input-lg" name="nuevoHost" placeholder="Host o ip" value="127.0.0.1" data-inputmask="'alias': 'ip'" data-mask required>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group namedb">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-key"></i></span>
                                             <input type="text" class="form-control input-lg" name="nuevoDB" placeholder="Nombre de la base de datos" value="tienda" required>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group userdb">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-user"></i></span>
                                             <input type="text" class="form-control input-lg" name="nuevoUsuarioDB" placeholder="Usuario de la base de datos" value="root" required>
                                         </div>
                                     </div>
-                                    <div class="form-group">
+                                    <div class="form-group passdb">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                                             <input type="password" class="form-control input-lg" name="nuevaPasswordDB" placeholder="Contraseña de la base de datos" >
@@ -184,38 +198,38 @@
                         <div class="tab-pane" id="tiendatab">
                             <div class="modal-body">
                                 <div class="box-body">
-                                    <div class="form-group">
+                                    <div class="form-group newTienda">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-user"></i></span>
                                             <input type="text" class="form-control input-lg" name="nuevaTiendaNombre" placeholder="Nombre de la tienda" required>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group newDirecc">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
-                                            <input type="text" class="form-control input-lg" name="nuevaTiendaDireccion" placeholder="Dirección" required>
+                                            <input type="text" class="form-control input-lg" name="nuevaTiendaDireccion" id="nuevaTiendaDireccion" placeholder="Dirección" required>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group newTelefo">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-phone"></i></span>
-                                            <input type="number" class="form-control input-lg" name="nuevaTiendaTelefono" placeholder="Teléfono" data-inputmask="'mask':'(999) 999-9999'" data-mask required>
+                                            <input type="text" class="form-control input-lg" name="nuevaTiendaTelefono" id="nuevaTiendaTelefono" placeholder="Teléfono" data-inputmask="'mask':'(999) 999-9999'" data-mask required>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group newPropie">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                            <input type="text" class="form-control input-lg" name="nuevaTiendaPropietario" placeholder="Nombre del propietario" required>
+                                            <input type="text" class="form-control input-lg" name="nuevaTiendaPropietario" id="nuevaTiendaPropietario" placeholder="Nombre del propietario" required>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group newEmail">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                            <input type="email" class="form-control input-lg" name="nuevaTiendaEmail" placeholder="email" required>
+                                            <input type="email" class="form-control input-lg" name="nuevaTiendaEmail" id="nuevaTiendaEmail" placeholder="email" required>
                                         </div>
                                     </div>
                                 </div>
@@ -225,7 +239,7 @@
                         <div class="tab-pane" id="usuariotab">
                             <div class="modal-body">
                                 <div class="box-body">
-                                    <div class="form-group">
+                                    <div class="form-group newTipo">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
                                             <select class="form-control input-lg" name="nuevoTipoDoc">
@@ -238,49 +252,49 @@
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group newDocumentoTer">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-sort-numeric-asc"></i></span>
                                             <input type="number" min="0" class="form-control input-lg" name="nuevoDocumentoId" placeholder="Ingresar documento" >
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group newTercero">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                                            <input type="text" class="form-control input-lg" name="nuevoTercero" placeholder="Ingresar nombre" required>
+                                            <input type="text" class="form-control input-lg" name="nuevoTercero" id="nuevoTercero" readonly required>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group newTelefonoTer">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-phone"></i></span>
-                                            <input type="text" class="form-control input-lg" name="nuevoTelefono" placeholder="Ingresar teléfono" data-inputmask="'mask':'(999) 999-9999'" data-mask required>
+                                            <input type="text" class="form-control input-lg" name="nuevoTelefono" id="nuevoTelefono" placeholder="Ingresar teléfono" data-inputmask="'mask':'(999) 999-9999'" data-mask required>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group newEmailTer">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                                            <input type="email" class="form-control input-lg" name="nuevoEmail" placeholder="Ingresar email" required>
+                                            <input type="email" class="form-control input-lg" name="nuevoEmail" id="nuevoEmail" placeholder="Ingresar email" required>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group newDireccionTer">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
-                                            <input type="text" class="form-control input-lg" name="nuevaDireccion" placeholder="Ingresar dirección" required>
+                                            <input type="text" class="form-control input-lg" name="nuevaDireccion" id="nuevaDireccion" placeholder="Ingresar dirección" required>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group newFechaNac">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                                            <input type="text" class="form-control pull-right" name="nuevaFechaNacimiento" placeholder="Ingresar fecha nacimiento" data-inputmask="'alias': 'yyyy/mm/dd'" data-mask required>
+                                            <input type="text" class="form-control input-lg" name="nuevaFechaNacimiento" id="nuevaFechaNacimiento" placeholder="Ingresar fecha nacimiento" data-inputmask="'alias': 'yyyy/mm/dd'" data-mask required>
                                         </div>
                                     </div>
 
-                                    <div class="form-group">
+                                    <div class="form-group newGenero">
                                         <div class="input-group">
                                             <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
                                             <select class="form-control input-lg" name="nuevoGeneroTercero">
@@ -288,18 +302,6 @@
                                                 <option value="1">Masculino  </option>
                                                 <option value="2">Femenino</option>
                                                 <option value="3">Indefinido </option>
-                                            </select>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <div class="input-group">
-                                            <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
-                                            <select class="form-control input-lg" name="nuevoTipoTercero">
-                                                <option value="">Seleccionar tipo de tercero</option>
-                                                <option value="1">Cliente  </option>
-                                                <option value="2">Proveedor</option>
-                                                <option value="3">Empleado </option>
                                             </select>
                                         </div>
                                     </div>
@@ -323,13 +325,26 @@
                                         </div>
                                     </div>
                                     <div class="form-group">
+                                        <div class="input-group">
+                                            <span class="input-group-addon"><i class="fa fa-lock"></i></span>
+                                            <input type="password" class="form-control input-lg" name="repetirPassword" placeholder="Confirmar contraseña" required>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <div class="input-group">
+                                            <div id="alertPass" style="display:none;" class="alert alert-danger">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
                                         <div class="panel">SUBIR FOTO</div>
-                                            <input type="file" class="nuevaFoto" name="nuevaFoto">
-                                            <p class="help-block">Peso máximo de la foto 2MB</p>
-                                            <img src="../views/img/empleados/default/anonymous.png" class="img-thumbnail previsualizar" width="100px">
+                                        <input type="file" class="nuevaFoto" name="nuevaFoto">
+                                        <p class="help-block">Peso máximo de la foto 2MB</p>
+                                        <img src="../views/img/empleados/default/anonymous.png" class="img-thumbnail previsualizar" width="100px">
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="submit" class="btn btn-primary">Crear tienda</button>
+                                        <button type="submit" id="crearTiendaBoton" class="btn btn-primary">Crear tienda</button>
+                                        <!-- <input type="submit" id="crearTiendaBoton" class="btn btn-primary" value="Crear tienda"> -->
                                     </div>
                                 </div>
                             </div>
@@ -337,7 +352,6 @@
                     </div>
                     <div id="alertError" style="display:none;" class="alert alert-danger">
                     </div>
-        
                     <div class="modal modal-danger fade in" id="modal-danger" style="display: none;">
                         <div class="modal-dialog">
                             <div class="modal-content">
@@ -354,7 +368,7 @@
                                 </div>
                             </div>
                         </div>
-                    </div>                    
+                    </div>
                 </div>
             </form>
         </div>
@@ -363,4 +377,3 @@
 </body>
 </html>
 <script src="../views/js/login.js"></script>
-

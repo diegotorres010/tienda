@@ -21,6 +21,11 @@ class AjaxTerceros{
 		echo json_encode($respuesta);
 	}
 
+	public function ajaxMostrarTercero(){
+		$respuesta = ControladorTerceros::ctrMostrarTercero(null,null);
+		echo json_encode($respuesta);
+	}
+
 	public $activarUsuario;
 	public $activarIdUsuario;
 
@@ -62,6 +67,11 @@ class AjaxTerceros{
 /*=============================================
 EDITAR TERCERO
 =============================================*/	
+
+if(isset($_POST["mostrarTerceros"])){
+	$tercero = new AjaxTerceros();	
+	$tercero -> ajaxMostrarTercero();
+}
 
 if(isset($_POST["idUsuario"])){
 	$tercero = new AjaxTerceros();

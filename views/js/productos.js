@@ -2,16 +2,16 @@
 CARGAR LA TABLA DINÁMICA DE PRODUCTOS
 =============================================*/
 
-$.ajax({
+// $.ajax({
 
-	url: "ajax/datatable-productos.ajax.php",
-	success: function (respuesta) {
+// 	url: "ajax/datatable-productos.ajax.php",
+// 	success: function (respuesta) {
 
-		console.log("respuesta", respuesta);
+// 		console.log("respuesta", respuesta);
 
-	}
+// 	}
 
-})
+// })
 
 // var listarProductos = $("#listarProductos").val();
 
@@ -263,6 +263,52 @@ $(".nuevaImagen").change(function () {
 	}
 })
 
+$(".editarImagen").change(function () {
+
+	var imagen = this.files[0];
+
+	/*=============================================
+		VALIDAMOS EL FORMATO DE LA IMAGEN SEA JPG O PNG
+		=============================================*/
+
+	if (imagen["type"] != "image/jpeg" && imagen["type"] != "image/png") {
+
+		$(".editarImagen").val("");
+
+		swal({
+			title: "Error al subir la imagen",
+			text: "¡La imagen debe estar en formato JPG o PNG!",
+			type: "error",
+			confirmButtonText: "¡Cerrar!"
+		});
+
+	} else if (imagen["size"] > 2000000) {
+
+		$(".editarImagen").val("");
+
+		swal({
+			title: "Error al subir la imagen",
+			text: "¡La imagen no debe pesar más de 2MB!",
+			type: "error",
+			confirmButtonText: "¡Cerrar!"
+		});
+
+	} else {
+
+		var datosImagen = new FileReader;
+		datosImagen.readAsDataURL(imagen);
+
+		$(datosImagen).on("load", function (event) {
+
+			var rutaImagen = event.target.result;
+
+			$(".previsualizarEditar").attr("src", rutaImagen);
+
+		})
+
+	}
+})
+
 /*=============================================
 EDITAR PRODUCTO
 =============================================*/
@@ -300,6 +346,7 @@ $(".tablaProductos tbody").on("click", "button.btnEditarProducto", function () {
 				success: function (respuesta) {
 
 					$('select[name="editarCategoria"] > option[value="' + respuesta["idCategoria"] + '"]').attr('selected', true);
+					$('select[name="editarCategoria"]').val(respuesta["idCategoria"]).trigger('change');
 
 				}
 
@@ -320,6 +367,7 @@ $(".tablaProductos tbody").on("click", "button.btnEditarProducto", function () {
 				success: function (respuesta) {
 
 					$('select[name="editarMedidas"] > option[value="' + respuesta["idUnidadVenta"] + '"]').attr('selected', true);
+					$('select[name="editarMedidas"]').val(respuesta["idUnidadVenta"]).trigger('change');
 
 				}
 
@@ -340,6 +388,7 @@ $(".tablaProductos tbody").on("click", "button.btnEditarProducto", function () {
 				success: function (respuesta) {
 
 					$('select[name="editarImpuestos"] > option[value="' + respuesta["idIva"] + '"]').attr('selected', true);
+					$('select[name="editarImpuestos"]').val(respuesta["idIva"]).trigger('change');
 
 				}
 
@@ -353,12 +402,12 @@ $(".tablaProductos tbody").on("click", "button.btnEditarProducto", function () {
 
 			$("#editarDescripcion").val(respuesta["descripcion"]);
 
+			$("#imagenActual").val(respuesta["imagen"]);			
+
 			if (respuesta["imagen"] != "") {
-
-				$("#imagenActual").val(respuesta["imagen"]);
-
-				$(".previsualizar").attr("src", respuesta["imagen"]);
-
+				$(".previsualizarEditar").attr("src", respuesta["imagen"]);
+			} else {
+				$(".previsualizarEditar").attr("src", "views/img/productos/default/anonymous.png");
 			}
 
 		}

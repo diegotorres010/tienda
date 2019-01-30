@@ -1,5 +1,9 @@
 <?php
 
+require_once "../models/tiendas.model.php";
+require_once "../models/terceros.model.php";
+require_once "../models/usuarios.model.php";
+
 class ControladorTiendas{
 
 	/*=============================================
@@ -177,6 +181,7 @@ class ControladorTiendas{
 				$encriptar = crypt($_POST["nuevoPassword"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
 
 				$datos = array("usuario" => $_POST["nuevoEmpleado"],
+							   "idTipo" => "1",
 					           "password" => $encriptar,
 							   "foto"=>$ruta);
 
@@ -253,7 +258,7 @@ class ControladorTiendas{
 							}).then(function(result){
 								if (result.value) {
 
-								window.location = "tienda";
+								window.location = "inicio";
 
 								}
 							})
@@ -270,7 +275,7 @@ class ControladorTiendas{
 							}).then(function(result){
 								if (result.value) {
 
-								window.location = "tienda";
+								window.location = "inicio";
 
 								}
 							})
@@ -289,7 +294,7 @@ class ControladorTiendas{
 						  }).then(function(result){
 							if (result.value) {
 
-							window.location = "tienda";
+							window.location = "inicio";
 
 							}
 						})

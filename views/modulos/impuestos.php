@@ -45,7 +45,7 @@ foreach ($impuestos as $key => $value) {
 
                     <td>' . $value["descripcion"] . '</td>
 
-                    <td>' . $value["porcentaje"] . '</td>';
+                    <td>' . $value["porcentaje"] . '%</td>';
 
     if ($value["estado"] != 0) {
         echo '<td><button class="btn btn-success btn-xs btnActivarIva" idIva="' . $value["idIva"] . '" estado="0">Activado</button></td>';

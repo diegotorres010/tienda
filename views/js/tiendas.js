@@ -1,11 +1,4 @@
-
 $(document).ready(function(){
-	console.log("hola11");
-	$(".btnEditarTienda").click(evento);
-});
-function evento() {
-
-	console.log("hola");
 	var idTienda = $(this).attr("idTienda");
 	console.log(idTienda);
 
@@ -22,20 +15,11 @@ function evento() {
 		processData: false,
 		dataType: "json",
 		success: function (respuesta) {
-			console.log(respuesta);
 
-			$("#idTienda").val(respuesta["idTienda"]);
-			$("#editarTiendaNombre").val(respuesta["nombreTienda"]);
-
-			$("#editarTiendaDireccion").val(respuesta["direccion"]);
-
-			$("#editarTiendaTelefono").val(respuesta["telefono"]);
-
-			$("#editarTiendaPropietario").val(respuesta["propietario"]);
-			$("#editarTiendaEmail").val(respuesta["email"]);
+			$('select[name="editarTiendaPropietario"] > option[value="' + respuesta["propietario"] + '"]').attr('selected', true);
+			$('select[name="editarTiendaPropietario"]').val(respuesta["propietario"]).trigger('change');
 
 		}
 
 	})
-
-};
+});

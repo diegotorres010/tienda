@@ -30,11 +30,7 @@
 	if(!file_put_contents($data, $valores)){
        echo 'No se ha podido crear el archivo de conexión';
     }else{
-        include("../models/tiendas.model.php");
-        include("../models/terceros.model.php");
-        include("../models/usuarios.model.php");
-
-        include("../controllers/tiendas.controller.php");
+        include("../controllers/instalador.controller.php");
     
         $crearTienda = new ControladorTiendas();
         $crearTienda -> ctrCrearTienda();
@@ -51,9 +47,8 @@
     <h4>Si presenta errores por favor siga las instrucciones o haga clic en "Reintentar".</h4>
     <h4>De lo contrario dar clic en "Continuar" para dar inicio al sistema.</h4>
     <br>
-    <a href="index.php"><input class="btn btn-danger btn-lg" value="Reintentar"/></a>
+    <a href="reintentar.php"><input class="btn btn-danger btn-lg" value="Reintentar"/></a>
     <a href="../index2.php"><input class="btn btn-primary btn-lg" value="Continuar"/></a>
-	<!--<a href="../install/#segundo"><input class="next" value="Continuar con la instalación"/></a>-->
 <?php
     }
 ?>

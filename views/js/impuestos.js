@@ -6,8 +6,6 @@ $(document).ready(function () {
   $('.sorting_1').click(function () {    
     setTimeout(function () { validarBotonesImpuestos() }, 50)
   });
-  // esto sirve para cargar el dato en el config
-  // $('#nombreTercero').val($('#nombrePersona').val())
 });
 
 function validarBotonesImpuestos() {  

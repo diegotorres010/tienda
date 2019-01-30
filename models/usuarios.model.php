@@ -60,10 +60,11 @@ class ModeloUsuarios{
 
 	static public function mdlIngresarUsuario($tabla, $datos, $usuario){
 
-		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(cod_empleado, contrasena, foto, idUsuario) 
-														VALUES (:usuario, :password, :foto, :idUsuario)");
+		$stmt = Conexion::conectar()->prepare("INSERT INTO $tabla(nombreEmpleado, idTipo, contrasena, foto, idUsuario) 
+														VALUES (:usuario, :idTipo, :password, :foto, :idUsuario)");
 		
 		$stmt->bindParam(":usuario", $datos["usuario"], PDO::PARAM_STR);
+		$stmt->bindParam(":idTipo", $datos["idTipo"], PDO::PARAM_STR);
 		$stmt->bindParam(":password", $datos["password"], PDO::PARAM_STR);
 		$stmt->bindParam(":foto", $datos["foto"], PDO::PARAM_STR);
 		$stmt->bindParam(":idUsuario", $usuario["idUsuario"], PDO::PARAM_STR);

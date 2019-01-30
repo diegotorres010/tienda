@@ -12,10 +12,10 @@ class ModeloImpuestos{
 
 			$pdo = Conexion::conectar();
 		
-			$sql = 'CALL agregarIva(:porcentaje,:descripcion,@respuesta)';
+			$sql = 'CALL agregarIva(:descripcion,:porcentaje,@respuesta)';
 			$stmt = $pdo->prepare($sql);
-			$stmt->bindParam(":porcentaje",$porcentaje,PDO::PARAM_STR);
 			$stmt->bindParam(":descripcion",$descripcion,PDO::PARAM_STR);
+			$stmt->bindParam(":porcentaje",$porcentaje,PDO::PARAM_STR);
 			$stmt->execute();
 			$stmt->closeCursor();
 

@@ -50,6 +50,19 @@ class AjaxEmpleados{
 
 	}
 
+	public $validarTerEmpleado;
+
+	public function ajaxValidarTerEmpleado(){
+
+		$item = "idUsuario";
+		$valor = $this->validarTerEmpleado;
+
+		$respuesta = ControladorEmpleados::ctrMostrarEmpleados($item, $valor);
+
+		echo json_encode($respuesta);
+
+	}
+
 	public function ajaxMostrarEmpleado(){
 		$respuesta = ControladorEmpleados::ctrMostrarEmpleados(null, null);
 		echo json_encode($respuesta);
@@ -80,5 +93,13 @@ if(isset( $_POST["validarUsuario"])){
 	$valUsuario = new AjaxEmpleados();
 	$valUsuario -> validarUsuario = $_POST["validarUsuario"];
 	$valUsuario -> ajaxValidarEmpleado();
+
+}
+
+if(isset( $_POST["validarTerEmpleado"])){
+
+	$valTerUsuario = new AjaxEmpleados();
+	$valTerUsuario -> validarTerEmpleado = $_POST["validarTerEmpleado"];
+	$valTerUsuario -> ajaxValidarTerEmpleado();
 
 }

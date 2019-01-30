@@ -18,7 +18,7 @@ class ControladorImpuestos
                 $tabla = "iva";
 
                 $datos = array("porcentaje" => $_POST["nuevoPorcentaje"],
-                    "descripcion" => $_POST["nuevoImpuesto"]);
+                               "descripcion" => $_POST["nuevoImpuesto"]);
 
                 $respuesta = ModeloImpuestos::mdlIngresarImpuesto($tabla, $datos);
                 $respuestTmp = explode("|", $respuesta);

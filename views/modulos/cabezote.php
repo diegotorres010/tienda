@@ -12,6 +12,7 @@
 	 	<a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
         	<span class="sr-only">Menu</span>
       	</a>
+
 		<div class="navbar-custom-menu">				
 			<ul class="nav navbar-nav">				
 				<li class="dropdown user user-menu">					
@@ -35,10 +36,26 @@
 						<span class="hidden-xs"><?php  echo $terceros["descripcion"]; ?></span>
 					</a>
 
-					<ul class="dropdown-menu">						
-						<li class="user-body">							
+					<ul class="dropdown-menu">
+						<li class="user-header">
+							<?php
+
+								if($_SESSION["foto"] != ""){
+									echo '<img src="'.$_SESSION["foto"].'" class="img-circle">';
+								}else{
+									echo '<img src="views/img/empleados/default/anonymous.png" class="img-circle">';
+								}
+							?>
+						<p>
+						<?php  echo $terceros["descripcion"]; ?>
+						</p>
+					</li>						
+						<li class="user-body">
+							<div class="pull-left">
+								<a href="#" class="btn btn-block btn-success" style="color: white !important;">Cambiar contraseña</a>
+                			</div>							
 							<div class="pull-right">								
-								<a href="salir" class="btn btn-default btn-flat">Salir</a>
+								<a href="salir" class="btn btn-block btn-danger" style="color: white !important;">Salir</a>
 							</div>
 						</li>
 					</ul>

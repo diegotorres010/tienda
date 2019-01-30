@@ -18,9 +18,9 @@
         <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarEmpleado">
           Agregar empleado
         </button>
-        <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarPermisos">
+        <!-- <button class="btn btn-primary" data-toggle="modal" data-target="#modalAgregarPermisos">
           Agregar permisos
-        </button>
+        </button> -->
       </div>
 
       <div class="box-body">
@@ -72,8 +72,10 @@ foreach ($terceros as $key => $value) {
     echo '<td>' . $value["ultimoIngreso"] . '</td>
                   <td>
                     <div class="btn-group">
-                      <button class="btn btn-warning btnEditarEmpleado" idUsuarioSistema="' . $value["idUsuarioSistema"] . '" estado="' . $value["estado"] . '" data-toggle="modal" data-target="#modalEditarEmpleado"><i class="fa fa-pencil"></i></button>
-                    </div>
+                      <button class="btn btn-warning btnEditarEmpleado" idUsuarioSistema="' . $value["idUsuarioSistema"] . '" estado="' . $value["estado"] . '" data-toggle="modal" data-target="#modalEditarEmpleado"><i class="fa fa-pencil"></i></button>'
+                    //  <button class="btn bg-olive btnPermisosEmpleado btnAgregar" idUsuarioSistema="' . $value["idUsuarioSistema"] . '" estado="' . $value["estado"] . '" data-toggle="modal" data-target="#modalAgregarPermisos"><i class="fa fa-lock"></i></button>
+                    //  <button class="btn btn-danger btnPermisosEmpleado btnModificar" idUsuarioSistema="' . $value["idUsuarioSistema"] . '" estado="' . $value["estado"] . '" data-toggle="modal" data-target="#modalAgregarPermisos"><i class="fa fa-lock"></i></button>
+                    .'</div>
                   </td>
                 </tr>';
 }
@@ -93,16 +95,23 @@ foreach ($terceros as $key => $value) {
       <form role="form" method="post" enctype="multipart/form-data">
         <div class="modal-header" style="background:#3c8dbc; color:white">
           <button type="button" class="close" data-dismiss="modal">&times;</button>
-          <h4 class="modal-title">Agregar empleado</h4>
+          <h4 class="modal-title">Asignar permisos</h4>
         </div>
         <div class="modal-body">
           <div class="box-body">
-            <div class="form-group">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-sort-numeric-asc"></i></span>
-                <input class="form-control input-lg" id="busquedaEmpleado" placeholder="Ingresar documento" >
+            <div class="form-group">                
+              <div class="input-group">              
+                <span class="input-group-addon"><i class="fa fa-th"></i></span> 
+                <input type="text" class="form-control input-lg" name="nombreEmpleadoP" id="nombreEmpleadoP" readonly>
+                <input type="hidden" id="idUsuarioP" name="idUsuarioP">
               </div>
             </div>
+            <!-- <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-sort-numeric-asc"></i></span>
+                <input class="form-control input-lg" id="busquedaEmpleado" placeholder="Ingresar documento" required>
+              </div>
+            </div> -->
             <hr>
             <ul id="listaPermisos" class="form">
             </ul>
@@ -110,7 +119,7 @@ foreach ($terceros as $key => $value) {
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
-          <input type="button" id="guardarPermisos" class="btn btn-primary" value="Guardar permisos">
+          <input type="button" id="PermisosBoton" class="btn btn-primary" value="Guardar permisos">
         </div>
        </form>
     </div>
@@ -128,62 +137,45 @@ foreach ($terceros as $key => $value) {
         </div>
         <div class="modal-body">
           <div class="box-body">
-          <div class="form-group">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
-                <select class="form-control input-lg" name="nuevoTipoDoc" id="nuevoTipoDoc">
-                  <option value="">Seleccionar tipo documento</option>
-                  <option value="1">CC</option>
-                  <option value="2">NIT</option>
-                  <option value="3">TI</option>
-                  <option value="3">PA</option>
+            <div class="form-group">                
+              <div class="input-group">              
+                <span class="input-group-addon"><i class="fa fa-th"></i></span> 
+                <select class="form-control select2" style="width: 100% !important;" id="nuevoTerEmpleado" name="nuevoTerEmpleado" required>
+                  <option value="">Seleccionar empleado</option>
+                  <?php
+
+                  $item = "tipoUsuario";
+                  $valor = null;
+
+                  $empleados = ControladorEmpleados::ctrListarEmpTerceros($item, $valor);
+
+                  foreach ($empleados as $key => $value) {
+                    if ($value["estado"] != 0) {
+                      echo '<option value="'.$value["idUsuario"].'">'.$value["descripcion"].'</option>';
+                    }
+                  }
+
+                  ?>
                 </select>
               </div>
             </div>
-            <div class="form-group">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-sort-numeric-asc"></i></span>
-                <input type="number" min="0" class="form-control input-lg" name="nuevoDocumentoId" id="nuevoDocumentoId" placeholder="Ingresar documento" >
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-user"></i></span>
-                <input type="text" class="form-control input-lg" name="nuevoTercero" placeholder="Ingresar nombre" >
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-phone"></i></span>
-                <input type="text" class="form-control input-lg" name="nuevoTelefono" placeholder="Ingresar teléfono" data-inputmask="'mask':'(999) 999-9999'" data-mask >
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
-                <input type="email" class="form-control input-lg" name="nuevoEmail" placeholder="Ingresar email" >
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
-                <input type="text" class="form-control input-lg" name="nuevaDireccion" placeholder="Ingresar dirección" >
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
-                <input type="text" class="form-control input-lg" name="nuevaFechaNacimiento" placeholder="Ingresar fecha nacimiento" data-inputmask="'alias': 'yyyy/mm/dd'" data-mask >
-              </div>
-            </div>
-            <div class="form-group">
-              <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-tasks"></i></span>
-                <select class="form-control input-lg" name="nuevoGeneroTercero">
-                  <option value="">Seleccionar género</option>
-                  <option value="1">Masculino</option>
-                  <option value="2">Femenino</option>
-                  <option value="3">Indefinido</option>
+            <div class="form-group">                
+              <div class="input-group">              
+                <span class="input-group-addon"><i class="fa fa-unlock-alt"></i></span> 
+                <select class="form-control select2" style="width: 100% !important;" id="nuevoTipoP" name="nuevoTipoP" required>
+                  <option value="">Tipo de acceso</option>
+                  <?php
+
+                  $item = null;
+                  $valor = null;
+
+                  $permisos = ControladorPermisos::ctrMostrarTipos($item, $valor);
+
+                  foreach ($permisos as $key => $value) {
+                      echo '<option value="'.$value["idTipo"].'">'.$value["nombreTipo"].'</option>';
+                  }
+
+                  ?>
                 </select>
               </div>
             </div>
@@ -215,10 +207,10 @@ foreach ($terceros as $key => $value) {
 
         <?php
 
-$crearEmpleado = new ControladorEmpleados();
-$crearEmpleado->ctrCrearEmpleado();
+        $crearEmpleado = new ControladorEmpleados();
+        $crearEmpleado->ctrCrearEmpleado();
 
-?>
+        ?>
 
       </form>
     </div>
@@ -254,9 +246,36 @@ MODAL EDITAR USUARIO
 
           <div class="box-body">
 
+            <div class="form-group">
+                
+                <div class="input-group">
+                
+                  <span class="input-group-addon"><i class="fa fa-unlock-alt"></i></span> 
+
+                  <select class="form-control select2" style="width: 100% !important;" name="editarTipo" id="editarTipo" required>
+
+                    <?php
+
+                    $item = null;
+                    $valor = null;
+
+                    $permisos = ControladorPermisos::ctrMostrarTipos($item, $valor);
+
+                    foreach ($permisos as $key => $value) {
+                      echo '<option value="'.$value["idTipo"].'">'.$value["nombreTipo"].'</option>';
+                    }
+
+                    ?>
+    
+                  </select>
+
+                </div>
+
+              </div>
+
             <!-- ENTRADA PARA EL USUARIO -->
 
-             <div class="form-group">
+            <div class="form-group">
 
               <div class="input-group">
 

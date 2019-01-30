@@ -112,6 +112,8 @@ class TablaProductos{
 				  "'.$categorias["descripcion"].'",
 				  "'.$medidas["descripcion"].'",
 				  "'.$impuestos["porcentaje"].' %",
+				  "<td></td>",
+				  "<td></td>",
 				  "'.$estados.'",
 			      "'.$botones.'"
 			    ],';

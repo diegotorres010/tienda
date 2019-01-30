@@ -20,7 +20,7 @@
 
     <h1>
 
-      Crear venta
+      Crear entrada
 
     </h1>
 
@@ -28,7 +28,7 @@
 
       <li><a href="#"><i class="fa fa-dashboard"></i> Inicio</a></li>
 
-      <li class="active">Crear venta</li>
+      <li class="active">Crear entrada</li>
 
     </ol>
 
@@ -46,14 +46,14 @@
 
         <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">Crear factura</h3>
+              <h3 class="box-title">Crear factura de entrada</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
             <!-- <form role="form"> -->
               <div class="box-body">
                 <div class="form-group col-lg-4 col-md-4 col-xs-12">
-                  <label>Vendedor</label>
+                  <label>Vendedor que elabora</label>
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-user"></i></span>
 
@@ -63,58 +63,20 @@
                   </div>
                 </div>
                 <div class="form-group col-lg-4 col-md-4 col-xs-12">
-                  <label>Número factura</label>
+                  <label>Número factura del proveedor</label>
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-key"></i></span>
 
-                    <?php
-
-$item = null;
-$valor = null;
-
-$ventas = ControladorVentas::ctrMostrarVentas($item, $valor);
-
-if (!$ventas) {
-
-    echo '<input type="text" class="form-control" id="nuevaVenta" name="nuevaVenta" value="10001" readonly>';
-
-} else {
-
-    foreach ($ventas as $key => $value) {
-
-    }
-
-    $codigo = $value["codigo"] + 1;
-
-    echo '<input type="text" class="form-control" id="nuevaVenta" name="nuevaVenta" value="' . $codigo . '" readonly>';
-
-}
-
-?>
+                    <input type="text" class="form-control" id="nuevoCodigo" name="nuevoCodigo" placeholder="Número de factura" >
 
                   </div>
                 </div>
                 <div class="form-group col-lg-4 col-md-4 col-xs-12">
-                  <label>Cliente</label>
+                  <label>Proveedor</label>
                   <div class="input-group">
                     <span class="input-group-addon"><i class="fa fa-users"></i></span>
-                    <input type="text" class="form-control" id="seleccionarCliente" >                      
-                    <?php
-
-// $item = null;
-// $valor = null;
-
-// $clientes = ControladorClientes::ctrSelectCliente();
-
-// foreach ($clientes as $key => $value) {
-
-//     echo '<option value="' . $value["idUsuario"] . '">' . $value["nombre"] . '</option>';
-
-// }
-
-?>
-
-<span class="input-group-addon"><button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#modalAgregarCliente" data-dismiss="modal">Crear cliente</button></span>
+                    <input type="text" class="form-control" id="seleccionarCliente" placeholder="Ingrese NIT o nombre">
+                    <span class="input-group-addon"><button type="button" class="btn btn-success btn-xs" data-toggle="modal" data-target="#modalAgregarCliente" data-dismiss="modal">Crear proveedor</button></span>
                   </div>
                 </div>
 

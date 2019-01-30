@@ -195,13 +195,13 @@ class ControladorProductos{
 					CREAMOS EL DIRECTORIO DONDE VAMOS A GUARDAR LA FOTO DEL USUARIO
 					=============================================*/
 
-					$directorio = "vistas/img/productos/".$_POST["editarCodigo"];
+					$directorio = "views/img/productos/".$_POST["editarCodigo"];
 
 					/*=============================================
 					PRIMERO PREGUNTAMOS SI EXISTE OTRA IMAGEN EN LA BD
 					=============================================*/
 
-					if(!empty($_POST["imagenActual"]) && $_POST["imagenActual"] != "vistas/img/productos/default/anonymous.png"){
+					if(!empty($_POST["imagenActual"]) && $_POST["imagenActual"] != "views/img/productos/default/anonymous.png"){
 
 						unlink($_POST["imagenActual"]);
 
@@ -223,7 +223,7 @@ class ControladorProductos{
 
 						$aleatorio = mt_rand(100,999);
 
-						$ruta = "vistas/img/productos/".$_POST["editarCodigo"]."/".$aleatorio.".jpg";
+						$ruta = "views/img/productos/".$_POST["editarCodigo"]."/".$aleatorio.".jpg";
 
 						$origen = imagecreatefromjpeg($_FILES["editarImagen"]["tmp_name"]);						
 
@@ -243,7 +243,7 @@ class ControladorProductos{
 
 						$aleatorio = mt_rand(100,999);
 
-						$ruta = "vistas/img/productos/".$_POST["editarCodigo"]."/".$aleatorio.".png";
+						$ruta = "views/img/productos/".$_POST["editarCodigo"]."/".$aleatorio.".png";
 
 						$origen = imagecreatefrompng($_FILES["editarImagen"]["tmp_name"]);						
 
@@ -315,46 +315,46 @@ class ControladorProductos{
 	/*=============================================
 	BORRAR PRODUCTO
 	=============================================*/
-	static public function ctrEliminarProducto(){
+	// static public function ctrEliminarProducto(){
 
-		if(isset($_GET["idProducto"])){
+	// 	if(isset($_GET["idProducto"])){
 
-			$tabla ="productos";
-			$datos = $_GET["idProducto"];
+	// 		$tabla ="productos";
+	// 		$datos = $_GET["idProducto"];
 
-			if($_GET["imagen"] != "" && $_GET["imagen"] != "vistas/img/productos/default/anonymous.png"){
+	// 		if($_GET["imagen"] != "" && $_GET["imagen"] != "vistas/img/productos/default/anonymous.png"){
 
-				unlink($_GET["imagen"]);
-				rmdir('vistas/img/productos/'.$_GET["codigo"]);
+	// 			unlink($_GET["imagen"]);
+	// 			rmdir('vistas/img/productos/'.$_GET["codigo"]);
 
-			}
+	// 		}
 
-			$respuesta = ModeloProductos::mdlEliminarProducto($tabla, $datos);
+	// 		$respuesta = ModeloProductos::mdlEliminarProducto($tabla, $datos);
 
-			if($respuesta == "ok"){
+	// 		if($respuesta == "ok"){
 
-				echo'<script>
+	// 			echo'<script>
 
-				swal({
-					  type: "success",
-					  title: "El producto ha sido borrado correctamente",
-					  showConfirmButton: true,
-					  confirmButtonText: "Cerrar"
-					  }).then(function(result){
-								if (result.value) {
+	// 			swal({
+	// 				  type: "success",
+	// 				  title: "El producto ha sido borrado correctamente",
+	// 				  showConfirmButton: true,
+	// 				  confirmButtonText: "Cerrar"
+	// 				  }).then(function(result){
+	// 							if (result.value) {
 
-								window.location = "productos";
+	// 							window.location = "productos";
 
-								}
-							})
+	// 							}
+	// 						})
 
-				</script>';
+	// 			</script>';
 
-			}		
-		}
+	// 		}		
+	// 	}
 
 
-	}
+	// }
 
 	/*=============================================
 	MOSTRAR SUMA VENTAS

@@ -23,6 +23,20 @@ class ModeloEmpleados
         $stmt = null;
     }
 
+    static public function mdlListarEmpTerceros($tabla, $item, $valor){
+
+		$stmt = Conexion::conectar()->prepare("SELECT * FROM $tabla WHERE $item = '3' ORDER BY estado DESC");
+
+		$stmt -> execute();
+
+		return $stmt -> fetchAll();
+
+		$stmt -> close();
+
+		$stmt = null;
+
+	}
+
     public static function mdlListarEmpleados()
     {
         $stmt = Conexion::conectar()->prepare("SELECT usuarios.descripcion,
@@ -50,12 +64,13 @@ class ModeloEmpleados
         try {
 			$pdo = Conexion::conectar();
 		
-			$sql = 'CALL agregarUsuarioSistema(:nombreEmpleado,:contrasena,:foto,:idUsuario,@respuesta)';
+			$sql = 'CALL agregarUsuarioSistema(:nombreEmpleado,:contrasena,:foto,:idUsuario,:idTipo,@respuesta)';
 			$stmt = $pdo->prepare($sql);
 			$stmt->bindParam(":nombreEmpleado", $datos["nombreEmpleado"], PDO::PARAM_STR);
 			$stmt->bindParam(":contrasena", $datos["contrasena"], PDO::PARAM_STR);
             $stmt->bindParam(":foto", $datos["foto"], PDO::PARAM_STR);
             $stmt->bindParam(":idUsuario", $datos["idUsuario"], PDO::PARAM_INT);
+            $stmt->bindParam(":idTipo", $datos["idTipo"], PDO::PARAM_INT);
 			
 			$stmt->execute();
 			$stmt->closeCursor();
@@ -79,9 +94,10 @@ class ModeloEmpleados
         try {
 			$pdo = Conexion::conectar();
 		
-			$sql = 'CALL actualizarUsuarioSistema(:idUsuarioSistema,:nombreEmpleado,:contrasena,:foto,@respuesta)';
+			$sql = 'CALL actualizarUsuarioSistema(:idUsuarioSistema,:idTipo,:nombreEmpleado,:contrasena,:foto,@respuesta)';
             $stmt = $pdo->prepare($sql);
             $stmt->bindParam(":idUsuarioSistema", $datos["idUsuarioSistema"], PDO::PARAM_INT);
+            $stmt->bindParam(":idTipo", $datos["idTipo"], PDO::PARAM_INT);
 			$stmt->bindParam(":nombreEmpleado", $datos["nombreEmpleado"], PDO::PARAM_STR);
 			$stmt->bindParam(":contrasena", $datos["contrasena"], PDO::PARAM_STR);
             $stmt->bindParam(":foto", $datos["foto"], PDO::PARAM_STR);

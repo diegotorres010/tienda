@@ -50,6 +50,9 @@ session_start();
   <!-- Morris chart -->
   <link rel="stylesheet" href="views/bower_components/morris.js/morris.css">
 
+  <!-- Select2 -->
+  <link rel="stylesheet" href="views/bower_components/select2/dist/css/select2.min.css">
+
   <!--=====================================
   PLUGINS DE JAVASCRIPT
   ======================================-->
@@ -102,13 +105,16 @@ session_start();
 
   <!-- ChartJS http://www.chartjs.org/-->
   <script src="views/bower_components/Chart.js/Chart.js"></script>
+
+  <!-- Select2 -->
+  <script src="views/bower_components/select2/dist/js/select2.full.min.js"></script>
 </head>
 
 <!--=====================================
 CUERPO DOCUMENTO
 ======================================-->
 
-<body class="hold-transition skin-blue sidebar-collapse sidebar-mini login-page">
+<body class="hold-transition skin-blue fixed sidebar-mini login-page">
  
   <?php
 
@@ -135,21 +141,23 @@ CUERPO DOCUMENTO
     if(isset($_GET["ruta"])){
       if($_GET["ruta"] == "inicio" ||
          $_GET["ruta"] == "empleados" ||
+         $_GET["ruta"] == "permisos" ||
          $_GET["ruta"] == "proveedores" ||
-         $_GET["ruta"] == "terceros" ||
          $_GET["ruta"] == "clientes" ||
+         $_GET["ruta"] == "terceros" ||
          $_GET["ruta"] == "impuestos" ||
          $_GET["ruta"] == "medidas" ||
          $_GET["ruta"] == "categorias" ||
          $_GET["ruta"] == "productos" ||
-         $_GET["ruta"] == "creditos" ||
-         $_GET["ruta"] == "ingresos" ||
-         $_GET["ruta"] == "ventas" ||
-         $_GET["ruta"] == "crear-ingreso" ||
+         $_GET["ruta"] == "tienda" ||
+         $_GET["ruta"] == "crear-entrada" ||
          $_GET["ruta"] == "crear-venta" ||
-         $_GET["ruta"] == "editar-ingreso" ||
-         $_GET["ruta"] == "editar-venta" ||
-         $_GET["ruta"] == "reportes" ||
+         $_GET["ruta"] == "control-entrada" ||
+         $_GET["ruta"] == "control-venta" ||
+         $_GET["ruta"] == "estado-productos" ||
+         $_GET["ruta"] == "deudores" ||
+         $_GET["ruta"] == "deudas" ||
+         $_GET["ruta"] == "informes" ||
          $_GET["ruta"] == "salir"){
         include "modulos/".$_GET["ruta"].".php";
       }else{

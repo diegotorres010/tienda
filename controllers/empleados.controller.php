@@ -78,14 +78,9 @@ class ControladorEmpleados{
 
 	static public function ctrCrearEmpleado(){
 
-		if(isset($_POST["nuevoDocumentoId"])){			
+		if(isset($_POST["nuevoEmpleado"])){			
 
-			if(preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ ]+$/', $_POST["nuevoTercero"]) &&
-			   preg_match('/^[0-9]+$/', $_POST["nuevoDocumentoId"]) &&
-			   preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $_POST["nuevoEmail"]) && 
-			   preg_match('/^[()\-0-9 ]+$/', $_POST["nuevoTelefono"]) && 
-			   preg_match('/^[#\.\-a-zA-Z0-9 ]+$/', $_POST["nuevaDireccion"]) && 
-			   preg_match('/^[a-zA-Z0-9]+$/', $_POST["nuevoEmpleado"]) &&
+			if(preg_match('/^[a-zA-Z0-9]+$/', $_POST["nuevoEmpleado"]) &&
 			   preg_match('/^[a-zA-Z0-9]+$/', $_POST["nuevoPassword"])){
 
 			   	/*=============================================
@@ -155,58 +150,59 @@ class ControladorEmpleados{
 
 				}
 
-				$tabla = "terceros";
+				// $tabla = "terceros";
 							   
-				$datosTercero = array("tipoDocumento"=>$_POST["nuevoTipoDoc"],
-							  		  "documento"=>$_POST["nuevoDocumentoId"],
-							   		  "descripcion"=>$_POST["nuevoTercero"],
-								      "telefono"=>$_POST["nuevoTelefono"],
-							   		  "email"=>$_POST["nuevoEmail"],
-							   		  "direccion"=>$_POST["nuevaDireccion"],
-							  		  "fechaNacimiento"=>$_POST["nuevaFechaNacimiento"],
-							  		  "tipoUsuario"=>"3",
-							 		  "genero"=>$_POST["nuevoGeneroTercero"]);
+				// $datosTercero = array("tipoDocumento"=>$_POST["nuevoTipoDoc"],
+				// 			  		  "documento"=>$_POST["nuevoDocumentoId"],
+				// 			   		  "descripcion"=>$_POST["nuevoTercero"],
+				// 				      "telefono"=>$_POST["nuevoTelefono"],
+				// 			   		  "email"=>$_POST["nuevoEmail"],
+				// 			   		  "direccion"=>$_POST["nuevaDireccion"],
+				// 			  		  "fechaNacimiento"=>$_POST["nuevaFechaNacimiento"],
+				// 			  		  "tipoUsuario"=>"3",
+				// 			 		  "genero"=>$_POST["nuevoGeneroTercero"]);
 
-				$respuesta = ModeloTerceros::mdlCrearTercero($tabla, $datosTercero);
+				// $respuesta = ModeloTerceros::mdlCrearTercero($tabla, $datosTercero);
 
-				$respuestTmp = explode("|",$respuesta);
+				// $respuestTmp = explode("|",$respuesta);
 				
-				 if($respuestTmp[0] == "1"){
-					$tipoAlerta ="error";
-					echo'<script>
-					swal({
-						  type: "'.$tipoAlerta.'",
-						  title: "'.$respuestTmp[1].'",
-						  showConfirmButton: true,
-						  confirmButtonText: "Cerrar"
-						  }).then(function(result){
-									if (result.value) {
-									window.location = "empleados";
-									}
-								})
-					</script>';
-				}
+				//  if($respuestTmp[0] == "1"){
+				// 	$tipoAlerta ="error";
+				// 	echo'<script>
+				// 	swal({
+				// 		  type: "'.$tipoAlerta.'",
+				// 		  title: "'.$respuestTmp[1].'",
+				// 		  showConfirmButton: true,
+				// 		  confirmButtonText: "Cerrar"
+				// 		  }).then(function(result){
+				// 					if (result.value) {
+				// 					window.location = "empleados";
+				// 					}
+				// 				})
+				// 	</script>';
+				// }
 				
-				$tabla = "usuarios";
-				$item = "idUsuario";
-				$valor = null;
+				// $tabla = "usuarios";
+				// $item = "idUsuario";
+				// $valor = null;
 				
-				$terceros = ModeloTerceros::mdlTraerTercero($tabla, $item, $valor);
+				// $terceros = ModeloTerceros::mdlTraerTercero($tabla, $item, $valor);
 
 				$tabla = "usuariossistema";
 
 				$encriptar = crypt($_POST["nuevoPassword"], '$2a$07$asxx54ahjppf45sd87a5a4dDDGsystemdev$');
 
-				$datos = array("nombreEmpleado" => $_POST["nuevoEmpleado"],				
+				$datos = array("nombreEmpleado" => $_POST["nuevoEmpleado"],
 								"contrasena" => $encriptar,
 								"foto"=>$ruta,
-							    "idUsuario"=>$terceros["idUsuario"]);
+								"idUsuario"=>$_POST["nuevoTerEmpleado"],
+							    "idTipo" => $_POST["nuevoTipoP"]);
 
-				$respuesta2 = ModeloEmpleados::mdlIngresarEmpleado($tabla, $datos);
+				$respuesta = ModeloEmpleados::mdlIngresarEmpleado($tabla, $datos);
 
-				$respuestTmp2 = explode("|",$respuesta2);
+				$respuestTmp = explode("|",$respuesta);
 
-				if($respuestTmp2[0] == "1"){
+				if($respuestTmp[0] == "1"){
 					$tipoAlerta ="error";
 				}else{
 					$tipoAlerta ="success";
@@ -214,7 +210,7 @@ class ControladorEmpleados{
 					echo'<script>
 					swal({
 						  type: "'.$tipoAlerta.'",
-						  title: "'.$respuestTmp2[1].'",
+						  title: "'.$respuestTmp[1].'",
 						  showConfirmButton: true,
 						  confirmButtonText: "Cerrar"
 						  }).then(function(result){
@@ -263,6 +259,14 @@ class ControladorEmpleados{
 		$respuesta = ModeloEmpleados::MdlMostrarEmpleados($tabla, $item, $valor);
 
 		return $respuesta;
+	}
+
+	static public function ctrListarEmpTerceros($item, $valor){
+
+		$tabla = "usuarios";
+		$respuesta = ModeloEmpleados::mdlListarEmpTerceros($tabla, $item, $valor);
+	 	return $respuesta;
+	
 	}
 
 	static public function ctrListarEmpleados(){	
@@ -395,6 +399,7 @@ class ControladorEmpleados{
 				}
 
 				$datos = array("idUsuarioSistema" => $_POST["idUsuarioSistema"],
+							   "idTipo" => $_POST["editarTipo"],
 					           "nombreEmpleado" => $_POST["editarNombre"],
 							   "contrasena" => $encriptar,
 							   "foto" => $ruta);

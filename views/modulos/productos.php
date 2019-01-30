@@ -63,6 +63,8 @@
            <th>Categoría</th>
            <th>Unidad de medida</th>
            <th>Impuestos</th>
+           <th>Stock</th>
+           <th>Precio unitario</th>
            <th>Estado</th>
            <th>Editar</th>
            
@@ -114,7 +116,6 @@ MODAL AGREGAR PRODUCTO
 
           <div class="box-body">
 
-
             <!-- ENTRADA PARA SELECCIONAR CATEGORÍA -->
 
             <div class="form-group">
@@ -123,7 +124,7 @@ MODAL AGREGAR PRODUCTO
               
                 <span class="input-group-addon"><i class="fa fa-th"></i></span> 
 
-                <select class="form-control input-lg" id="nuevaCategoria" name="nuevaCategoria" required>
+                <select class="form-control select2" style="width: 100% !important;" id="nuevaCategoria" name="nuevaCategoria" required>
                   
                   <option value="">Seleccionar categoría</option>
 
@@ -194,7 +195,7 @@ MODAL AGREGAR PRODUCTO
               
                 <span class="input-group-addon"><i class="fa fa-th"></i></span> 
 
-                <select class="form-control input-lg" id="nuevaMedidas" name="nuevaMedidas" required>
+                <select class="form-control select2" style="width: 100% !important;" id="nuevaMedidas" name="nuevaMedidas" required>
                   
                   <option value="">Seleccionar unidad de medida</option>
 
@@ -225,7 +226,7 @@ MODAL AGREGAR PRODUCTO
               
                 <span class="input-group-addon"><i class="fa fa-th"></i></span> 
 
-                <select class="form-control input-lg" id="nuevoImpuestos" name="nuevoImpuestos" required>
+                <select class="form-control select2" style="width: 100% !important;" id="nuevoImpuestos" name="nuevoImpuestos" required>
                   
                   <option value="">Seleccionar impuesto</option>
 
@@ -336,7 +337,7 @@ MODAL EDITAR PRODUCTO
               
                 <span class="input-group-addon"><i class="fa fa-th"></i></span> 
 
-                <select class="form-control input-lg" name="editarCategoria" required>
+                <select class="form-control select2" style="width: 100% !important;" name="editarCategoria" required>
 
                   <?php
 
@@ -406,7 +407,7 @@ MODAL EDITAR PRODUCTO
               
                 <span class="input-group-addon"><i class="fa fa-th"></i></span> 
 
-                <select class="form-control input-lg" name="editarMedidas" required>
+                <select class="form-control select2" style="width: 100% !important;" name="editarMedidas" required>
 
                   <?php
 
@@ -435,7 +436,7 @@ MODAL EDITAR PRODUCTO
               
                 <span class="input-group-addon"><i class="fa fa-th"></i></span> 
 
-                <select class="form-control input-lg" name="editarImpuestos" required>
+                <select class="form-control select2" style="width: 100% !important;" name="editarImpuestos" required>
 
                   <?php
 
@@ -464,11 +465,11 @@ MODAL EDITAR PRODUCTO
               
               <div class="panel">SUBIR IMAGEN</div>
 
-              <input type="file" class="nuevaImagen" name="editarImagen">
+              <input type="file" class="editarImagen" name="editarImagen">
 
               <p class="help-block">Peso máximo de la imagen 2MB</p>
 
-              <img src="views/img/productos/default/anonymous.png" class="img-thumbnail previsualizar" width="100px">
+              <img src="views/img/productos/default/anonymous.png" class="img-thumbnail previsualizarEditar" width="100px">
 
               <input type="hidden" name="imagenActual" id="imagenActual">
 

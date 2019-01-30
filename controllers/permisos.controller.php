@@ -10,7 +10,6 @@ class ControladorPermisos
 
         $respuesta = ModeloPermisos::mdlRegistrarPermisos($tabla, $idEmpleado, $idPermiso);
         
-        return '0|Permiso ingresado correctamente';
         if ($respuesta) {
             return '0|Permiso ingresado correctamente';
         }else{
@@ -18,4 +17,32 @@ class ControladorPermisos
         }
 
     }
+
+    static public function ctrMostrarTipos($item, $valor){
+
+		$tabla = "tipopermisos";
+
+		$respuesta = ModeloPermisos::mdlMostrarTipos($tabla, $item, $valor);
+
+		return $respuesta;
+	
+    }
+
+    static public function ctrMostrarPermisos($item, $valor){
+
+		$tabla = "permisousuarios";
+
+		$respuesta = ModeloPermisos::mdlMostrarPermisos($tabla, $item, $valor);
+
+		return $respuesta;
+	
+    }
+    
+    static public function ctrListarPermiso($item, $valor){
+
+		$tabla = "tipopermisos";
+		$respuesta = ModeloPermisos::mdlListarPermiso($tabla, $item, $valor);
+		return $respuesta;
+	
+	}
 }

@@ -82,15 +82,21 @@
 
                 <div class="form-group col-lg-12 col-md-12 col-xs-12">
                 <label>Productos</label>
-                  <div class="input-group">
-                    <div class="input-group-btn">
-                    <button id="agregarItm" type="button" class="btn btn-success" >Agregar </button>
-                    </div>
+                  <div class="input-group col-lg-12 col-md-12 col-xs-12">
                     <!-- /btn-group -->
-                    <input type="text" class="form-control" id="nuevoProducto" placeholder="Seleccionar producto">
+                    <div class=" col-lg-9 col-md-9 col-xs-12">
+                      <input type="text" class="form-control" id="nuevoProducto" placeholder="Seleccionar producto">
+                    </div>
+                    <div class="col-lg-2 col-md-2 col-xs-12">
+                      <input type="text" class="form-control" id="cantidad" placeholder="Cantidad">
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-xs-12">
+                      <button id="agregarItm" type="button" class="btn btn-success" >Agregar </button>
+                    </div>
+
                   </div>
                 </div>
-                
+
                 <!--=====================================
                 ENTRADA PARA AGREGAR PRODUCTO
                 ======================================-->
@@ -121,7 +127,7 @@
                         <td>prueba</td>
                         <td>60</td>
                         <td>60.000</td>
-                        <td> 
+                        <td>
                           <input type="number">
                         </td>
                         <td>600.000</td>
@@ -250,10 +256,10 @@
                 </div>
 
                 <br>
-                
+
               </div>
               <!-- /.box-body -->
-                
+
 
               <div class="box-footer">
               <button type="submit" class="btn btn-primary pull-right">Guardar venta</button>
@@ -279,7 +285,7 @@
 
           <div class="box-footer">
 
-            
+
 
           </div>
 
@@ -345,7 +351,7 @@
 MODAL AGREGAR CLIENTE
 ======================================-->
 
-<div id="modalAgregarCliente" class="modal fade" role="dialog">  
+<div id="modalAgregarCliente" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
       <form role="form" method="post">
@@ -370,44 +376,44 @@ MODAL AGREGAR CLIENTE
                   </div>
                 </div>
 
-            <div class="form-group">              
-              <div class="input-group">              
-                <span class="input-group-addon"><i class="fa fa-sort-numeric-asc"></i></span> 
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-sort-numeric-asc"></i></span>
                 <input type="number" min="0" class="form-control input-lg" name="nuevoDocumentoId" placeholder="Ingresar documento" id="nuevoDocumentoId" required>
               </div>
             </div>
 
-            <div class="form-group">              
-              <div class="input-group">              
-                <span class="input-group-addon"><i class="fa fa-user"></i></span> 
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-user"></i></span>
                 <input type="text" class="form-control input-lg" name="nuevoTercero" placeholder="Ingresar nombre" required>
               </div>
             </div>
 
-            <div class="form-group">              
-              <div class="input-group">              
-                <span class="input-group-addon"><i class="fa fa-phone"></i></span> 
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-phone"></i></span>
                 <input type="text" class="form-control input-lg" name="nuevoTelefono" placeholder="Ingresar teléfono" data-inputmask="'mask':'(999) 999-9999'" data-mask required>
               </div>
             </div>
 
             <div class="form-group">
               <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-envelope"></i></span> 
+                <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                 <input type="email" class="form-control input-lg" name="nuevoEmail" placeholder="Ingresar email" required>
               </div>
             </div>
 
-            <div class="form-group">              
-              <div class="input-group">              
-                <span class="input-group-addon"><i class="fa fa-map-marker"></i></span> 
+            <div class="form-group">
+              <div class="input-group">
+                <span class="input-group-addon"><i class="fa fa-map-marker"></i></span>
                 <input type="text" class="form-control input-lg" name="nuevaDireccion" placeholder="Ingresar dirección" required>
               </div>
             </div>
 
             <div class="form-group">
               <div class="input-group">
-                <span class="input-group-addon"><i class="fa fa-calendar"></i></span> 
+                <span class="input-group-addon"><i class="fa fa-calendar"></i></span>
                 <input type="text" class="form-control input-lg" name="nuevaFechaNacimiento" placeholder="Ingresar fecha nacimiento" data-inputmask="'alias': 'yyyy/mm/dd'" data-mask required>
               </div>
             </div>
@@ -433,10 +439,12 @@ MODAL AGREGAR CLIENTE
       <!-- </form> -->
 
       <?php
-        $crearCliente = new ControladorClientes();
-        $crearCliente -> ctrCrearClienteVenta();
-      ?>
+$crearCliente = new ControladorClientes();
+$crearCliente->ctrCrearClienteVenta();
+?>
 
     </div>
   </div>
 </div>
+
+<script src="views/js/crear-entrada.js"><script>

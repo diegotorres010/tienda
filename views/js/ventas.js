@@ -4,16 +4,15 @@ $(document).ready(function () {
 	cargarTerceros();
 	cargarProductos();
 	$('#agregarItm').click(agregarItem);
-	$('#nuevoProducto').keypress(function(event){		
-		if(event.which == 13) agregarItem();
+	$('#nuevoProducto').keypress(function (event) {
+		if (event.which == 13) agregarItem();
 	})
-
 });
 
 function agregarItem() {
 	var idProducto = $('#nuevoProducto').attr('value');
 	var infoProducto = buscarProducto(idProducto);
-	var itemsFactura = $('#detalleFactura tr').length + parseInt(1);	
+	var itemsFactura = $('#detalleFactura tr').length + parseInt(1);
 	$('#detalleFactura').append(
 		'<tr>'
 		+ '<td>' + itemsFactura + '</td>'
@@ -29,7 +28,7 @@ function agregarItem() {
 		+ '</tr>'
 	);
 	$('#nuevoProducto').val('');
-	setTimeout(function(){$('#nuevoProducto').focus()}, 300);
+	setTimeout(function () { $('#nuevoProducto').focus() }, 300);
 }
 
 function buscarProducto(idProducto) {
